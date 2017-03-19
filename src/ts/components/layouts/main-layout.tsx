@@ -21,7 +21,6 @@ export class AppComponent extends React.Component<Props, State> {
             <div>
                 <div className="container">
                     <UIVideoSeekSlider
-                        min={0}
                         max={1152}
                         currentTime={this.state.currentTime}
                         progress={400}

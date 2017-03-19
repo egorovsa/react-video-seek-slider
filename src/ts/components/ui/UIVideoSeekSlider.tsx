@@ -12,7 +12,6 @@ export interface Props {
     currentTime?: number,
     progress?: number,
     onChange: (time: number) => void
-
 }
 
 export interface State {
@@ -59,6 +58,10 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
 
             position = position < 0 ? 0 : position;
             position = position > this.state.trackWidth ? this.state.trackWidth : position;
+
+            this.setState({
+                seekHoverPosition: position
+            } as State);
 
             let percent: number = position * 100 / this.state.trackWidth;
             let time: number = +(percent * (this.props.max / 100)).toFixed(0);
@@ -183,7 +186,6 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
                     onMouseLeave={this.clearTrackHover}
                     onMouseDown={this.setSeeking.bind(this,event, true)}
                     onMouseUp={this.setSeeking.bind(this,event, false)}
-
                 >
                     <div className="main">
                         <div className="buffered" style={this.getPositionStyle(this.props.progress)}></div>
@@ -192,11 +194,15 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
                     </div>
                 </div>
 
-                <div className="hover-time" style={this.getHoverTimePosition()} ref={ref => this.hoverTime = ref}>
+                <div
+                    className={this.isThumbActive() ? "hover-time active" : "hover-time"}
+                    style={this.getHoverTimePosition()}
+                    ref={ref => this.hoverTime = ref}
+                >
                     {this.getHoverTime()}
                 </div>
 
-                <div className={this.isThumbActive()?"thumb active":"thumb"} style={this.getThumbHandlerPosition()}>
+                <div className={this.isThumbActive() ? "thumb active" : "thumb"} style={this.getThumbHandlerPosition()}>
                     <div className="handler"/>
                 </div>
             </div>
