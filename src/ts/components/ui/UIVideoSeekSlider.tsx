@@ -183,9 +183,13 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
                     className={this.isThumbActive()?"track active":"track"}
                     ref={ref => this.track = ref}
                     onMouseMove={this.handleTrackHover}
+                    onTouchMove={this.handleTrackHover}
                     onMouseLeave={this.clearTrackHover}
+                    onTouchCancel={this.clearTrackHover}
                     onMouseDown={this.setSeeking.bind(this,event, true)}
                     onMouseUp={this.setSeeking.bind(this,event, false)}
+                    onTouchStart={this.setSeeking.bind(this,event, true)}
+                    onTouchEnd={this.setSeeking.bind(this,event, false)}
                 >
                     <div className="main">
                         <div className="buffered" style={this.getPositionStyle(this.props.progress)}></div>
