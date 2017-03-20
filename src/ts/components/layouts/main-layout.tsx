@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {UIVideoSeekSlider} from "../ui/UIVideoSeekSlider";
+import {VideoSeekSlider} from "../ui/VideoSeekSlider";
 
 export interface Props {
 
@@ -20,7 +20,7 @@ export class AppComponent extends React.Component<Props, State> {
         return (
             <div>
                 <div className="container">
-                    <UIVideoSeekSlider
+                    <VideoSeekSlider
                         max={1152}
                         currentTime={this.state.currentTime}
                         progress={400}

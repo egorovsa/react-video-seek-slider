@@ -22,7 +22,7 @@ export interface State {
     mobileSeeking: boolean,
 }
 
-export class UIVideoSeekSlider extends React.Component<Props, State> {
+export class VideoSeekSlider extends React.Component<Props, State> {
     state: State = {
         ready: false,
         trackWidth: 0,
