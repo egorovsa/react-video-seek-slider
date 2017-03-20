@@ -18,7 +18,8 @@ export interface State {
     ready: boolean,
     trackWidth: number,
     seekHoverPosition: number,
-    seeking: boolean
+    seeking: boolean,
+    mobileSeeking: boolean,
 }
 
 export class UIVideoSeekSlider extends React.Component<Props, State> {
@@ -26,7 +27,8 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         ready: false,
         trackWidth: 0,
         seekHoverPosition: 0,
-        seeking: false
+        seeking: false,
+        mobileSeeking: false
     };
 
     static defaultProps: Props = {
@@ -45,7 +47,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         window.addEventListener('mousemove', this.handleSeeking);
         window.addEventListener('mouseup', this.setSeeking.bind(this, false));
         window.addEventListener('touchmove', this.handleTouchSeeking);
-        window.addEventListener('touchend', this.setSeeking.bind(this, false));
+        window.addEventListener('touchend', this.setMobileSeeking.bind(this, false));
     }
 
     componentWillUnmount() {
@@ -53,7 +55,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         window.removeEventListener('mousemove', this.handleSeeking);
         window.removeEventListener('mouseup', this.setSeeking.bind(this, false));
         window.removeEventListener('touchmove', this.handleTouchSeeking);
-        window.removeEventListener('touchend', this.setSeeking.bind(this, false));
+        window.removeEventListener('touchend', this.setMobileSeeking.bind(this, false));
     }
 
     private handleTouchSeeking = (event): void => {
@@ -65,7 +67,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
 
         pageX = pageX < 0 ? 0 : pageX;
 
-        if (this.state.seeking) {
+        if (this.state.mobileSeeking) {
             this.changeCurrentTimePosition(pageX);
         }
     };
@@ -189,6 +191,15 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         } as State)
     };
 
+    private setMobileSeeking = (state: boolean, event): void => {
+        // this.handleSeeking(event);
+
+        this.setState({
+            mobileSeeking: state,
+            seekHoverPosition: !state ? 0 : this.state.seekHoverPosition
+        } as State)
+    };
+
     private isThumbActive(): boolean {
         if (this.state.seekHoverPosition > 0 || this.state.seeking) {
             return true;
@@ -208,7 +219,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
                     onMouseMove={this.handleTrackHover.bind(this,false)}
                     onMouseLeave={this.handleTrackHover.bind(this, true)}
                     onMouseDown={this.setSeeking.bind(this,true)}
-                    onTouchStart={this.setSeeking.bind(this,true)}
+                    onTouchStart={this.setMobileSeeking.bind(this,true)}
                 >
                     <div className="main">
                         <div className="buffered" style={this.getPositionStyle(this.props.progress)}></div>

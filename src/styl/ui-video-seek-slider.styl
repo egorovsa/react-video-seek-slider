@@ -7,9 +7,18 @@ $seek-hover = rgba(#fff, 0.5)
 .ui-video-seek-slider
 	position relative
 
+	&:focus
+		outline  none
+
 	.track
 		padding 10px 0
 		cursor pointer
+		outline  none
+
+		&:focus
+			border 0
+			outline  none
+
 
 		.main
 			width 100%
@@ -21,6 +30,11 @@ $seek-hover = rgba(#fff, 0.5)
 			top 10 - ($track-height-default / 2)
 			overflow hidden
 			transition transform .4s
+			outline  none
+
+			&:focus
+				border 0
+				outline  none
 
 			.buffered
 				position absolute
