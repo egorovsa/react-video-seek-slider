@@ -43,13 +43,13 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         this.setTrackWidthState();
         window.addEventListener('resize', this.setTrackWidthState);
         window.addEventListener('mousemove', this.handleSeeking);
-        window.addEventListener('mouseup', this.setSeeking.bind(this, event, false));
+        window.addEventListener('mouseup', this.setSeeking.bind(this, false));
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.setTrackWidthState);
         window.removeEventListener('mousemove', this.handleSeeking);
-        window.removeEventListener('mouseup', this.setSeeking.bind(this, event, false));
+        window.removeEventListener('mouseup', this.setSeeking.bind(this, false));
     }
 
     private handleSeeking = (event: MouseEvent): void => {
@@ -79,8 +79,10 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
     };
 
     private handleTrackHover = (e): void => {
+        let position: number = e.pageX - this.track.getBoundingClientRect().left;
+
         this.setState({
-            seekHoverPosition: e.nativeEvent.layerX
+            seekHoverPosition: position
         } as State);
     };
 
@@ -158,7 +160,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         }
     }
 
-    private setSeeking = (event, state: boolean): void => {
+    private setSeeking = (state: boolean, event): void => {
         this.handleSeeking(event);
 
         this.setState({
@@ -183,13 +185,10 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
                     className={this.isThumbActive()?"track active":"track"}
                     ref={ref => this.track = ref}
                     onMouseMove={this.handleTrackHover}
-                    onTouchMove={this.handleTrackHover}
                     onMouseLeave={this.clearTrackHover}
                     onTouchCancel={this.clearTrackHover}
-                    onMouseDown={this.setSeeking.bind(this,event, true)}
-                    onMouseUp={this.setSeeking.bind(this,event, false)}
-                    onTouchStart={this.setSeeking.bind(this,event, true)}
-                    onTouchEnd={this.setSeeking.bind(this,event, false)}
+                    onMouseDown={this.setSeeking.bind(this,true)}
+                    onMouseUp={this.setSeeking.bind(this,false)}
                 >
                     <div className="main">
                         <div className="buffered" style={this.getPositionStyle(this.props.progress)}></div>
