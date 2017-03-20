@@ -164,7 +164,8 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         this.handleSeeking(event);
 
         this.setState({
-            seeking: state
+            seeking: state,
+            seekHoverPosition: !state ? 0 : this.state.seekHoverPosition
         } as State)
     };
 
