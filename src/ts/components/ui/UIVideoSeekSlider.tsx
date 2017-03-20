@@ -44,6 +44,9 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         window.addEventListener('resize', this.setTrackWidthState);
         window.addEventListener('mousemove', this.handleSeeking);
         window.addEventListener('mouseup', this.setSeeking.bind(this, false));
+
+        window.addEventListener('touchmove', this.handleTouchSeeking);
+        window.addEventListener('touchend', this.setSeeking.bind(this, false));
     }
 
     componentWillUnmount() {
@@ -52,23 +55,44 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         window.removeEventListener('mouseup', this.setSeeking.bind(this, false));
     }
 
-    private handleSeeking = (event: MouseEvent): void => {
+    private handleTouchSeeking = (event): void => {
+        let pageX: number = 0;
+
+        for (let i = 0; i < event.changedTouches.length; i++) {
+            pageX = event.changedTouches[i].pageX;
+        }
+
+        pageX = pageX < 0 ? 0 : pageX;
+
         if (this.state.seeking) {
-            let position: number = event.pageX - this.track.getBoundingClientRect().left;
+            this.changeCurrentTimePosition(pageX);
+        }
 
-            position = position < 0 ? 0 : position;
-            position = position > this.state.trackWidth ? this.state.trackWidth : position;
+        // event.stopImmediatePropagation();
+    };
 
-            this.setState({
-                seekHoverPosition: position
-            } as State);
-
-            let percent: number = position * 100 / this.state.trackWidth;
-            let time: number = +(percent * (this.props.max / 100)).toFixed(0);
-
-            this.props.onChange(time);
+    private handleSeeking = (event): void => {
+        if (this.state.seeking) {
+            console.log('handleSeeking', event.pageX);
+            this.changeCurrentTimePosition(event.pageX);
         }
     };
+
+    private changeCurrentTimePosition(pageX: number) {
+        let position: number = pageX - this.track.getBoundingClientRect().left;
+
+        position = position < 0 ? 0 : position;
+        position = position > this.state.trackWidth ? this.state.trackWidth : position;
+
+        this.setState({
+            seekHoverPosition: position
+        } as State);
+
+        let percent: number = position * 100 / this.state.trackWidth;
+        let time: number = +(percent * (this.props.max / 100)).toFixed(0);
+
+        this.props.onChange(time);
+    }
 
     private setTrackWidthState = (): void => {
         if (this.track) {
@@ -186,6 +210,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
                     onMouseMove={this.handleTrackHover.bind(this,false)}
                     onMouseLeave={this.handleTrackHover.bind(this, true)}
                     onMouseDown={this.setSeeking.bind(this,true)}
+                    onTouchStart={this.setSeeking.bind(this,true)}
                 >
                     <div className="main">
                         <div className="buffered" style={this.getPositionStyle(this.props.progress)}></div>
