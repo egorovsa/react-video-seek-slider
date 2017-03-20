@@ -12,6 +12,8 @@ npm i react-video-seek-slider --save
 ## How to use
 
 ```typescript
+import {VideoSeekSlider} from 'react-video-seek-slider';
+
 //JSX
                     <VideoSeekSlider
                         max={1152}
