@@ -1,3 +1,2 @@
-/**
- * Created by admin on 20/03/17.
- */
+const VideoSeekSlider = require('./lib/index');
+module.exports.VideoSeekSlider = VideoSeekSlider;
