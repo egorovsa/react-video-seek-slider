@@ -11,7 +11,7 @@ npm i react-video-seek-slider --save
 
 ## How to use
 
-```
+```typescript
 //JSX
                     <VideoSeekSlider
                         max={1152}
@@ -23,4 +23,4 @@ npm i react-video-seek-slider --save
                             } as State);
                         }}
                     />
-```                   
+```
