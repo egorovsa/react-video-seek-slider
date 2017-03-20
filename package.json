@@ -1,6 +1,6 @@
 {
-  "name": "react-video-player-component",
-  "version": "1.0.0",
+  "name": "react-video-seek-slider",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
