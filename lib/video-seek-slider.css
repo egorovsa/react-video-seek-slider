@@ -1,0 +1,132 @@
+$track-height-default = 3px
+$progress-color = #ff0000
+$track-color = rgba(#ffffff, 0.3)
+$buffered-color = rgba(#fff, 0.2)
+$seek-hover = rgba(#fff, 0.5)
+
+.ui-video-seek-slider
+	position relative
+
+	&:focus
+		outline  none
+
+	.track
+		padding 10px 0
+		cursor pointer
+		outline  none
+
+		&:focus
+			border 0
+			outline  none
+
+
+		.main
+			width 100%
+			height $track-height-default
+			background-color $track-color
+			border-radius 30px
+			position absolute
+			left 0
+			top 10 - ($track-height-default / 2)
+			overflow hidden
+			transition transform .4s
+			outline  none
+
+			&:focus
+				border 0
+				outline  none
+
+			.buffered
+				position absolute
+				background-color $buffered-color
+				width 100%
+				height 100%
+				transform scaleX(0.8)
+				z-index 1
+				transform-origin 0 0
+
+			.seek-hover
+				position absolute
+				background-color $seek-hover
+				width 100%
+				height 100%
+				z-index 2
+				transform scaleX(0.6)
+				transform-origin 0 0
+				opacity 0
+				transition opacity .4s
+
+			.connect
+				position absolute
+				background-color $progress-color
+				width 100%
+				height 100%
+				z-index 3
+				left 0
+				transform scaleX(0.13)
+				transform-origin 0 0
+
+		&.active
+			.main
+				transform scaleY(2)
+
+	.thumb
+		pointer-events none
+		position absolute
+		width 12px
+		height 12px
+		left -6px
+		top 4px
+		z-index 4
+		transform translateX(100px)
+
+		.handler
+			transition transform .2s
+			border-radius 100%
+			width 100%
+			height 100%
+			background-color $progress-color
+			opacity 0
+			transform scale(0.4)
+
+		&.active
+			.handler
+				opacity 1
+				transform scale(1)
+
+	.hover-time
+		//transition opacity 0.2s
+		position absolute
+		background-color rgba(#000, 0.3)
+		line-height 18px
+		font-size 16px
+		color #ddd
+		top -25px
+		left 0
+		padding 5px 10px
+		border-radius 5px
+		box-shadow 0 0 5px rgba(#000, 0.3)
+		opacity 0
+		transform translateX(150px)
+		pointer-events none
+
+		&.active
+			opacity 1
+
+	&:hover
+		.track
+			.main
+				.seek-hover
+					opacity 1
+
+
+
+
+
+
+
+
+
+
+
+

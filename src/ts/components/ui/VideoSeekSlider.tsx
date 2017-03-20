@@ -7,7 +7,6 @@ interface Time {
 }
 
 export interface Props {
-    min?: number,
     max?: number,
     currentTime?: number,
     progress?: number,
@@ -32,7 +31,6 @@ export class VideoSeekSlider extends React.Component<Props, State> {
     };
 
     static defaultProps: Props = {
-        min: 0,
         max: 100,
         currentTime: 0,
         progress: 0
