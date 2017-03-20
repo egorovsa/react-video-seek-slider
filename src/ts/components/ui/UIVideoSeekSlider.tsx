@@ -73,7 +73,6 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
 
     private handleSeeking = (event): void => {
         if (this.state.seeking) {
-            console.log('handleSeeking', event.pageX);
             this.changeCurrentTimePosition(event.pageX);
         }
     };
