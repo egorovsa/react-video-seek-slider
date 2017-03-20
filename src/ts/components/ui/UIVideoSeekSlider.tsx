@@ -191,9 +191,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         } as State)
     };
 
-    private setMobileSeeking = (state: boolean, event): void => {
-        // this.handleSeeking(event);
-
+    private setMobileSeeking = (state: boolean): void => {
         this.setState({
             mobileSeeking: state,
             seekHoverPosition: !state ? 0 : this.state.seekHoverPosition
