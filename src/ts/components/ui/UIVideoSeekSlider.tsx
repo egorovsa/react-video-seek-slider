@@ -44,7 +44,6 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         window.addEventListener('resize', this.setTrackWidthState);
         window.addEventListener('mousemove', this.handleSeeking);
         window.addEventListener('mouseup', this.setSeeking.bind(this, false));
-
         window.addEventListener('touchmove', this.handleTouchSeeking);
         window.addEventListener('touchend', this.setSeeking.bind(this, false));
     }
@@ -53,6 +52,8 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         window.removeEventListener('resize', this.setTrackWidthState);
         window.removeEventListener('mousemove', this.handleSeeking);
         window.removeEventListener('mouseup', this.setSeeking.bind(this, false));
+        window.removeEventListener('touchmove', this.handleTouchSeeking);
+        window.removeEventListener('touchend', this.setSeeking.bind(this, false));
     }
 
     private handleTouchSeeking = (event): void => {
@@ -67,8 +68,6 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         if (this.state.seeking) {
             this.changeCurrentTimePosition(pageX);
         }
-
-        // event.stopImmediatePropagation();
     };
 
     private handleSeeking = (event): void => {
@@ -77,7 +76,7 @@ export class UIVideoSeekSlider extends React.Component<Props, State> {
         }
     };
 
-    private changeCurrentTimePosition(pageX: number) {
+    private changeCurrentTimePosition(pageX: number): void {
         let position: number = pageX - this.track.getBoundingClientRect().left;
 
         position = position < 0 ? 0 : position;
