@@ -15,16 +15,16 @@ npm i react-video-seek-slider --save
 import {VideoSeekSlider} from 'react-video-seek-slider';
 
 //JSX
-                    <VideoSeekSlider
-                        max={1152}
-                        currentTime={this.state.currentTime}
-                        progress={400}
-                        onChange={(time:number)=>{
-                            this.setState({
-                                currentTime:time
-                            } as State);
-                        }}
-                    />
+    <VideoSeekSlider
+        max={1152}
+        currentTime={this.state.currentTime}
+        progress={400}
+        onChange={(time:number)=>{
+            this.setState({
+                currentTime:time
+            } as State);
+        }}
+    />
 ```
 
 ### Specification
@@ -35,3 +35,11 @@ import {VideoSeekSlider} from 'react-video-seek-slider';
 + `hideSeekTimes` (boolean) - hide hover current time (Default: false)
 + `onChange` ((time:number)=>void, required) - script to be run when thumb change position
 
+### For development
+
+just use:
+
++ & yarn
++ $ gulp
+
+open your browser http://localhost:3000
