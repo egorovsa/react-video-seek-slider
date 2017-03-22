@@ -26,3 +26,12 @@ import {VideoSeekSlider} from 'react-video-seek-slider';
                         }}
                     />
 ```
+
+### Specification
+
++ `max` (number, required) - Max sliders value
++ `currentTime` (number, required) - Current sliders value
++ `progress` (number) - Current buffered progress
++ `hideSeekTimes` (boolean) - hide hover current time (Default: false)
++ `onChange` ((time:number)=>void, required) - script to be run when thumb change position
+

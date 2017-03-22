@@ -7,10 +7,11 @@ interface Time {
 }
 
 export interface Props {
-    max?: number,
-    currentTime?: number,
+    max: number,
+    currentTime: number,
     progress?: number,
-    onChange: (time: number) => void
+    onChange: (time: number) => void,
+    hideHoverTime?: boolean
 }
 
 export interface State {
@@ -33,7 +34,8 @@ export class VideoSeekSlider extends React.Component<Props, State> {
     static defaultProps: Props = {
         max: 100,
         currentTime: 0,
-        progress: 0
+        progress: 0,
+        hideHoverTime: false
     } as Props;
 
     private track: HTMLDivElement;
@@ -204,6 +206,20 @@ export class VideoSeekSlider extends React.Component<Props, State> {
         return false;
     }
 
+    private drawHoverTime(): JSX.Element {
+        if (!this.props.hideHoverTime) {
+            return (
+                <div
+                    className={this.isThumbActive() ? "hover-time active" : "hover-time"}
+                    style={this.getHoverTimePosition()}
+                    ref={ref => this.hoverTime = ref}
+                >
+                    {this.getHoverTime()}
+                </div>
+            )
+        }
+    }
+
     public render() {
         return (
             <div
@@ -224,13 +240,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
                     </div>
                 </div>
 
-                <div
-                    className={this.isThumbActive() ? "hover-time active" : "hover-time"}
-                    style={this.getHoverTimePosition()}
-                    ref={ref => this.hoverTime = ref}
-                >
-                    {this.getHoverTime()}
-                </div>
+                {this.drawHoverTime()}
 
                 <div className={this.isThumbActive() ? "thumb active" : "thumb"} style={this.getThumbHandlerPosition()}>
                     <div className="handler"/>

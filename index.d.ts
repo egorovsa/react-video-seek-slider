@@ -1,10 +1,11 @@
 /// <reference types="react" />
 import * as React from 'react';
 export interface Props {
-    max?: number;
-    currentTime?: number;
+    max: number;
+    currentTime: number;
     progress?: number;
     onChange: (time: number) => void;
+    hideHoverTime?: boolean;
 }
 export interface State {
     ready: boolean;
@@ -34,5 +35,6 @@ export declare class VideoSeekSlider extends React.Component<Props, State> {
     private setSeeking;
     private setMobileSeeking;
     private isThumbActive();
+    private drawHoverTime();
     render(): JSX.Element;
 }
