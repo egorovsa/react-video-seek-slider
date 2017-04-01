@@ -9,11 +9,20 @@ React seek slider for video player like youtube
 npm i react-video-seek-slider --save
 ```
 
-## How to use
-
+## How to import
+For TypeScript usage there is a index.d.ts in node_modules folder
 ```typescript
 import {VideoSeekSlider} from 'react-video-seek-slider';
+```
 
+or
+
+```javascript
+var VideoSeekSlider = require('react-video-seek-slider');
+```
+
+## How to use
+```typescript
 //JSX
     <VideoSeekSlider
         max={1152}
@@ -39,7 +48,7 @@ import {VideoSeekSlider} from 'react-video-seek-slider';
 
 just use:
 
-+ & yarn
++ $ yarn
 + $ gulp
 
 open your browser http://localhost:3000
