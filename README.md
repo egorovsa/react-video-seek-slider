@@ -1,8 +1,10 @@
 # react-video-seek-slider
 
-![react-stores](https://github.com/egorovsa/react-video-seek-slider/blob/master/lib/example.png?raw=true)
+React video seeker slider for video player like youtube
 
-React seek slider for video player like youtube
+Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
+
+![react-stores](https://github.com/egorovsa/react-video-seek-slider/blob/master/lib/example.png?raw=true)
 
 ## How to install
 ```
