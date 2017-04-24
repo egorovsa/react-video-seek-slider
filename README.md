@@ -4,7 +4,7 @@ React video seeker slider for video player like youtube
 
 Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
 
-![react-stores](https://github.com/egorovsa/react-video-seek-slider/blob/master/lib/example.png?raw=true)
+![react-stores](https://github.com/egorovsa/react-video-seek-slider/blob/master/example.png?raw=true)
 
 ## How to install
 ```
@@ -23,8 +23,14 @@ or
 var VideoSeekSlider = require('react-video-seek-slider');
 ```
 
+Also use css in a lib folder in: 
+
+```
+node_modules/react-video-seek-slider/lib/video-seek-slider.css
+```
+
 ## How to use
-```typescript
+```jsx harmony
 //JSX
     <VideoSeekSlider
         max={1152}
@@ -35,6 +41,9 @@ var VideoSeekSlider = require('react-video-seek-slider');
                 currentTime:time
             } as State);
         }}
+        offset={0}
+        secondsPrefix="00:00:"
+        minutesPrefix="00:"
     />
 ```
 
@@ -45,12 +54,18 @@ var VideoSeekSlider = require('react-video-seek-slider');
 + `progress` (number) - Current buffered progress
 + `hideSeekTimes` (boolean) - hide hover current time (Default: false)
 + `onChange` ((time:number)=>void, required) - script to be run when thumb change position
++ `offset` (number, default:0) - when you need start slider with offset time
++ `secondsPrefix` (string, default: '') - when video time is less than one minutes you can use prefix time as "00:00:"
++ `minutesPrefix` (string, default: '')  - when video time is less than one hour you can use prefix time as "00:"
 
-### For development
-
+## For development
 just use:
 
-+ $ yarn
++ $ yarn or $ npm i
 + $ gulp
 
 open your browser http://localhost:3000
+
+## For Build
+
+$ ./production

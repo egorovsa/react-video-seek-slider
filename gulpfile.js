@@ -14,6 +14,8 @@ const buffer = require('vinyl-buffer');
 const stylus = require('gulp-stylus');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
+const nib = require('nib');
+const rename = require('gulp-rename');
 
 const expressPort = 3000;
 
@@ -112,6 +114,20 @@ function images() {
     return gulp.src(['src/img/**/*','src/img/*.**'])
         .pipe(gulp.dest('dist/img'));
 }
+
+gulp.task('stylesProduction', function () {
+	return gulp.src('src/styl/ui-video-seek-slider.styl')
+		.pipe(plumber())
+		.pipe(stylus(
+			{
+				use: [
+					nib()
+				]
+			}
+		))
+		.pipe(rename('video-seek-slider.css'))
+		.pipe(gulp.dest('lib'));
+});
 
 gulp.task('html', function () {
     createHtml();
