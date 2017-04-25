@@ -53,7 +53,7 @@ node_modules/react-video-seek-slider/lib/video-seek-slider.css
 + `currentTime` (number, required) - Current sliders value
 + `progress` (number) - Current buffered progress
 + `hideSeekTimes` (boolean) - hide hover current time (Default: false)
-+ `onChange` ((time:number)=>void, required) - script to be run when thumb change position
++ `onChange` ((time:number, offsetTime:number)=>void, required) - script to be run when thumb change position
 + `offset` (number, default:0) - when you need start slider with offset time
 + `secondsPrefix` (string, default: '') - when video time is less than one minutes you can use prefix time as "00:00:"
 + `minutesPrefix` (string, default: '')  - when video time is less than one hour you can use prefix time as "00:"
