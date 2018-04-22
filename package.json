@@ -8,7 +8,7 @@
 	"scripts": {
 		"dev": "webpack-dev-server",
 		"stylus": "stylus --compress < ./src/styl/ui-video-seek-slider.styl > ./lib/ui-video-seek-slider.css",
-		"production": "rm -rf ./lib && tsc ./src/ts/index.tsx -d --jsx react --target ES5 --outDir ./lib && npm run stylus"
+		"production": "rm -rf ./lib && tsc ./src/ts/index.tsx -d --jsx react --target ES5 --outDir ./lib && npm run stylus && cp ./lib/index.d.ts ./index.d.ts"
 	},
 	"devDependencies": {
 		"@types/react": "^16.3.12",
