@@ -20,10 +20,10 @@ import {VideoSeekSlider} from 'react-video-seek-slider';
 or
 
 ```javascript
-var VideoSeekSlider = require('react-video-seek-slider');
+const VideoSeekSlider = require('react-video-seek-slider');
 ```
 
-Also use css in a lib folder in: 
+Also you have to use css file in a lib folder in: 
 
 ```
 node_modules/react-video-seek-slider/lib/video-seek-slider.css
@@ -61,11 +61,15 @@ node_modules/react-video-seek-slider/lib/video-seek-slider.css
 ## For development
 just use:
 
-+ $ yarn or $ npm i
-+ $ gulp
+```javascript 1.8
+$ yarn or $ npm i
+$ npm run dev
+```
 
 open your browser http://localhost:3000
 
 ## For Build
 
-$ ./production
+```
+$ npm run production
+```

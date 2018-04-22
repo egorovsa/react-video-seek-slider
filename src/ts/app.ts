@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import {AppComponent} from "./components/layouts/main-layout";
+import {AppComponent} from "./main-layout";
+import '../styl/style.styl'
 
 window.onload = () => {
     ReactDom.render(

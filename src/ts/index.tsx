@@ -51,17 +51,17 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 		this.setTrackWidthState();
 		window.addEventListener('resize', this.setTrackWidthState);
 		window.addEventListener('mousemove', this.handleSeeking);
-		window.addEventListener('mouseup', this.setSeeking.bind(this, false));
+		window.addEventListener('mouseup', (e) => this.setSeeking(false, e));
 		window.addEventListener('touchmove', this.handleTouchSeeking);
-		window.addEventListener('touchend', this.setMobileSeeking.bind(this, false));
+		window.addEventListener('touchend', (e) => this.setMobileSeeking(false));
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.setTrackWidthState);
 		window.removeEventListener('mousemove', this.handleSeeking);
-		window.removeEventListener('mouseup', this.setSeeking.bind(this, false));
+		window.removeEventListener('mouseup', (e) => this.setSeeking(false, e));
 		window.removeEventListener('touchmove', this.handleTouchSeeking);
-		window.removeEventListener('touchend', this.setMobileSeeking.bind(this, false));
+		window.removeEventListener('touchend', (e) => this.setMobileSeeking(false));
 	}
 
 	private handleTouchSeeking = (event): void => {
@@ -230,10 +230,10 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 				<div
 					className={this.isThumbActive() ? "track active" : "track"}
 					ref={ref => this.track = ref}
-					onMouseMove={this.handleTrackHover.bind(this, false)}
-					onMouseLeave={this.handleTrackHover.bind(this, true)}
-					onMouseDown={this.setSeeking.bind(this, true)}
-					onTouchStart={this.setMobileSeeking.bind(this, true)}
+					onMouseMove={(e) => this.handleTrackHover(false, e)}
+					onMouseLeave={(e) => this.handleTrackHover(true, e)}
+					onMouseDown={(e) => this.setSeeking(true, e)}
+					onTouchStart={() => this.setMobileSeeking(true)}
 				>
 					<div className="main">
 						<div className="buffered" style={this.getPositionStyle(this.props.progress)}/>
