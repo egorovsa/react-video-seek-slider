@@ -51,17 +51,17 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 		this.setTrackWidthState();
 		window.addEventListener('resize', this.setTrackWidthState);
 		window.addEventListener('mousemove', this.handleSeeking);
-		window.addEventListener('mouseup', (e) => this.setSeeking(false, e));
+		window.addEventListener('mouseup', this.mouseSeekingHandler);
 		window.addEventListener('touchmove', this.handleTouchSeeking);
-		window.addEventListener('touchend', (e) => this.setMobileSeeking(false));
+		window.addEventListener('touchend', this.mobileTouchSeekingHandler);
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.setTrackWidthState);
 		window.removeEventListener('mousemove', this.handleSeeking);
-		window.removeEventListener('mouseup', (e) => this.setSeeking(false, e));
+		window.removeEventListener('mouseup', this.mouseSeekingHandler);
 		window.removeEventListener('touchmove', this.handleTouchSeeking);
-		window.removeEventListener('touchend', (e) => this.setMobileSeeking(false));
+		window.removeEventListener('touchend', this.mobileTouchSeekingHandler);
 	}
 
 	private handleTouchSeeking = (event): void => {
@@ -78,7 +78,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 		}
 	};
 
-	private handleSeeking = (event): void => {
+	private handleSeeking = (event: MouseEvent): void => {
 		if (this.state.seeking) {
 			this.changeCurrentTimePosition(event.pageX);
 		}
@@ -188,13 +188,21 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 		}
 	}
 
-	private setSeeking = (state: boolean, event): void => {
+	private mouseSeekingHandler = (event: MouseEvent): void => {
+		this.setSeeking(false, event);
+	};
+
+	private setSeeking = (state: boolean, event: MouseEvent): void => {
 		this.handleSeeking(event);
 
 		this.setState({
 			seeking: state,
 			seekHoverPosition: !state ? 0 : this.state.seekHoverPosition
 		} as State)
+	};
+
+	private mobileTouchSeekingHandler = (): void => {
+		this.setMobileSeeking(false);
 	};
 
 	private setMobileSeeking = (state: boolean): void => {
@@ -232,7 +240,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 					ref={ref => this.track = ref}
 					onMouseMove={(e) => this.handleTrackHover(false, e)}
 					onMouseLeave={(e) => this.handleTrackHover(true, e)}
-					onMouseDown={(e) => this.setSeeking(true, e)}
+					onMouseDown={(e) => this.setSeeking(true, e as any)}
 					onTouchStart={() => this.setMobileSeeking(true)}
 				>
 					<div className="main">
