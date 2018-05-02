@@ -9,17 +9,18 @@ export interface Props {
     offset?: number;
     secondsPrefix?: string;
     minutesPrefix?: string;
+    limitTimeTooltipBySides?: boolean;
 }
 export interface State {
     ready: boolean;
     trackWidth: number;
     seekHoverPosition: number;
-    seeking: boolean;
-    mobileSeeking: boolean;
 }
 export declare class VideoSeekSlider extends React.Component<Props, State> {
     state: State;
     static defaultProps: Props;
+    private seeking;
+    private mobileSeeking;
     private track;
     private hoverTime;
     componentDidMount(): void;

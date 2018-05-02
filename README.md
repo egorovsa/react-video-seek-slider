@@ -36,7 +36,7 @@ node_modules/react-video-seek-slider/lib/video-seek-slider.css
         max={1152}
         currentTime={this.state.currentTime}
         progress={400}
-        onChange={(time:number)=>{
+        onChange={(time)=>{
             this.setState({
                 currentTime:time
             } as State);
@@ -57,6 +57,7 @@ node_modules/react-video-seek-slider/lib/video-seek-slider.css
 + `offset` (number, default:0) - when you need start slider with offset time
 + `secondsPrefix` (string, default: '') - when video time is less than one minutes you can use prefix time as "00:00:"
 + `minutesPrefix` (string, default: '')  - when video time is less than one hour you can use prefix time as "00:"
++ `limitTimeTooltipBySides` (boolean, default: false) - limit the time tooltip position inside track
 
 ## For development
 just use:

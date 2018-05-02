@@ -8,7 +8,7 @@ export interface State {
 
 export class AppComponent extends React.Component<any, State> {
 	state: State = {
-		currentTime: 0,
+		currentTime: 110,
 		test: false
 	};
 
@@ -23,15 +23,16 @@ export class AppComponent extends React.Component<any, State> {
 	private getSlider() {
 		if (!this.state.test) {
 			return <VideoSeekSlider
-				max={1152}
+				max={11150}
 				currentTime={this.state.currentTime}
-				progress={400}
+				progress={4000}
 				onChange={(time: number, offsetTime: number) => {
 					this.setState({
 						currentTime: time // or offsetTime
 					} as State);
 				}}
 				offset={0}
+				limitTimeTooltipBySides={true}
 				secondsPrefix="00:00:"
 				minutesPrefix="00:"
 			/>;

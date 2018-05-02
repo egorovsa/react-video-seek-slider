@@ -14,7 +14,8 @@ export interface Props {
 	hideHoverTime?: boolean
 	offset?: number
 	secondsPrefix?: string
-	minutesPrefix?: string
+	minutesPrefix?: string,
+	limitTimeTooltipBySides?: boolean
 }
 
 export interface State {
@@ -147,6 +148,14 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 
 		if (this.hoverTime) {
 			position = this.state.seekHoverPosition - this.hoverTime.offsetWidth / 2;
+
+			if (this.props.limitTimeTooltipBySides) {
+				if (position < 0) {
+					position = 0;
+				} else if (position + this.hoverTime.offsetWidth > this.state.trackWidth) {
+					position = this.state.trackWidth - this.hoverTime.offsetWidth;
+				}
+			}
 		}
 
 		return {
@@ -171,17 +180,14 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 
 	private getHoverTime(): string {
 		let percent: number = this.state.seekHoverPosition * 100 / this.state.trackWidth;
-		let time: number = +(percent * (this.props.max / 100)).toFixed(0);
+		let time: number = Math.floor(+(percent * (this.props.max / 100)));
+		let times: Time = this.secondsToTime(time);
 
 		if ((this.props.max + this.props.offset) < 60) {
-			return this.props.secondsPrefix + (time + this.props.offset);
+			return this.props.secondsPrefix + (times.ss);
 		} else if ((this.props.max + this.props.offset) < 3600) {
-			let times: Time = this.secondsToTime(time);
-
 			return this.props.minutesPrefix + times.mm + ':' + times.ss;
 		} else {
-			let times: Time = this.secondsToTime(time);
-
 			return times.hh + ':' + times.mm + ':' + times.ss;
 		}
 	}
@@ -191,6 +197,8 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 	};
 
 	private setSeeking = (state: boolean, event: MouseEvent): void => {
+		event.preventDefault();
+
 		this.handleSeeking(event);
 		this.seeking = state;
 
