@@ -1,37 +1,33 @@
 import * as React from 'react';
 
 interface Time {
-	hh: string,
-	mm: string,
+	hh: string
+	mm: string
 	ss: string
 }
 
 export interface Props {
-	max: number,
-	currentTime: number,
-	progress?: number,
-	onChange: (time: number, offsetTime: number) => void,
-	hideHoverTime?: boolean,
-	offset?: number,
-	secondsPrefix?: string,
+	max: number
+	currentTime: number
+	progress?: number
+	onChange: (time: number, offsetTime: number) => void
+	hideHoverTime?: boolean
+	offset?: number
+	secondsPrefix?: string
 	minutesPrefix?: string
 }
 
 export interface State {
-	ready: boolean,
-	trackWidth: number,
-	seekHoverPosition: number,
-	seeking: boolean,
-	mobileSeeking: boolean
+	ready: boolean
+	trackWidth: number
+	seekHoverPosition: number
 }
 
 export class VideoSeekSlider extends React.Component<Props, State> {
 	state: State = {
 		ready: false,
 		trackWidth: 0,
-		seekHoverPosition: 0,
-		seeking: false,
-		mobileSeeking: false
+		seekHoverPosition: 0
 	};
 
 	static defaultProps: Props = {
@@ -44,6 +40,8 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 		minutesPrefix: ''
 	} as Props;
 
+	private seeking: boolean;
+	private mobileSeeking: boolean;
 	private track: HTMLDivElement;
 	private hoverTime: HTMLDivElement;
 
@@ -73,13 +71,13 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 
 		pageX = pageX < 0 ? 0 : pageX;
 
-		if (this.state.mobileSeeking) {
+		if (this.mobileSeeking) {
 			this.changeCurrentTimePosition(pageX);
 		}
 	};
 
 	private handleSeeking = (event: MouseEvent): void => {
-		if (this.state.seeking) {
+		if (this.seeking) {
 			this.changeCurrentTimePosition(event.pageX);
 		}
 	};
@@ -194,9 +192,9 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 
 	private setSeeking = (state: boolean, event: MouseEvent): void => {
 		this.handleSeeking(event);
+		this.seeking = state;
 
 		this.setState({
-			seeking: state,
 			seekHoverPosition: !state ? 0 : this.state.seekHoverPosition
 		} as State)
 	};
@@ -206,14 +204,15 @@ export class VideoSeekSlider extends React.Component<Props, State> {
 	};
 
 	private setMobileSeeking = (state: boolean): void => {
+		this.mobileSeeking = state;
+
 		this.setState({
-			mobileSeeking: state,
 			seekHoverPosition: !state ? 0 : this.state.seekHoverPosition
 		} as State)
 	};
 
 	private isThumbActive(): boolean {
-		return this.state.seekHoverPosition > 0 || this.state.seeking;
+		return this.state.seekHoverPosition > 0 || this.seeking;
 	}
 
 	private drawHoverTime(): JSX.Element {
