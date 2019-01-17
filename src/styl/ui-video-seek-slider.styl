@@ -8,16 +8,16 @@ $seek-hover = rgba(#fff, 0.5)
 	position relative
 
 	&:focus
-		outline  none
+		outline none
 
 	.track
 		padding 10px 0
 		cursor pointer
-		outline  none
+		outline none
 
 		&:focus
 			border 0
-			outline  none
+			outline none
 
 
 		.main
@@ -30,11 +30,11 @@ $seek-hover = rgba(#fff, 0.5)
 			top 10 - ($track-height-default / 2)
 			overflow hidden
 			transition transform .4s
-			outline  none
+			outline none
 
 			&:focus
 				border 0
-				outline  none
+				outline none
 
 			.buffered
 				position absolute
@@ -44,6 +44,7 @@ $seek-hover = rgba(#fff, 0.5)
 				transform scaleX(0.8)
 				z-index 2
 				transform-origin 0 0
+				transition 0.5s transform
 
 			.seek-hover
 				position absolute
