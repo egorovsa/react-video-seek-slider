@@ -1,6 +1,6 @@
 # react-video-seek-slider
 
-React video seeker slider for video player like youtube
+The simplest and light weight video seeker like for React
 
 Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
 
@@ -20,10 +20,10 @@ import {VideoSeekSlider} from 'react-video-seek-slider';
 or
 
 ```javascript
-const VideoSeekSlider = require('react-video-seek-slider');
+const VideoSeekSlider = require('react-video-seek-slider').VideoSeekSlider;
 ```
 
-Also you have to use css file in a lib folder in: 
+Also you have to use css file in a lib folder: 
 
 ```
 node_modules/react-video-seek-slider/lib/video-seek-slider.css
@@ -64,7 +64,7 @@ just use:
 
 ```javascript 1.8
 $ yarn or $ npm i
-$ npm run dev
+$ npm run start
 ```
 
 open your browser http://localhost:3000
@@ -72,5 +72,5 @@ open your browser http://localhost:3000
 ## For Build
 
 ```
-$ npm run production
+$ npm run build
 ```

@@ -6,7 +6,7 @@ interface Time {
     ss: string;
 }
 
-export interface Props {
+interface Props {
     max: number;
     currentTime: number;
     progress?: number;
@@ -18,7 +18,7 @@ export interface Props {
     limitTimeTooltipBySides?: boolean;
 }
 
-export interface State {
+interface State {
     ready: boolean;
     trackWidth: number;
     seekHoverPosition: number;
@@ -46,7 +46,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
     private track: HTMLDivElement;
     private hoverTime: HTMLDivElement;
 
-    componentDidMount() {
+    public componentDidMount(): void {
         this.setTrackWidthState();
         window.addEventListener('resize', this.setTrackWidthState);
         window.addEventListener('mousemove', this.handleSeeking);
@@ -55,7 +55,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
         window.addEventListener('touchend', this.mobileTouchSeekingHandler);
     }
 
-    componentWillUnmount() {
+    public componentWillUnmount(): void {
         window.removeEventListener('resize', this.setTrackWidthState);
         window.removeEventListener('mousemove', this.handleSeeking);
         window.removeEventListener('mouseup', this.mouseSeekingHandler);
@@ -119,7 +119,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
         } as State);
     };
 
-    private getPositionStyle(time: number): Object {
+    private getPositionStyle(time: number): object {
         let position: number = time * 100 / this.props.max;
 
         return {
@@ -127,7 +127,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
         };
     }
 
-    private getThumbHandlerPosition(): Object {
+    private getThumbHandlerPosition(): object {
         let position: number = this.state.trackWidth / (this.props.max / this.props.currentTime);
 
         return {
@@ -135,7 +135,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
         };
     }
 
-    private getSeekHoverPosition(): Object {
+    private getSeekHoverPosition(): object {
         let position: number = this.state.seekHoverPosition * 100 / this.state.trackWidth;
 
         return {
@@ -143,7 +143,7 @@ export class VideoSeekSlider extends React.Component<Props, State> {
         }
     }
 
-    private getHoverTimePosition(): Object {
+    private getHoverTimePosition(): object {
         let position: number = 0;
 
         if (this.hoverTime) {
@@ -237,11 +237,9 @@ export class VideoSeekSlider extends React.Component<Props, State> {
         }
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
-            <div
-                className="ui-video-seek-slider"
-            >
+            <div className="ui-video-seek-slider">
                 <div
                     className={this.isThumbActive() ? "track active" : "track"}
                     ref={ref => this.track = ref}
@@ -251,15 +249,29 @@ export class VideoSeekSlider extends React.Component<Props, State> {
                     onTouchStart={() => this.setMobileSeeking(true)}
                 >
                     <div className="main">
-                        <div className="buffered" style={this.getPositionStyle(this.props.progress)}/>
-                        <div className="seek-hover" style={this.getSeekHoverPosition()}/>
-                        <div className="connect" style={this.getPositionStyle(this.props.currentTime)}/>
+                        <div
+                            className="buffered"
+                            style={this.getPositionStyle(this.props.progress)}
+                        />
+
+                        <div
+                            className="seek-hover"
+                            style={this.getSeekHoverPosition()}
+                        />
+
+                        <div
+                            className="connect"
+                            style={this.getPositionStyle(this.props.currentTime)}
+                        />
                     </div>
                 </div>
 
                 {this.drawHoverTime()}
 
-                <div className={this.isThumbActive() ? "thumb active" : "thumb"} style={this.getThumbHandlerPosition()}>
+                <div
+                    className={this.isThumbActive() ? "thumb active" : "thumb"}
+                    style={this.getThumbHandlerPosition()}
+                >
                     <div className="handler"/>
                 </div>
             </div>
