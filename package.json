@@ -12,7 +12,7 @@
     "scripts": {
         "start": "webpack serve --config webpack.dev.js",
         "build": "webpack  --config webpack.prod.js && npm run copyDts && npm run removeDts",
-        "copyDts": "cp ./lib/src/index.d.ts ./lib/index.d.ts",
+        "copyDts": "cp ./lib/src/index.d.ts ./index.d.ts",
         "removeDts": "rm -rf ./lib/src"
     },
     "devDependencies": {
