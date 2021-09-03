@@ -25,7 +25,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(["build"], {
+    new CleanWebpackPlugin(["lib"], {
       verbose: false,
     }),
   ],

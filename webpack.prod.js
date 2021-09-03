@@ -1,7 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
+const common = require("./webpack.common.js");
+const { merge } = require("webpack-merge");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-module.exports = {
+module.exports = merge(common, {
   mode: "production",
   entry: { app: "./src/index.tsx" },
   output: {
@@ -16,33 +19,17 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: "ts-loader",
-        query: {
-          declaration: true,
-        },
+        // query: {
+        //   declaration: true,
+        // },
       },
       {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              modules: {
-                localIdentName: "[local]-[hash:base64:6]",
-              },
-            },
-          },
-          "postcss-loader",
-          {
-            loader: "sass-loader",
-            options: {
-              data:
-                "@import './src/common/styles/themes/_theme-" +
-                process.env.BRANDINGNAME +
-                "';",
-              javascriptEnabled: true,
-            },
-          },
+          "css-loader",
+          // "postcss-loader",
+          "sass-loader",
         ],
       },
     ],
@@ -62,10 +49,13 @@ module.exports = {
       root: "ReactDOM",
     },
   },
-  optimization: {},
+  optimization: {
+    minimize: true,
+  },
+
   plugins: [
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("production"),
+    new MiniCssExtractPlugin({
+      filename: "ui-video-seek-slider.css",
     }),
   ],
-};
+});
