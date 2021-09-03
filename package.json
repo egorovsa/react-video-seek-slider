@@ -1,7 +1,7 @@
 {
     "name": "react-video-seek-slider",
     "description": "React video seek slider like youtube",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "main": "/lib/index.js",
     "author": "Sergey Egorov",
     "license": "MIT",
@@ -26,7 +26,6 @@
         "html-webpack-plugin": "^5.3.2",
         "mini-css-extract-plugin": "^2.2.2",
         "postcss": "^8.3.6",
-        "postcss-cssnext": "^3.1.0",
         "postcss-loader": "^6.1.1",
         "postcss-preset-env": "^6.7.0",
         "postcss-short": "^5.0.0",

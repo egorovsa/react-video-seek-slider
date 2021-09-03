@@ -4,11 +4,6 @@ module.exports = {
   plugins: [
     // Plugins for PostCSS
     ["postcss-short", { prefix: "x" }],
-    "postcss-preset-env",
-    {
-      "postcss-cssnext": {
-        browsers: ["last 5 versions", "> 50%"],
-      },
-    },
+    { "postcss-preset-env": { browsers: "last 2 versions" } },
   ],
 };
