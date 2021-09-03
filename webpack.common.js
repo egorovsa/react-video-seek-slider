@@ -1,5 +1,5 @@
 const path = require("path");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   output: {
@@ -7,7 +7,7 @@ module.exports = {
     publicPath: "/",
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json", ".css", ".less"],
+    extensions: [".ts", ".tsx", ".js", ".json", ".css", ".scss"],
   },
   module: {
     rules: [
@@ -24,9 +24,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new CleanWebpackPlugin(["lib"], {
-      verbose: false,
-    }),
-  ],
+  plugins: [new CleanWebpackPlugin()],
 };

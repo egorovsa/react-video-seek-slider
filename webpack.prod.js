@@ -19,16 +19,13 @@ module.exports = merge(common, {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: "ts-loader",
-        // query: {
-        //   declaration: true,
-        // },
       },
       {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
-          // "postcss-loader",
+          "postcss-loader",
           "sass-loader",
         ],
       },
