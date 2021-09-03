@@ -4,10 +4,13 @@
         "target": "es5",
         "lib": [
             "dom",
-            "es6"
+            "dom.iterable",
+            "esnext"
         ],
         "sourceMap": true,
-        "jsx": "react",
+        "jsx": "react-jsx",
+        "strictNullChecks": true,
+        "noImplicitAny": true,
         "declaration": true,
         "outDir": "lib",
         "rootDir": ".",
