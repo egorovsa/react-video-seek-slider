@@ -1,13 +1,13 @@
 const path = require("path");
-const webpack = require("webpack");
 const common = require("./webpack.common.js");
 const { merge } = require("webpack-merge");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = merge(common, {
   mode: "production",
   target: "web",
-  entry: { app: "./src/index.tsx" },
+  entry: { index: "./src/index.tsx" },
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "lib"),
@@ -47,13 +47,10 @@ module.exports = merge(common, {
       root: "ReactDOM",
     },
   },
-  optimization: {
-    minimize: true,
-  },
-
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "ui-video-seek-slider.css",
+      filename: "styles.css",
     }),
+    new CleanWebpackPlugin(),
   ],
 });

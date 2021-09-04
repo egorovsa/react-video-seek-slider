@@ -12,7 +12,7 @@ const host = "localhost";
 
 module.exports = merge(common, {
   mode: "development",
-  devtool: "inline-source-map",
+  devtool: "source-map",
   entry: { app: "./src/app.ts" },
   devServer: {
     static: {

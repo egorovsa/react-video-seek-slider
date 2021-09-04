@@ -1,21 +1,24 @@
 {
     "name": "react-video-seek-slider",
     "description": "React video seek slider like youtube",
-    "version": "3.0.3",
-    "main": "/lib/index.js",
+    "version": "4.0.11",
+    "main": "/index.js",
     "author": "Sergey Egorov",
     "license": "MIT",
     "files": [
-        "lib/",
+        "index.js",
+        "styles.css",
         "index.d.ts"
     ],
     "scripts": {
         "start": "webpack serve --config webpack.dev.js",
         "build": "webpack --config webpack.prod.js",
         "copyDts": "cp ./lib/src/index.d.ts ./index.d.ts",
+        "copyLib": "cp ./lib/* ./",
         "removeDts": "rm -rf ./lib/src",
         "prepare": "npm run build",
-        "prepublishOnly": "npm run copyDts && npm run removeDts"
+        "prepublishOnly": "npm run copyDts && npm run removeDts && npm run copyLib",
+        "postpublish": "git clean -df"
     },
     "devDependencies": {
         "@types/react": "^17.0.19",
