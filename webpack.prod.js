@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = merge(common, {
   mode: "production",
+  target: "web",
   entry: { app: "./src/index.tsx" },
   output: {
     filename: "[name].js",

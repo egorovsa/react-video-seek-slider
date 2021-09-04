@@ -12,9 +12,8 @@
     "scripts": {
         "start": "webpack serve --config webpack.dev.js",
         "build": "webpack --config webpack.prod.js",
-        "prepare": "npm run build && npm run copyDts && npm run removeDts",
-        "prepublishOnly": "rm -rf ./src",
-        "postpublish": "git checkout HEAD ./src",
+        "prepare": "npm run build",
+        "prepublishOnly": "npm run copyDts && npm run removeDts",
         "copyDts": "cp ./lib/src/index.d.ts ./index.d.ts",
         "removeDts": "rm -rf ./lib/src"
     },
