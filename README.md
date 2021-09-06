@@ -65,7 +65,7 @@ import "react-video-seek-slider/styles.css"
 just use:
 
 ```javascript 1.8
-$ yarn or $ npm i
+$ npm i
 $ npm run start
 ```
 
