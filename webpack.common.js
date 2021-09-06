@@ -8,19 +8,4 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json", ".css", ".scss"],
   },
-  module: {
-    rules: [
-      {
-        test: /\.([jt])s(x)?$/,
-        exclude: /node_modules/,
-        include: path.join(__dirname, "src"),
-        use: [
-          {
-            loader: "ts-loader",
-            options: { transpileOnly: true },
-          },
-        ].filter(Boolean),
-      },
-    ],
-  },
 };

@@ -1,6 +1,6 @@
 # react-video-seek-slider
 
-The simplest and light weight video seeker like for React
+The simplest and light weight video seeker like YouTube for React
 
 Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
 

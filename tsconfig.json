@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ESNext",
         "target": "es5",
         "lib": [
             "dom",
