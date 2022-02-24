@@ -1,58 +1,57 @@
-import * as React from 'react';
-import { VideoSeekSlider } from "./index";
+import { useEffect, useState } from 'react';
+import { VideoSeekSlider } from './index';
 
 export interface State {
-    currentTime: number,
-    progress: number,
-    test: boolean
+  currentTime: number;
+  progress: number;
+  test: boolean;
 }
 
-export class AppComponent extends React.Component<any, State> {
-    state: State = {
-        currentTime: 10,
-        progress: 0,
-        test: false
+export const AppComponent: React.FC = () => {
+  const [currentTime, setCurrentTime] = useState(10);
+  const [progress, setProgress] = useState(0);
+  const [maxTime, setMaxTime] = useState(0);
+
+  useEffect(() => {
+    const currentTimeId = setInterval(() => {
+      setCurrentTime((prev) => (prev < maxTime ? prev + 10 : 0));
+    }, 100);
+
+    const progressId = setInterval(() => {
+      setProgress((prev) => (prev < maxTime ? prev + 3000 : 0));
+    }, 1000);
+
+    return () => {
+      clearInterval(currentTimeId);
+      clearInterval(progressId);
     };
+  }, [maxTime]);
 
-    componentDidMount() {
-        setInterval(() => {
-            this.setState({
-                currentTime: this.state.currentTime < 11150 ? this.state.currentTime + 10 : 0,
-            })
-        }, 100);
-        setInterval(() => {
-            this.setState({
-                progress: this.state.progress < 11150 ? this.state.progress + 3000 : 0,
-            })
-        }, 1000);
-    }
+  useEffect(() => {
+    setTimeout(() => {
+      setMaxTime(11150);
+    }, 1000);
+  }, []);
 
-    private getSlider() {
-        if (!this.state.test) {
-            return <VideoSeekSlider
-                max={11150}
-                currentTime={this.state.currentTime}
-                progress={this.state.progress}
-                onChange={(time: number, offsetTime: number) => {
-                    this.setState({
-                        currentTime: time // or offsetTime
-                    } as State);
-                }}
-                offset={0}
-                limitTimeTooltipBySides={true}
-                secondsPrefix="00:00:"
-                minutesPrefix="00:"
-            />;
-        }
-    }
+  return (
+    <div className="container">
+      <h1>React Video slider</h1>
 
-    public render() {
-        return (
-            <div className="container">
-                <h1>React Video slider</h1>
+      <VideoSeekSlider
+        max={maxTime}
+        currentTime={currentTime}
+        progress={progress}
+        onChange={(time: number, offsetTime: number) => {
+          setCurrentTime(time);
 
-                {this.getSlider()}
-            </div>
-        );
-    }
-}
+          // eslint-disable-next-line no-console
+          console.log({ time, offsetTime });
+        }}
+        offset={0}
+        limitTimeTooltipBySides={true}
+        secondsPrefix="00:00:"
+        minutesPrefix="00:"
+      />
+    </div>
+  );
+};

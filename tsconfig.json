@@ -3,9 +3,8 @@
         "module": "ESNext",
         "target": "es5",
         "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
+            "ESNext",
+            "DOM"
         ],
         "sourceMap": true,
         "jsx": "react-jsx",

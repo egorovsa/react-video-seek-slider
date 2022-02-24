@@ -1,0 +1,14 @@
+**/*.d.ts
+*.css
+*.svg
+*.test.ts
+build
+setupTests.ts
+node_modules
+dist
+coverage
+webpack.common.js
+webpack.dev.js
+webpack.prod.js
+.eslintrc.js
+lib
