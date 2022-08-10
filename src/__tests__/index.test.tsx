@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react';
-import { create } from 'react-test-renderer';
+/* eslint-disable no-underscore-dangle */
+import { render, screen, cleanup } from '@testing-library/react';
 import { VideoSeekSlider, Props } from '..';
 
 const getWrapper = (overrides: Partial<Props> = {}): any => (
@@ -21,12 +21,61 @@ const getWrapper = (overrides: Partial<Props> = {}): any => (
   />
 );
 
+// jest.mock('react', () => ({
+//   ...jest.requireActual<typeof React>('react'),
+//   useRef: (initial: any) => {
+//     // const ref = { current: null };
+
+//     // Object.defineProperty(ref, 'current', {
+//     //   set(_current: any) {
+
+//     //     console.log({ _current });
+
+//     //     if (_current && typeof _current === 'object') {
+//     //       if (_current.className === 'track') {
+//     //         jest.spyOn(_current, 'offsetWidth', 'get').mockReturnValueOnce(100);
+//     //       }
+//     //     }
+
+//     //     this._current = _current;
+//     //   },
+//     //   get() {
+//     //     return this._current;
+//     //   },
+//     // });
+
+//     return ref;
+//   },
+// }));
+
 describe('VideoSeekSlider.tsx', () => {
   it('should render without errors', () => {
-    const instance = create(getWrapper());
+    render(getWrapper());
+  });
 
-    expect(instance.toJSON()).toMatchSnapshot();
+  it('should render without errors', () => {
+    render(
+      getWrapper({
+        hideHoverTime: true,
+      })
+    );
+  });
 
+  it('should show hover-time by default', () => {
+    cleanup();
+    render(getWrapper({ hideHoverTime: false }));
+    expect(screen.getByTestId('hover-time')).toBeInTheDocument();
+  });
+
+  it('should hide hover-time if hideHoverTime is true', () => {
+    cleanup();
+    render(getWrapper({ hideHoverTime: true }));
+    const hoverTimeElement = screen.queryByTestId('hover-time');
+    expect(hoverTimeElement).not.toBeInTheDocument();
+  });
+
+  it('should hide hover-time if hideHoverTime is true', () => {
+    cleanup();
     render(getWrapper());
   });
 });

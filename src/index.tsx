@@ -20,7 +20,7 @@ export interface Props {
 }
 
 function secondsToTime(seconds: number, offset: number): Time {
-  const roundedSeconds = Math.round(seconds + offset);
+  const roundedSeconds = Math.round(seconds / 1000 + offset);
 
   const hours: number = Math.floor(roundedSeconds / 3600);
   const divirsForMinutes: number = roundedSeconds % 3600;
@@ -34,8 +34,70 @@ function secondsToTime(seconds: number, offset: number): Time {
   };
 }
 
+function getTimeValue(
+  max: number,
+  seekHoverPosition: number,
+  trackWidth: number,
+  offset: number,
+  minutesPrefix: string,
+  secondsPrefix: string
+): string {
+  const percent: number = (seekHoverPosition * 100) / trackWidth;
+  const seconds: number = Math.floor(+(percent * (max / 100)));
+  const times: Time = secondsToTime(seconds, offset);
+
+  if (max + offset < 60 * 1000) {
+    return secondsPrefix + times.ss;
+  }
+
+  if (max + offset < 3600 * 1000) {
+    return `${minutesPrefix + times.mm}:${times.ss}`;
+  }
+
+  return `${times.hh}:${times.mm}:${times.ss}`;
+}
+
+function getPositionStyle(max: number, time: number): { transform: string } {
+  const divider = max || -1; // prevent division by zero
+  const position = (time * 100) / divider;
+
+  return { transform: `scaleX(${position / 100})` };
+}
+
+function getSeekHoverPosition(
+  seekHoverPosition: number,
+  trackWidth: number
+): { transform: string } {
+  const position = (seekHoverPosition * 100) / trackWidth;
+
+  return { transform: `scaleX(${position / 100})` };
+}
+
+function getHoverTimePosition(
+  seekHoverPosition: number,
+  hoverTimeElement: HTMLDivElement | null,
+  trackWidth: number,
+  limitTimeTooltipBySides: boolean
+): { transform: string } {
+  let position = 0;
+
+  if (hoverTimeElement) {
+    position = seekHoverPosition - hoverTimeElement.offsetWidth / 2;
+
+    if (limitTimeTooltipBySides) {
+      if (position < 0) {
+        position = 0;
+      } else if (position + hoverTimeElement.offsetWidth > trackWidth) {
+        position = trackWidth - hoverTimeElement.offsetWidth;
+      }
+    }
+  }
+
+  return { transform: `translateX(${position}px)` };
+}
+
 export const VideoSeekSlider: React.FC<Props> = ({
-  max = 100,
+  max = 1000,
   currentTime = 0,
   progress = 0,
   hideHoverTime = false,
@@ -50,27 +112,42 @@ export const VideoSeekSlider: React.FC<Props> = ({
   const seeking = useRef(false);
   const trackWidth = useRef(0);
   const mobileSeeking = useRef(false);
-  const track = useRef<HTMLDivElement>(null);
-  const hoverTime = useRef<HTMLDivElement>(null);
+  const trackElement = useRef<HTMLDivElement>(null);
+  const hoverTimeElement = useRef<HTMLDivElement>(null);
 
-  const hoverTimeValue = useMemo(() => {
-    const percent: number = (seekHoverPosition * 100) / trackWidth.current;
-    const time: number = Math.floor(+(percent * (max / 100)));
-    const times: Time = secondsToTime(time, offset);
+  const hoverTimeValue = useMemo(
+    () =>
+      getTimeValue(
+        max,
+        seekHoverPosition,
+        trackWidth.current,
+        offset,
+        minutesPrefix,
+        secondsPrefix
+      ),
+    [max, minutesPrefix, offset, secondsPrefix, seekHoverPosition]
+  );
 
-    if (max + offset < 60) {
-      return secondsPrefix + times.ss;
-    }
+  const bufferedStyle = getPositionStyle(max, progress);
 
-    if (max + offset < 3600) {
-      return `${minutesPrefix + times.mm}:${times.ss}`;
-    }
+  const seekHoverStyle = getSeekHoverPosition(
+    seekHoverPosition,
+    trackWidth?.current
+  );
 
-    return `${times.hh}:${times.mm}:${times.ss}`;
-  }, [max, minutesPrefix, offset, secondsPrefix, seekHoverPosition]);
+  const hoverTimePosition = getHoverTimePosition(
+    seekHoverPosition,
+    hoverTimeElement?.current,
+    trackWidth?.current,
+    limitTimeTooltipBySides
+  );
 
-  function changeCurrentTimePosition(pageX: number): void {
-    const left = track.current?.getBoundingClientRect().left || 0;
+  const isThumbActive = seekHoverPosition > 0 || seeking.current;
+  const thumbClassName = isThumbActive ? 'thumb active' : 'thumb';
+  const hoverTimeClassName = isThumbActive ? 'hover-time active' : 'hover-time';
+
+  const changeCurrentTimePosition = (pageX: number): void => {
+    const left = trackElement.current?.getBoundingClientRect().left || 0;
     let position = pageX - left;
 
     position = position < 0 ? 0 : position;
@@ -82,9 +159,9 @@ export const VideoSeekSlider: React.FC<Props> = ({
     const time = +(percent * (max / 100)).toFixed(0);
 
     onChange(time, time + offset);
-  }
+  };
 
-  function handleTouchSeeking(event: TouchEvent): void {
+  const handleTouchSeeking = (event: TouchEvent): void => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -99,95 +176,57 @@ export const VideoSeekSlider: React.FC<Props> = ({
     if (mobileSeeking.current) {
       changeCurrentTimePosition(pageX);
     }
-  }
+  };
 
-  function handleSeeking(event: MouseEvent): void {
+  const handleSeeking = (event: MouseEvent): void => {
     if (seeking.current) {
       changeCurrentTimePosition(event.pageX);
     }
-  }
+  };
 
-  function setTrackWidthState(): void {
-    if (track.current) {
-      trackWidth.current = track.current.offsetWidth;
+  const setTrackWidthState = (): void => {
+    if (trackElement.current) {
+      trackWidth.current = trackElement.current.offsetWidth;
     }
-  }
+  };
 
-  function handleTrackHover(
+  const handleTrackHover = (
     clear: boolean,
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ): void {
-    const left = track.current?.getBoundingClientRect().left || 0;
+  ): void => {
+    const left = trackElement.current?.getBoundingClientRect().left || 0;
     const position = clear ? 0 : event.pageX - left;
 
     setSeekHoverPosition(position);
-  }
+  };
 
-  function getPositionStyle(time: number): { transform: string } {
-    const divider = max || -1; // prevent division by zero
-    const position = (time * 100) / divider;
-
-    return { transform: `scaleX(${position / 100})` };
-  }
-
-  function getThumbHandlerPosition(): { transform: string } {
+  const getThumbHandlerPosition = (): { transform: string } => {
     const position = trackWidth.current / (max / currentTime);
 
     return { transform: `translateX(${position}px)` };
-  }
+  };
 
-  function getSeekHoverPosition(): { transform: string } {
-    const position = (seekHoverPosition * 100) / trackWidth.current;
-
-    return { transform: `scaleX(${position / 100})` };
-  }
-
-  function getHoverTimePosition(): { transform: string } {
-    let position = 0;
-
-    if (hoverTime.current) {
-      position = seekHoverPosition - hoverTime.current.offsetWidth / 2;
-
-      if (limitTimeTooltipBySides) {
-        if (position < 0) {
-          position = 0;
-        } else if (
-          position + hoverTime.current.offsetWidth >
-          trackWidth.current
-        ) {
-          position = trackWidth.current - hoverTime.current.offsetWidth;
-        }
-      }
-    }
-
-    return { transform: `translateX(${position}px)` };
-  }
-
-  function setMobileSeeking(state = true): void {
+  const setMobileSeeking = (state = true): void => {
     mobileSeeking.current = state;
     setSeekHoverPosition(state ? seekHoverPosition : 0);
-  }
+  };
 
-  function setSeeking(state: boolean, event: MouseEvent): void {
+  const setSeeking = (state: boolean, event: MouseEvent): void => {
     event.preventDefault();
 
     handleSeeking(event);
     seeking.current = state;
 
     setSeekHoverPosition(state ? seekHoverPosition : 0);
-  }
+  };
 
-  function mouseSeekingHandler(event: MouseEvent): void {
+  const mouseSeekingHandler = (event: MouseEvent): void => {
     setSeeking(false, event);
-  }
+  };
 
-  function mobileTouchSeekingHandler(): void {
+  const mobileTouchSeekingHandler = (): void => {
     setMobileSeeking(false);
-  }
-
-  function isThumbActive(): boolean {
-    return seekHoverPosition > 0 || seeking.current;
-  }
+  };
 
   useEffect(() => {
     setTrackWidthState();
@@ -210,48 +249,49 @@ export const VideoSeekSlider: React.FC<Props> = ({
   return (
     <div className="ui-video-seek-slider">
       <div
-        className={isThumbActive() ? 'track active' : 'track'}
-        ref={track}
+        className={isThumbActive ? 'track active' : 'track'}
+        ref={trackElement}
         onMouseMove={(event) => handleTrackHover(false, event)}
         onMouseLeave={(event) => handleTrackHover(true, event)}
         onMouseDown={(event) => setSeeking(true, event as any)}
         onTouchStart={() => setMobileSeeking(true)}
-        data-test-id="testTrack"
+        data-testid="main-track"
       >
         <div className="main">
           <div
             className="buffered"
             data-test-id="testBuffered"
-            style={getPositionStyle(progress)}
+            style={bufferedStyle}
           />
 
           <div
             className="seek-hover"
             data-test-id="testSeekHover"
-            style={getSeekHoverPosition()}
+            style={seekHoverStyle}
           />
 
           <div
             className="connect"
             data-test-id="testConnect"
-            style={getPositionStyle(currentTime)}
+            style={getPositionStyle(max, currentTime)}
           />
         </div>
       </div>
 
       {!hideHoverTime && (
         <div
-          className={isThumbActive() ? 'hover-time active' : 'hover-time'}
-          style={getHoverTimePosition()}
-          ref={hoverTime}
+          className={hoverTimeClassName}
+          style={hoverTimePosition}
+          ref={hoverTimeElement}
+          data-testid="hover-time"
         >
           {hoverTimeValue}
         </div>
       )}
 
       <div
-        className={isThumbActive() ? 'thumb active' : 'thumb'}
-        data-test-id="testThumb"
+        className={thumbClassName}
+        data-testid="testThumb"
         style={getThumbHandlerPosition()}
       >
         <div className="handler" />

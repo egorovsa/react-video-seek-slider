@@ -6,6 +6,12 @@ Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/master/example.png?raw=true)
 
+## Braking changes from v4 -> v5
+
+All time values you pass to props like `max`, `currentTime` and `progress` now are im milliseconds instead of seconds. 
+
+`onChange` prop will also return `time` param in milliseconds as well.
+
 ## How to install
 
 ```
@@ -33,15 +39,13 @@ import "react-video-seek-slider/styles.css"
 
 ```jsx harmony
 //JSX
+    const [currentTime, setCurrentTime] = useState(0);
+    /// ..... 
     <VideoSeekSlider
         max={1152}
-        currentTime={this.state.currentTime}
+        currentTime={currentTime}
         progress={400}
-        onChange={(time)=>{
-            this.setState({
-                currentTime:time
-            } as State);
-        }}
+        onChange={setCurrentTime}
         offset={0}
         secondsPrefix="00:00:"
         minutesPrefix="00:"
@@ -50,15 +54,15 @@ import "react-video-seek-slider/styles.css"
 
 ### Specification
 
-- `max` (number, required) - Max sliders value
-- `currentTime` (number, required) - Current sliders value
-- `progress` (number) - Current buffered progress
-- `hideSeekTimes` (boolean) - hide hover current time (Default: false)
+- `max` (number, required) - video duration (in milliseconds)
+- `currentTime` (number, required) - current video progress (in milliseconds)
+- `progress` (number) - Current buffer progress (in milliseconds)
+- `hideSeekTimes` (boolean) - hide hover seek time (Default: false)
 - `onChange` ((time:number, offsetTime:number)=>void, required) - script to be run when thumb change position
 - `offset` (number, default:0) - when you need start slider with offset time
-- `secondsPrefix` (string, default: '') - when video time is less than one minutes you can use prefix time as "00:00:"
-- `minutesPrefix` (string, default: '') - when video time is less than one hour you can use prefix time as "00:"
-- `limitTimeTooltipBySides` (boolean, default: false) - limit the time tooltip position inside track
+- `minutesPrefix` (string, default: '') - when video duration is less than an hour you can use time prefix like "0:" so the time tooltip will show e.g "0:25:23"
+- `secondsPrefix` (string, default: '') - when video duration is less than one minute it's possible to use time prefix like "0:00:" and the time tooltip will show e.g "0:00:10"
+- `limitTimeTooltipBySides` (boolean, default: true) - limit the time tooltip position inside of the slider
 
 ## For development
 

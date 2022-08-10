@@ -8,17 +8,17 @@ export interface State {
 }
 
 export const AppComponent: React.FC = () => {
-  const [currentTime, setCurrentTime] = useState(10);
+  const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [maxTime, setMaxTime] = useState(0);
 
   useEffect(() => {
     const currentTimeId = setInterval(() => {
-      setCurrentTime((prev) => (prev < maxTime ? prev + 10 : 0));
-    }, 100);
+      setCurrentTime((prev) => (prev < maxTime ? prev + 4 : 0));
+    }, 4);
 
     const progressId = setInterval(() => {
-      setProgress((prev) => (prev < maxTime ? prev + 3000 : 0));
+      setProgress((prev) => (prev < maxTime ? prev + 500 : 0));
     }, 1000);
 
     return () => {
@@ -27,10 +27,17 @@ export const AppComponent: React.FC = () => {
     };
   }, [maxTime]);
 
+  const handleTimeChange = (time: number, offsetTime: number): void => {
+    setCurrentTime(time);
+
+    // eslint-disable-next-line no-console
+    console.log({ time, offsetTime });
+  };
+
   useEffect(() => {
     setTimeout(() => {
-      setMaxTime(11150);
-    }, 1000);
+      setMaxTime(50000);
+    }, 100);
   }, []);
 
   return (
@@ -41,16 +48,11 @@ export const AppComponent: React.FC = () => {
         max={maxTime}
         currentTime={currentTime}
         progress={progress}
-        onChange={(time: number, offsetTime: number) => {
-          setCurrentTime(time);
-
-          // eslint-disable-next-line no-console
-          console.log({ time, offsetTime });
-        }}
+        onChange={handleTimeChange}
         offset={0}
         limitTimeTooltipBySides={true}
-        secondsPrefix="00:00:"
-        minutesPrefix="00:"
+        secondsPrefix="0:"
+        minutesPrefix="0:"
       />
     </div>
   );
