@@ -12,3 +12,4 @@ webpack.dev.js
 webpack.prod.js
 .eslintrc.js
 lib
+index.js
