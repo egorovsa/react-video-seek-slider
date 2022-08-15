@@ -70,7 +70,7 @@ just use:
 
 ```javascript 1.8
 $ npm i
-$ npm run start
+$ npm run dev
 ```
 
 open your browser http://localhost:3000

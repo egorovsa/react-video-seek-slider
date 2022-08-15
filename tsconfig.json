@@ -3,8 +3,9 @@
         "module": "ESNext",
         "target": "es5",
         "lib": [
-            "ESNext",
-            "DOM"
+            "dom",
+            "dom.iterable",
+            "esnext"
         ],
         "sourceMap": true,
         "jsx": "react-jsx",
@@ -13,7 +14,8 @@
         "declaration": true,
         "outDir": "lib",
         "rootDir": ".",
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true
     },
     "exclude": [
         "node_modules"

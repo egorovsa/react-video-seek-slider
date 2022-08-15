@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import * as React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 import { VideoSeekSlider, Props } from '..';
 
@@ -8,9 +9,6 @@ const getWrapper = (overrides: Partial<Props> = {}): any => (
     currentTime={500}
     progress={600}
     onChange={(time: number, offsetTime: number) => {
-      // setCurrentTime(time);
-
-      // eslint-disable-next-line no-console
       console.log({ time, offsetTime });
     }}
     offset={0}
@@ -21,28 +19,31 @@ const getWrapper = (overrides: Partial<Props> = {}): any => (
   />
 );
 
+// FIXME: This mock does not work correctly, It mock offsetWidth to elements
+// with className "track" but at the same time it
+// brakes the normal useRef begaviour
+
 // jest.mock('react', () => ({
 //   ...jest.requireActual<typeof React>('react'),
 //   useRef: (initial: any) => {
-//     // const ref = { current: null };
+//     const ref = { current: initial };
 
-//     // Object.defineProperty(ref, 'current', {
-//     //   set(_current: any) {
+//     Object.defineProperty(ref, 'current', {
+//       set(_current: any) {
+//         if (_current && typeof _current === 'object') {
+//           if (_current.className === 'track') {
+//             jest.spyOn(
+//                _current, 'offsetWidth', 'get'
+//              ).mockReturnValueOnce(100);
+//           }
+//         }
 
-//     //     console.log({ _current });
-
-//     //     if (_current && typeof _current === 'object') {
-//     //       if (_current.className === 'track') {
-//     //         jest.spyOn(_current, 'offsetWidth', 'get').mockReturnValueOnce(100);
-//     //       }
-//     //     }
-
-//     //     this._current = _current;
-//     //   },
-//     //   get() {
-//     //     return this._current;
-//     //   },
-//     // });
+//         this._current = _current;
+//       },
+//       get() {
+//         return this._current;
+//       },
+//     });
 
 //     return ref;
 //   },
@@ -53,29 +54,15 @@ describe('VideoSeekSlider.tsx', () => {
     render(getWrapper());
   });
 
-  it('should render without errors', () => {
-    render(
-      getWrapper({
-        hideHoverTime: true,
-      })
-    );
+  it('should render without hover time ', () => {
+    cleanup();
+    render(getWrapper({ hideHoverTime: true }));
+    expect(screen.queryByTestId('hover-time')).not.toBeInTheDocument();
   });
 
   it('should show hover-time by default', () => {
     cleanup();
-    render(getWrapper({ hideHoverTime: false }));
-    expect(screen.getByTestId('hover-time')).toBeInTheDocument();
-  });
-
-  it('should hide hover-time if hideHoverTime is true', () => {
-    cleanup();
-    render(getWrapper({ hideHoverTime: true }));
-    const hoverTimeElement = screen.queryByTestId('hover-time');
-    expect(hoverTimeElement).not.toBeInTheDocument();
-  });
-
-  it('should hide hover-time if hideHoverTime is true', () => {
-    cleanup();
     render(getWrapper());
+    expect(screen.getByTestId('hover-time')).toBeInTheDocument();
   });
 });
