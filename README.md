@@ -8,7 +8,7 @@ Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
 
 ## Braking changes from v4 -> v5
 
-All time values you pass to props like `max`, `currentTime` and `progress` now are im milliseconds instead of seconds. 
+All time values you pass to props like `max`, `currentTime` and `progress` now are in milliseconds instead of seconds. 
 
 `onChange` prop will also return `time` param in milliseconds as well.
 
