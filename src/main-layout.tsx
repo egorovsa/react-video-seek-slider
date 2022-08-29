@@ -18,7 +18,7 @@ export const AppComponent: React.FC = () => {
     }, 4);
 
     const progressId = setInterval(() => {
-      setProgress((prev) => (prev < maxTime ? prev + 500 : 0));
+      setProgress((prev) => (prev < maxTime ? prev + 3500 : 0));
     }, 1000);
 
     return () => {
@@ -51,7 +51,7 @@ export const AppComponent: React.FC = () => {
         onChange={handleTimeChange}
         offset={0}
         limitTimeTooltipBySides={true}
-        secondsPrefix="0:"
+        secondsPrefix="00:"
         minutesPrefix="0:"
       />
     </div>

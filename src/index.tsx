@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
 import './ui-video-seek-slider.scss';
-
-interface Time {
-  hh: string;
-  mm: string;
-  ss: string;
-}
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { getHoverTimePosition } from './utils/getHoverTimePosition';
+import { getPositionStyle } from './utils/getPositionStyle';
+import { getHoverPositionToTimeValue } from './utils/getHoverPositionToTimeValue';
 
 export interface Props {
   max: number;
@@ -17,83 +14,6 @@ export interface Props {
   secondsPrefix?: string;
   minutesPrefix?: string;
   limitTimeTooltipBySides?: boolean;
-}
-
-function secondsToTime(seconds: number, offset: number): Time {
-  const roundedSeconds = Math.round(seconds / 1000 + offset);
-
-  const hours: number = Math.floor(roundedSeconds / 3600);
-  const divirsForMinutes: number = roundedSeconds % 3600;
-  const minutes: number = Math.floor(divirsForMinutes / 60);
-  const sec: number = Math.ceil(divirsForMinutes % 60);
-
-  return {
-    hh: hours.toString(),
-    mm: minutes < 10 ? `0${minutes}` : minutes.toString(),
-    ss: sec < 10 ? `0${sec}` : sec.toString(),
-  };
-}
-
-function getTimeValue(
-  max: number,
-  seekHoverPosition: number,
-  trackWidth: number,
-  offset: number,
-  minutesPrefix: string,
-  secondsPrefix: string
-): string {
-  const percent: number = (seekHoverPosition * 100) / trackWidth;
-  const seconds: number = Math.floor(+(percent * (max / 100)));
-  const times: Time = secondsToTime(seconds, offset);
-
-  if (max + offset < 60 * 1000) {
-    return secondsPrefix + times.ss;
-  }
-
-  if (max + offset < 3600 * 1000) {
-    return `${minutesPrefix + times.mm}:${times.ss}`;
-  }
-
-  return `${times.hh}:${times.mm}:${times.ss}`;
-}
-
-function getPositionStyle(max: number, time: number): { transform: string } {
-  const divider = max || -1; // prevent division by zero
-  const position = (time * 100) / divider;
-
-  return { transform: `scaleX(${position / 100})` };
-}
-
-function getSeekHoverPosition(
-  seekHoverPosition: number,
-  trackWidth: number
-): { transform: string } {
-  const position = (seekHoverPosition * 100) / trackWidth;
-
-  return { transform: `scaleX(${position / 100})` };
-}
-
-function getHoverTimePosition(
-  seekHoverPosition: number,
-  hoverTimeElement: HTMLDivElement | null,
-  trackWidth: number,
-  limitTimeTooltipBySides: boolean
-): { transform: string } {
-  let position = 0;
-
-  if (hoverTimeElement) {
-    position = seekHoverPosition - hoverTimeElement.offsetWidth / 2;
-
-    if (limitTimeTooltipBySides) {
-      if (position < 0) {
-        position = 0;
-      } else if (position + hoverTimeElement.offsetWidth > trackWidth) {
-        position = trackWidth - hoverTimeElement.offsetWidth;
-      }
-    }
-  }
-
-  return { transform: `translateX(${position}px)` };
 }
 
 export const VideoSeekSlider: React.FC<Props> = ({
@@ -117,7 +37,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
 
   const hoverTimeValue = useMemo(
     () =>
-      getTimeValue(
+      getHoverPositionToTimeValue(
         max,
         seekHoverPosition,
         trackWidth.current,
@@ -130,9 +50,9 @@ export const VideoSeekSlider: React.FC<Props> = ({
 
   const bufferedStyle = getPositionStyle(max, progress);
 
-  const seekHoverStyle = getSeekHoverPosition(
-    seekHoverPosition,
-    trackWidth?.current
+  const seekHoverStyle = getPositionStyle(
+    trackWidth?.current,
+    seekHoverPosition
   );
 
   const hoverTimePosition = getHoverTimePosition(
