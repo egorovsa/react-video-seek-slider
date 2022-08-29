@@ -3,6 +3,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { getHoverTimePosition } from './utils/getHoverTimePosition';
 import { getPositionStyle } from './utils/getPositionStyle';
 import { getHoverPositionToTimeValue } from './utils/getHoverPositionToTimeValue';
+import { TimeCode } from './components/timeCode';
+
+export interface TimeCode {
+  fromMs: number;
+  description: string;
+}
 
 export interface Props {
   max: number;
@@ -14,6 +20,7 @@ export interface Props {
   secondsPrefix?: string;
   minutesPrefix?: string;
   limitTimeTooltipBySides?: boolean;
+  timeCodes?: TimeCode[];
 }
 
 export const VideoSeekSlider: React.FC<Props> = ({
@@ -26,6 +33,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   minutesPrefix = '',
   onChange = () => undefined,
   limitTimeTooltipBySides = false,
+  timeCodes,
 }) => {
   const [seekHoverPosition, setSeekHoverPosition] = useState(0);
 
@@ -34,6 +42,10 @@ export const VideoSeekSlider: React.FC<Props> = ({
   const mobileSeeking = useRef(false);
   const trackElement = useRef<HTMLDivElement>(null);
   const hoverTimeElement = useRef<HTMLDivElement>(null);
+
+  const isThumbActive = seekHoverPosition > 0 || seeking.current;
+  const thumbClassName = isThumbActive ? 'thumb active' : 'thumb';
+  const hoverTimeClassName = isThumbActive ? 'hover-time active' : 'hover-time';
 
   const hoverTimeValue = useMemo(
     () =>
@@ -48,11 +60,14 @@ export const VideoSeekSlider: React.FC<Props> = ({
     [max, minutesPrefix, offset, secondsPrefix, seekHoverPosition]
   );
 
-  const bufferedStyle = getPositionStyle(max, progress);
+  const bufferedStyle = useMemo(
+    () => getPositionStyle(max, progress),
+    [max, progress]
+  );
 
-  const seekHoverStyle = getPositionStyle(
-    trackWidth?.current,
-    seekHoverPosition
+  const seekHoverStyle = useMemo(
+    () => getPositionStyle(trackWidth?.current, seekHoverPosition),
+    [seekHoverPosition]
   );
 
   const hoverTimePosition = getHoverTimePosition(
@@ -61,10 +76,6 @@ export const VideoSeekSlider: React.FC<Props> = ({
     trackWidth?.current,
     limitTimeTooltipBySides
   );
-
-  const isThumbActive = seekHoverPosition > 0 || seeking.current;
-  const thumbClassName = isThumbActive ? 'thumb active' : 'thumb';
-  const hoverTimeClassName = isThumbActive ? 'hover-time active' : 'hover-time';
 
   const changeCurrentTimePosition = (pageX: number): void => {
     const left = trackElement.current?.getBoundingClientRect().left || 0;
@@ -169,7 +180,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   return (
     <div className="ui-video-seek-slider">
       <div
-        className={isThumbActive ? 'track active' : 'track'}
+        className={isThumbActive ? 'track' : 'track'}
         ref={trackElement}
         onMouseMove={(event) => handleTrackHover(false, event)}
         onMouseLeave={(event) => handleTrackHover(true, event)}
@@ -177,25 +188,46 @@ export const VideoSeekSlider: React.FC<Props> = ({
         onTouchStart={() => setMobileSeeking(true)}
         data-testid="main-track"
       >
-        <div className="main">
-          <div
-            className="buffered"
-            data-test-id="testBuffered"
-            style={bufferedStyle}
-          />
+        {timeCodes?.map(({ fromMs, description }, index) => {
+          const endTime =
+            index + 1 < timeCodes.length ? timeCodes[index + 1].fromMs : max;
+          const isTimePassed = endTime <= currentTime;
 
-          <div
-            className="seek-hover"
-            data-test-id="testSeekHover"
-            style={seekHoverStyle}
-          />
+          return (
+            <TimeCode
+              key={fromMs}
+              trackWidth={trackWidth?.current}
+              label={description}
+              timePassed={isTimePassed}
+              maxTime={max}
+              startTime={fromMs}
+              endTime={endTime}
+              currentTime={isTimePassed ? 0 : currentTime}
+            />
+          );
+        })}
+        {/* 
+        {!timeCodes && (
+          <div className="main">
+            <div
+              className="buffered"
+              data-test-id="testBuffered"
+              style={bufferedStyle}
+            />
 
-          <div
-            className="connect"
-            data-test-id="testConnect"
-            style={getPositionStyle(max, currentTime)}
-          />
-        </div>
+            <div
+              className="seek-hover"
+              data-test-id="testSeekHover"
+              style={seekHoverStyle}
+            />
+
+            <div
+              className="connect"
+              data-test-id="testConnect"
+              style={getPositionStyle(max, currentTime)}
+            />
+          </div>
+        )} */}
       </div>
 
       {!hideHoverTime && (
@@ -205,6 +237,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
           ref={hoverTimeElement}
           data-testid="hover-time"
         >
+          <div>Hello everybody fdsf ds fsd fds f </div>
           {hoverTimeValue}
         </div>
       )}

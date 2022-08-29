@@ -31,8 +31,12 @@ $seek-hover: rgba(#fff, 0.5);
       position: absolute;
       left: 0 top 10 - math.div($track-height-default, 2);
       overflow: hidden;
-      transition: transform 0.4s;
+      transition: transform 0.1s;
       outline: none;
+
+      &:hover {
+        transform: scaleY(2.8);
+      }
 
       &:focus {
         border: 0;
@@ -74,11 +78,11 @@ $seek-hover: rgba(#fff, 0.5);
       }
     }
 
-    &.active {
-      .main {
-        transform: scaleY(2);
-      }
-    }
+    // &.active {
+    //   .main {
+
+    //   }
+    // }
   }
 
   .thumb {
@@ -98,6 +102,7 @@ $seek-hover: rgba(#fff, 0.5);
       background-color: $progress-color;
       opacity: 0;
       transform: scale(0.4);
+      transition: transform 0.2s, opacity 0.2s;
     }
 
     &.active {
@@ -109,13 +114,12 @@ $seek-hover: rgba(#fff, 0.5);
   }
 
   .hover-time {
-    // transition opacity 0.2s;
+    text-shadow: 1px 1px 1px #000;
     position: absolute;
-    background-color: rgba(#000, 0.3);
     line-height: 18px;
     font-size: 16px;
     color: #ddd;
-    top: -25px;
+    bottom: 20px;
     left: 0;
     padding: 5px 10px;
     border-radius: 5px;
@@ -123,6 +127,7 @@ $seek-hover: rgba(#fff, 0.5);
     opacity: 0;
     transform: translateX(150px);
     pointer-events: none;
+    text-align: center;
 
     &.active {
       opacity: 1;

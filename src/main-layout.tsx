@@ -53,6 +53,24 @@ export const AppComponent: React.FC = () => {
         limitTimeTooltipBySides={true}
         secondsPrefix="00:"
         minutesPrefix="0:"
+        timeCodes={[
+          {
+            fromMs: 0,
+            description: 'Hello 0',
+          },
+          {
+            fromMs: 10000,
+            description: 'Hello 10000',
+          },
+          {
+            fromMs: 15000,
+            description: 'Hello 15000',
+          },
+          {
+            fromMs: 40000,
+            description: 'Hello 40000',
+          },
+        ]}
       />
     </div>
   );
