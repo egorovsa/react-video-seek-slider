@@ -98,7 +98,11 @@ export const AppComponent: React.FC = () => {
           },
           {
             fromMs: 440000,
-            description: 'And one more time quite long name ',
+            description: 'Final battle',
+          },
+          {
+            fromMs: 600000,
+            description: 'Cast ',
           },
         ]}
       />
@@ -110,7 +114,7 @@ export const AppComponent: React.FC = () => {
         ref={player}
       >
         <source
-          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4"
+          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
           type="video/mp4"
         />
       </video>
