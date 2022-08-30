@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { getPositionPercent } from '../utils/getPositionStyle';
 import { getTimeScale } from '../utils/getTimeScale';
+import { isInRange } from '../utils/isInRange';
 
 export interface Props {
   currentTime: number;
@@ -10,16 +11,16 @@ export interface Props {
   endTime: number;
   maxTime: number;
   trackWidth: number | undefined;
-  label: string;
-  isTimePassed: boolean;
-  isBufferPassed: boolean;
-  isHoverPassed: boolean;
+  label?: string;
+  isTimePassed?: boolean;
+  isBufferPassed?: boolean;
+  isHoverPassed?: boolean;
   onHover?: (label: string) => void;
 }
 
 export const TimeCode: React.FC<Props> = memo(
   ({
-    label,
+    label = '',
     startTime,
     maxTime,
     endTime,
@@ -27,9 +28,9 @@ export const TimeCode: React.FC<Props> = memo(
     currentTime,
     seekHoverTime,
     bufferTime,
-    isTimePassed,
-    isBufferPassed,
-    isHoverPassed,
+    isTimePassed = false,
+    isBufferPassed = false,
+    isHoverPassed = false,
     onHover = () => undefined,
   }) => {
     const gap = endTime === maxTime ? 0 : 2;
@@ -62,10 +63,22 @@ export const TimeCode: React.FC<Props> = memo(
 
     const handleMouseMove = (): void => onHover(label);
 
+    const handleTouchMove = (): void => {
+      console.log({ currentTime });
+
+      const isRange = isInRange(currentTime, startTime, endTime);
+
+      if (isRange) {
+        onHover(label);
+      }
+    };
+
     return (
       <div
         className="main"
         onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
+        onTouchStart={() => console.log('START')}
         style={{
           width: `${width - gap}px`,
           left: `${translateX}px`,

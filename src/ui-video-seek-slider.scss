@@ -9,6 +9,7 @@ $seek-hover: rgba(#fff, 0.5);
 
 .ui-video-seek-slider {
   position: relative;
+  touch-action: none;
 
   &:focus {
     outline: none;
@@ -75,13 +76,15 @@ $seek-hover: rgba(#fff, 0.5);
         transform-origin: 0 0;
       }
 
-      &:hover {
-        &:before {
-          height: $track-height-hovered;
-        }
+      @media (hover) {
+        &:hover {
+          &:before {
+            height: $track-height-hovered;
+          }
 
-        .inner-seek-block {
-          height: $track-height-hovered;
+          .inner-seek-block {
+            height: $track-height-hovered;
+          }
         }
       }
     }

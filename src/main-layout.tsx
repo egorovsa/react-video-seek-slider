@@ -13,16 +13,16 @@ export const AppComponent: React.FC = () => {
   const [maxTime, setMaxTime] = useState(0);
 
   useEffect(() => {
-    // const currentTimeId = setInterval(() => {
-    //   setCurrentTime((prev) => (prev < maxTime ? prev + 4 : 0));
-    // }, 4);
+    const currentTimeId = setInterval(() => {
+      setCurrentTime((prev) => (prev < maxTime ? prev + 4 : 0));
+    }, 4);
 
     const progressId = setInterval(() => {
       setProgress((prev) => (prev < maxTime ? prev + 3500 : 0));
     }, 1000);
 
     return () => {
-      // clearInterval(currentTimeId);
+      clearInterval(currentTimeId);
       clearInterval(progressId);
     };
   }, [maxTime]);
@@ -56,19 +56,19 @@ export const AppComponent: React.FC = () => {
         timeCodes={[
           {
             fromMs: 0,
-            description: 'Hello 0',
+            description: 'This is a very logn first part label you could use',
           },
           {
             fromMs: 10000,
-            description: 'Hello 10000',
+            description: 'This is the second part',
           },
           {
             fromMs: 15000,
-            description: 'Hello 15000',
+            description: 'One more part label',
           },
           {
             fromMs: 40000,
-            description: 'Hello 40000',
+            description: 'And one more time quite long name ',
           },
         ]}
       />
