@@ -13,16 +13,16 @@ export const AppComponent: React.FC = () => {
   const [maxTime, setMaxTime] = useState(0);
 
   useEffect(() => {
-    const currentTimeId = setInterval(() => {
-      setCurrentTime((prev) => (prev < maxTime ? prev + 4 : 0));
-    }, 4);
+    // const currentTimeId = setInterval(() => {
+    //   setCurrentTime((prev) => (prev < maxTime ? prev + 4 : 0));
+    // }, 4);
 
     const progressId = setInterval(() => {
       setProgress((prev) => (prev < maxTime ? prev + 3500 : 0));
     }, 1000);
 
     return () => {
-      clearInterval(currentTimeId);
+      // clearInterval(currentTimeId);
       clearInterval(progressId);
     };
   }, [maxTime]);
@@ -47,7 +47,7 @@ export const AppComponent: React.FC = () => {
       <VideoSeekSlider
         max={maxTime}
         currentTime={currentTime}
-        progress={progress}
+        bufferTime={progress}
         onChange={handleTimeChange}
         offset={0}
         limitTimeTooltipBySides={true}

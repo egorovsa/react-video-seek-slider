@@ -7,7 +7,7 @@ const getWrapper = (overrides: Partial<Props> = {}): any => (
   <VideoSeekSlider
     max={1000}
     currentTime={500}
-    progress={600}
+    bufferTime={600}
     onChange={(time: number, offsetTime: number) => {
       console.log({ time, offsetTime });
     }}

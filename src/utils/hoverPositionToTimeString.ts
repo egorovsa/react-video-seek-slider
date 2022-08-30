@@ -1,16 +1,13 @@
 import { millisecondsToTime } from './secondsToTime';
 
-export function getHoverPositionToTimeValue(
+export function hoverPositionToTimeString(
   max: number,
-  seekHoverPosition: number,
-  trackWidth: number,
+  seekHoverTime: number,
   offset = 0,
   minutesPrefix = '',
   secondsPrefix = ''
 ): string {
-  const percent = (seekHoverPosition * 100) / trackWidth;
-  const seconds = Math.floor(+(percent * (max / 100)));
-  const times = millisecondsToTime(seconds, offset);
+  const times = millisecondsToTime(seekHoverTime, offset);
 
   if (max + offset < 60 * 1000) {
     return secondsPrefix + times.ss;
