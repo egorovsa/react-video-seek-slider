@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable max-len */
+/* eslint-disable jsx-a11y/media-has-caption */
+import { useEffect, useRef, useState } from 'react';
 import { VideoSeekSlider } from './index';
 
 export interface State {
@@ -8,26 +10,18 @@ export interface State {
 }
 
 export const AppComponent: React.FC = () => {
+  const player = useRef<HTMLVideoElement>(null);
+  const interval = useRef<any>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [maxTime, setMaxTime] = useState(0);
 
-  useEffect(() => {
-    const currentTimeId = setInterval(() => {
-      setCurrentTime((prev) => (prev < maxTime ? prev + 4 : 0));
-    }, 4);
-
-    const progressId = setInterval(() => {
-      setProgress((prev) => (prev < maxTime ? prev + 3500 : 0));
-    }, 1000);
-
-    return () => {
-      clearInterval(currentTimeId);
-      clearInterval(progressId);
-    };
-  }, [maxTime]);
-
   const handleTimeChange = (time: number, offsetTime: number): void => {
+    if (!player.current?.currentTime) {
+      return;
+    }
+
+    player.current.currentTime = time / 1000;
     setCurrentTime(time);
 
     // eslint-disable-next-line no-console
@@ -35,10 +29,46 @@ export const AppComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setMaxTime(50000);
-    }, 100);
-  }, []);
+    if (!player) {
+      return;
+    }
+
+    player.current?.addEventListener('play', () => {
+      interval.current = setInterval(() => {
+        setCurrentTime((player.current?.currentTime || 0) * 1000);
+      }, 1000);
+    });
+
+    player.current?.addEventListener('pause', () => {
+      clearInterval(interval.current);
+    });
+
+    player.current?.addEventListener('loadeddata', () => {
+      setMaxTime((player.current?.duration || 0) * 1000);
+    });
+
+    player.current?.addEventListener('progress', () => {
+      const buffer: any = player?.current?.buffered;
+
+      if (((buffer?.length > 0 && player.current?.duration) || 0) > 0) {
+        let currentBuffer = 0;
+        const inSeconds = player.current?.currentTime || 0;
+
+        for (let i = 0; i < buffer.length; i++) {
+          if (buffer.start(i) <= inSeconds && inSeconds <= buffer.end(i)) {
+            currentBuffer = i;
+            break;
+          }
+        }
+
+        const a = buffer.end(currentBuffer);
+
+        console.log({ a });
+
+        setProgress(buffer.end(currentBuffer) * 1000 || 0);
+      }
+    });
+  }, [player]);
 
   return (
     <div className="container">
@@ -59,19 +89,31 @@ export const AppComponent: React.FC = () => {
             description: 'This is a very logn first part label you could use',
           },
           {
-            fromMs: 10000,
+            fromMs: 130000,
             description: 'This is the second part',
           },
           {
-            fromMs: 15000,
+            fromMs: 270000,
             description: 'One more part label',
           },
           {
-            fromMs: 40000,
+            fromMs: 440000,
             description: 'And one more time quite long name ',
           },
         ]}
       />
+
+      <video
+        controls={true}
+        autoPlay={true}
+        className="video-preview"
+        ref={player}
+      >
+        <source
+          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4"
+          type="video/mp4"
+        />
+      </video>
     </div>
   );
 };

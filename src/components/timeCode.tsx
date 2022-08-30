@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { getPositionPercent } from '../utils/getPositionStyle';
+import { getPositionPercent } from '../utils/getPositionPercent';
 import { getTimeScale } from '../utils/getTimeScale';
 import { isInRange } from '../utils/isInRange';
 
@@ -77,8 +77,6 @@ export const TimeCode: React.FC<Props> = memo(
       <div
         className="main"
         onMouseMove={handleMouseMove}
-        onTouchMove={handleTouchMove}
-        onTouchStart={() => console.log('START')}
         style={{
           width: `${width - gap}px`,
           left: `${translateX}px`,

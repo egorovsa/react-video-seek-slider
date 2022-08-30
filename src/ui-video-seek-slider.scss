@@ -61,7 +61,6 @@ $seek-hover: rgba(#fff, 0.5);
 
       .buffered {
         background-color: $buffered-color;
-        transition: transform 0.3s;
         z-index: 2;
       }
 
@@ -134,6 +133,14 @@ $seek-hover: rgba(#fff, 0.5);
 
     &.active {
       opacity: 1;
+    }
+
+    .preview-screen {
+      width: 160px;
+      height: 90px;
+      border-radius: 5px;
+      background-color: #000;
+      margin: 0 auto 10px;
     }
   }
 

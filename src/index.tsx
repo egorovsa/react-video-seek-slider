@@ -1,11 +1,11 @@
 import './ui-video-seek-slider.scss';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getHoverTimePosition } from './utils/getHoverTimePosition';
-// import { getPositionStyle } from './utils/getPositionStyle';
 import { hoverPositionToTimeString } from './utils/hoverPositionToTimeString';
 import { TimeCode } from './components/timeCode';
 import { isInRange } from './utils/isInRange';
 import { positionToMs } from './utils/positionToMs';
+import { getEndTimeByIndex } from './utils/getEndTimeByIndex';
 
 export interface TimeCode {
   fromMs: number;
@@ -90,17 +90,17 @@ export const VideoSeekSlider: React.FC<Props> = ({
     event.preventDefault();
     event.stopPropagation();
 
-    let pageX = 0;
-
-    for (let i = 0; i < event.changedTouches.length; i++) {
-      pageX = event.changedTouches?.[i].pageX;
+    if (!mobileSeeking.current) {
+      return;
     }
+
+    const { changedTouches } = event;
+
+    let pageX = changedTouches?.[changedTouches.length - 1]?.pageX || 0;
 
     pageX = pageX < 0 ? 0 : pageX;
 
-    if (mobileSeeking.current) {
-      changeCurrentTimePosition(pageX);
-    }
+    changeCurrentTimePosition(pageX);
   };
 
   const handleSeeking = (event: MouseEvent): void => {
@@ -153,6 +153,31 @@ export const VideoSeekSlider: React.FC<Props> = ({
     setMobileSeeking(false);
   };
 
+  const handleLableChange = useCallback(
+    (currentLabel: string) => {
+      if (label !== currentLabel) {
+        setLabel(currentLabel);
+      }
+    },
+    [label]
+  );
+
+  useEffect(() => {
+    if (!mobileSeeking.current) {
+      return;
+    }
+
+    const currentCode = timeCodes?.find(({ fromMs }, index) => {
+      const endTime = getEndTimeByIndex(timeCodes, index, max);
+
+      return isInRange(currentTime, fromMs, endTime);
+    });
+
+    if (currentCode?.description !== label) {
+      setLabel(currentCode?.description || '');
+    }
+  }, [currentTime, label, max, timeCodes]);
+
   useEffect(() => {
     setTrackWidthState();
 
@@ -171,15 +196,6 @@ export const VideoSeekSlider: React.FC<Props> = ({
     };
   }, [max, offset]);
 
-  const handleLableChange = useCallback(
-    (currentLabel: string) => {
-      if (label !== currentLabel) {
-        setLabel(currentLabel);
-      }
-    },
-    [label]
-  );
-
   return (
     <div className="ui-video-seek-slider">
       <div
@@ -192,8 +208,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
         data-testid="main-track"
       >
         {timeCodes?.map(({ fromMs, description }, index) => {
-          const endTime =
-            index + 1 < timeCodes.length ? timeCodes[index + 1].fromMs : max;
+          const endTime = getEndTimeByIndex(timeCodes, index, max);
 
           const isTimePassed = endTime <= currentTime;
           const isBufferPassed = endTime <= bufferTime;
@@ -248,6 +263,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
           ref={hoverTimeElement}
           data-testid="hover-time"
         >
+          <div className="preview-screen" />
           {label && <div>{label}</div>}
           {hoverTimeString}
         </div>
