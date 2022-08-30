@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { getPositionPercent } from '../utils/getPositionStyle';
-import { isInRange } from '../utils/isInRange';
+import { getTimeScale } from '../utils/getTimeScale';
 
 export interface Props {
   currentTime: number;
@@ -14,25 +14,12 @@ export interface Props {
   isTimePassed: boolean;
   isBufferPassed: boolean;
   isHoverPassed: boolean;
-  onHover?: () => void;
-}
-
-function getTimeScale(
-  currentTime: number,
-  startTime: number,
-  endTime: number,
-  isTimePassed: boolean
-): number {
-  const isActiveTime = isInRange(currentTime, startTime, endTime);
-  const timeDiff = endTime - startTime;
-  const timeDiffWithCurrent = currentTime - startTime;
-  const currentScalePercent = isActiveTime ? timeDiffWithCurrent / timeDiff : 0;
-
-  return isTimePassed ? 1 : currentScalePercent;
+  onHover?: (label: string) => void;
 }
 
 export const TimeCode: React.FC<Props> = memo(
   ({
+    label,
     startTime,
     maxTime,
     endTime,
@@ -43,11 +30,11 @@ export const TimeCode: React.FC<Props> = memo(
     isTimePassed,
     isBufferPassed,
     isHoverPassed,
+    onHover = () => undefined,
   }) => {
+    const gap = endTime === maxTime ? 0 : 2;
     const positionPercent = getPositionPercent(maxTime, startTime);
-
     const translateX = (trackWidth / 100) * positionPercent;
-
     const timeDiff = endTime - startTime;
     const widthPercent = (timeDiff / maxTime) * 100;
     const width = (trackWidth / 100) * widthPercent;
@@ -58,6 +45,7 @@ export const TimeCode: React.FC<Props> = memo(
       endTime,
       isTimePassed
     );
+
     const seekHoverTimeScale = getTimeScale(
       seekHoverTime,
       startTime,
@@ -72,11 +60,12 @@ export const TimeCode: React.FC<Props> = memo(
       isBufferPassed
     );
 
-    const gap = endTime === maxTime ? 0 : 3;
+    const handleMouseMove = (): void => onHover(label);
 
     return (
       <div
         className="main"
+        onMouseMove={handleMouseMove}
         style={{
           width: `${width - gap}px`,
           left: `${translateX}px`,

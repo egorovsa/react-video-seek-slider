@@ -1,5 +1,5 @@
 import './ui-video-seek-slider.scss';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getHoverTimePosition } from './utils/getHoverTimePosition';
 // import { getPositionStyle } from './utils/getPositionStyle';
 import { hoverPositionToTimeString } from './utils/hoverPositionToTimeString';
@@ -39,6 +39,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
 }) => {
   const [seekHoverPosition, setSeekHoverTime] = useState(0);
 
+  const [label, setLabel] = useState('');
   const seeking = useRef(false);
   const trackWidth = useRef(0);
   const mobileSeeking = useRef(false);
@@ -49,10 +50,9 @@ export const VideoSeekSlider: React.FC<Props> = ({
   const thumbClassName = isThumbActive ? 'thumb active' : 'thumb active';
   const hoverTimeClassName = isThumbActive ? 'hover-time active' : 'hover-time';
 
-  const hoverTimeValue = positionToMs(
-    max,
-    seekHoverPosition,
-    trackWidth.current
+  const hoverTimeValue = useMemo(
+    () => positionToMs(max, seekHoverPosition, trackWidth.current),
+    [max, seekHoverPosition]
   );
 
   const hoverTimeString = useMemo(
@@ -67,21 +67,15 @@ export const VideoSeekSlider: React.FC<Props> = ({
     [max, minutesPrefix, offset, secondsPrefix, hoverTimeValue]
   );
 
-  // const bufferedStyle = useMemo(
-  //   () => getPositionStyle(max, bufferTime),
-  //   [max, bufferTime]
-  // );
-
-  // const seekHoverStyle = useMemo(
-  //   () => getPositionStyle(trackWidth?.current, seekHoverPosition),
-  //   [seekHoverPosition]
-  // );
-
-  const hoverTimePosition = getHoverTimePosition(
-    seekHoverPosition,
-    hoverTimeElement?.current,
-    trackWidth?.current,
-    limitTimeTooltipBySides
+  const hoverTimePosition = useMemo(
+    () =>
+      getHoverTimePosition(
+        seekHoverPosition,
+        hoverTimeElement?.current,
+        trackWidth?.current,
+        limitTimeTooltipBySides
+      ),
+    [limitTimeTooltipBySides, seekHoverPosition]
   );
 
   const changeCurrentTimePosition = (pageX: number): void => {
@@ -184,6 +178,15 @@ export const VideoSeekSlider: React.FC<Props> = ({
     };
   }, [max, offset]);
 
+  const handleLableChange = useCallback(
+    (currentLabel: string) => {
+      if (label !== currentLabel) {
+        setLabel(currentLabel);
+      }
+    },
+    [label]
+  );
+
   return (
     <div className="ui-video-seek-slider">
       <div
@@ -204,6 +207,8 @@ export const VideoSeekSlider: React.FC<Props> = ({
           const isHoverPassed = endTime <= hoverTimeValue;
           const inRange = isInRange(currentTime, fromMs, endTime);
           const newCurrentTime = isTimePassed || !inRange ? 0 : currentTime;
+          const newBufferTime = isBufferPassed || !inRange ? 0 : bufferTime;
+          const newHoverTime = isHoverPassed || !inRange ? 0 : hoverTimeValue;
 
           return (
             <TimeCode
@@ -217,8 +222,9 @@ export const VideoSeekSlider: React.FC<Props> = ({
               isBufferPassed={isBufferPassed}
               isHoverPassed={isHoverPassed}
               currentTime={newCurrentTime}
-              bufferTime={bufferTime}
-              seekHoverTime={hoverTimeValue}
+              bufferTime={newBufferTime}
+              seekHoverTime={newHoverTime}
+              onHover={handleLableChange}
             />
           );
         })}
@@ -253,7 +259,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
           ref={hoverTimeElement}
           data-testid="hover-time"
         >
-          <div>Hello everybody fdsf ds fsd fds f </div>
+          {label && <div>{label}</div>}
           {hoverTimeString}
         </div>
       )}
