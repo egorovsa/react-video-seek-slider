@@ -1,11 +1,12 @@
 import './ui-video-seek-slider.scss';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getHoverTimePosition } from './utils/getHoverTimePosition';
 import { hoverPositionToTimeString } from './utils/hoverPositionToTimeString';
-import { TimeCode } from './components/timeCode';
+import { TimeCodeItem } from './components/timeCodeItem';
 import { isInRange } from './utils/isInRange';
 import { positionToMs } from './utils/positionToMs';
 import { getEndTimeByIndex } from './utils/getEndTimeByIndex';
+import { TimeCodes } from './components/timeCodes';
 
 export interface TimeCode {
   fromMs: number;
@@ -153,15 +154,6 @@ export const VideoSeekSlider: React.FC<Props> = ({
     setMobileSeeking(false);
   };
 
-  const handleLableChange = useCallback(
-    (currentLabel: string) => {
-      if (label !== currentLabel) {
-        setLabel(currentLabel);
-      }
-    },
-    [label]
-  );
-
   useEffect(() => {
     if (!mobileSeeking.current) {
       return;
@@ -207,43 +199,22 @@ export const VideoSeekSlider: React.FC<Props> = ({
         onTouchStart={() => setMobileSeeking(true)}
         data-testid="main-track"
       >
-        {timeCodes?.map(({ fromMs, description }, index) => {
-          const endTime = getEndTimeByIndex(timeCodes, index, max);
-
-          const isTimePassed = endTime <= currentTime;
-          const isBufferPassed = endTime <= bufferTime;
-          const isHoverPassed = endTime <= hoverTimeValue;
-
-          let inRange = isInRange(currentTime, fromMs, endTime);
-          const newCurrentTime = isTimePassed || !inRange ? 0 : currentTime;
-
-          inRange = isInRange(bufferTime, fromMs, endTime);
-          const newBufferTime = isBufferPassed || !inRange ? 0 : bufferTime;
-
-          inRange = isInRange(hoverTimeValue, fromMs, endTime);
-          const newHoverTime = isHoverPassed || !inRange ? 0 : hoverTimeValue;
-
-          return (
-            <TimeCode
-              key={fromMs}
-              trackWidth={trackWidth?.current}
-              label={description}
-              maxTime={max}
-              startTime={fromMs}
-              endTime={endTime}
-              isTimePassed={isTimePassed}
-              isBufferPassed={isBufferPassed}
-              isHoverPassed={isHoverPassed}
-              currentTime={newCurrentTime}
-              bufferTime={newBufferTime}
-              seekHoverTime={newHoverTime}
-              onHover={handleLableChange}
-            />
-          );
-        })}
+        {(timeCodes?.length || 0) > 0 && (
+          <TimeCodes
+            currentTime={currentTime}
+            max={max}
+            bufferTime={bufferTime}
+            seekHoverPosition={seekHoverPosition}
+            timeCodes={timeCodes}
+            mobileSeeking={mobileSeeking.current}
+            trackWidth={trackWidth.current}
+            label={label}
+            setLabel={setLabel}
+          />
+        )}
 
         {!timeCodes && (
-          <TimeCode
+          <TimeCodeItem
             trackWidth={trackWidth?.current}
             maxTime={max}
             startTime={0}
@@ -251,7 +222,6 @@ export const VideoSeekSlider: React.FC<Props> = ({
             currentTime={currentTime}
             bufferTime={bufferTime}
             seekHoverTime={hoverTimeValue}
-            onHover={handleLableChange}
           />
         )}
       </div>

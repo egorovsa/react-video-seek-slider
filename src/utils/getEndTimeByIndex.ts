@@ -1,4 +1,4 @@
-import { TimeCode } from '..';
+import { TimeCode } from '../components/timeCodeItem';
 
 export const getEndTimeByIndex = (
   timeCodes: TimeCode[],

@@ -1,7 +1,11 @@
 import React, { memo } from 'react';
 import { getPositionPercent } from '../utils/getPositionPercent';
 import { getTimeScale } from '../utils/getTimeScale';
-import { isInRange } from '../utils/isInRange';
+
+export interface TimeCode {
+  fromMs: number;
+  description: string;
+}
 
 export interface Props {
   currentTime: number;
@@ -18,7 +22,7 @@ export interface Props {
   onHover?: (label: string) => void;
 }
 
-export const TimeCode: React.FC<Props> = memo(
+export const TimeCodeItem: React.FC<Props> = memo(
   ({
     label = '',
     startTime,
@@ -62,16 +66,6 @@ export const TimeCode: React.FC<Props> = memo(
     );
 
     const handleMouseMove = (): void => onHover(label);
-
-    const handleTouchMove = (): void => {
-      console.log({ currentTime });
-
-      const isRange = isInRange(currentTime, startTime, endTime);
-
-      if (isRange) {
-        onHover(label);
-      }
-    };
 
     return (
       <div

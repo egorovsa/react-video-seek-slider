@@ -1,13 +1,8 @@
+/* eslint-disable no-console */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useEffect, useRef, useState } from 'react';
 import { VideoSeekSlider } from './index';
-
-export interface State {
-  currentTime: number;
-  progress: number;
-  test: boolean;
-}
 
 export const AppComponent: React.FC = () => {
   const player = useRef<HTMLVideoElement>(null);
@@ -24,8 +19,39 @@ export const AppComponent: React.FC = () => {
     player.current.currentTime = time / 1000;
     setCurrentTime(time);
 
-    // eslint-disable-next-line no-console
     console.log({ time, offsetTime });
+  };
+
+  const handlePlay = (): void => {
+    interval.current = setInterval(() => {
+      setCurrentTime((player.current?.currentTime || 0) * 1000);
+    }, 1000);
+  };
+
+  const handlePause = (): void => {
+    clearInterval(interval.current);
+  };
+
+  const handleDataLoaded = (): void => {
+    setMaxTime((player.current?.duration || 0) * 1000);
+  };
+
+  const handleProgress = (): void => {
+    const buffer: any = player?.current?.buffered;
+
+    if (((buffer?.length > 0 && player.current?.duration) || 0) > 0) {
+      let currentBuffer = 0;
+      const inSeconds = player.current?.currentTime || 0;
+
+      for (let i = 0; i < buffer.length; i++) {
+        if (buffer.start(i) <= inSeconds && inSeconds <= buffer.end(i)) {
+          currentBuffer = i;
+          break;
+        }
+      }
+
+      setProgress(buffer.end(currentBuffer) * 1000 || 0);
+    }
   };
 
   useEffect(() => {
@@ -33,41 +59,10 @@ export const AppComponent: React.FC = () => {
       return;
     }
 
-    player.current?.addEventListener('play', () => {
-      interval.current = setInterval(() => {
-        setCurrentTime((player.current?.currentTime || 0) * 1000);
-      }, 1000);
-    });
-
-    player.current?.addEventListener('pause', () => {
-      clearInterval(interval.current);
-    });
-
-    player.current?.addEventListener('loadeddata', () => {
-      setMaxTime((player.current?.duration || 0) * 1000);
-    });
-
-    player.current?.addEventListener('progress', () => {
-      const buffer: any = player?.current?.buffered;
-
-      if (((buffer?.length > 0 && player.current?.duration) || 0) > 0) {
-        let currentBuffer = 0;
-        const inSeconds = player.current?.currentTime || 0;
-
-        for (let i = 0; i < buffer.length; i++) {
-          if (buffer.start(i) <= inSeconds && inSeconds <= buffer.end(i)) {
-            currentBuffer = i;
-            break;
-          }
-        }
-
-        const a = buffer.end(currentBuffer);
-
-        console.log({ a });
-
-        setProgress(buffer.end(currentBuffer) * 1000 || 0);
-      }
-    });
+    player.current?.addEventListener('play', handlePlay);
+    player.current?.addEventListener('pause', handlePause);
+    player.current?.addEventListener('loadeddata', handleDataLoaded);
+    player.current?.addEventListener('progress', handleProgress);
   }, [player]);
 
   return (
