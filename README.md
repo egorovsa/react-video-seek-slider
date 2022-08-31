@@ -5,7 +5,7 @@ With time codes and video preview opportunity
 
 Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
 
-![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/master/example.gif?raw=true)
+![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
 
 ## What's new in v6
 - Added time codes and seeker preview fully like in youtube player!
@@ -15,8 +15,8 @@ Demo [react-video-seek-slider](http://video-seeker.egorov.pw/)
 
 #### props names that are changed
 
-`progress` -> `bufferTime`
-`hideSeekTimes` -> `hideThumbTooltip`
+- `progress` -> `bufferTime`
+- `hideSeekTimes` -> `hideThumbTooltip`
 
 
 ## Braking changes from v4 -> v5
