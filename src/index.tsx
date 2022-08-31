@@ -18,7 +18,7 @@ export interface Props {
   currentTime: number;
   bufferTime?: number;
   onChange: (time: number, offsetTime: number) => void;
-  hideHoverTime?: boolean;
+  hideThumbTooltip?: boolean;
   offset?: number;
   secondsPrefix?: string;
   minutesPrefix?: string;
@@ -31,7 +31,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   max = 1000,
   currentTime = 0,
   bufferTime = 0,
-  hideHoverTime = false,
+  hideThumbTooltip = false,
   offset = 0,
   secondsPrefix = '',
   minutesPrefix = '',
@@ -228,7 +228,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
         )}
       </div>
 
-      {!hideHoverTime && (
+      {!hideThumbTooltip && (
         <div
           className={hoverTimeClassName}
           style={hoverTimePosition}

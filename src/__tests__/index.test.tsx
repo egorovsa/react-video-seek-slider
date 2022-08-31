@@ -56,7 +56,7 @@ describe('VideoSeekSlider.tsx', () => {
 
   it('should render without hover time ', () => {
     cleanup();
-    render(getWrapper({ hideHoverTime: true }));
+    render(getWrapper({ hideThumbTooltip: true }));
     expect(screen.queryByTestId('hover-time')).not.toBeInTheDocument();
   });
 
