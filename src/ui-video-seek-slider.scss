@@ -1,6 +1,7 @@
 @use "sass:math";
 
 $track-height-default: 3px;
+$track-height-hovered: 8px;
 $progress-color: #ff0000;
 $track-color: rgba(#ffffff, 0.2);
 $buffered-color: rgba(#fff, 0.3);
@@ -8,13 +9,14 @@ $seek-hover: rgba(#fff, 0.5);
 
 .ui-video-seek-slider {
   position: relative;
+  touch-action: none;
 
   &:focus {
     outline: none;
   }
 
   .track {
-    padding: 10px 0;
+    padding: 0;
     cursor: pointer;
     outline: none;
 
@@ -25,14 +27,33 @@ $seek-hover: rgba(#fff, 0.5);
 
     .main {
       width: 100%;
-      height: $track-height-default;
-      background-color: $track-color;
-      border-radius: 30px;
-      position: absolute;
-      left: 0 top 10 - math.div($track-height-default, 2);
-      overflow: hidden;
-      transition: transform 0.4s;
       outline: none;
+      height: $track-height-hovered + 10px;
+      top: 0;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: $track-height-default;
+        background-color: $track-color;
+        // border-radius: 30px;
+        overflow: hidden;
+        transition: height 0.1s;
+        outline: none;
+      }
+
+      .inner-seek-block {
+        position: absolute;
+        width: 100%;
+        height: $track-height-default;
+        transition: height 0.1s, opacity 0.4s;
+        transform-origin: 0 0;
+      }
 
       &:focus {
         border: 0;
@@ -40,43 +61,39 @@ $seek-hover: rgba(#fff, 0.5);
       }
 
       .buffered {
-        position: absolute;
         background-color: $buffered-color;
-        width: 100%;
-        height: 100%;
-        transform: scaleX(0.8);
         z-index: 2;
-        transform-origin: 0 0;
-        transition: 0.5s transform;
       }
 
       .seek-hover {
-        position: absolute;
         background-color: $seek-hover;
-        width: 100%;
-        height: 100%;
         z-index: 1;
-        transform: scaleX(0.6);
-        transform-origin: 0 0;
-        opacity: 0;
-        transition: opacity 0.4s;
       }
 
       .connect {
-        position: absolute;
         background-color: $progress-color;
-        width: 100%;
-        height: 100%;
         z-index: 3;
-        left: 0;
-        transform: scaleX(0.13);
         transform-origin: 0 0;
       }
-    }
 
-    &.active {
-      .main {
-        transform: scaleY(2);
+      &.with-gap {
+        .inner-seek-block,
+        &:before {
+          width: calc(100% - 2px);
+          margin: 0 auto;
+        }
+      }
+
+      @media (hover) {
+        &:hover {
+          &:before {
+            height: $track-height-hovered;
+          }
+
+          .inner-seek-block {
+            height: $track-height-hovered;
+          }
+        }
       }
     }
   }
@@ -87,9 +104,8 @@ $seek-hover: rgba(#fff, 0.5);
     width: 12px;
     height: 12px;
     left: -6px;
-    top: 6px;
     z-index: 4;
-    transform: translateX(100px);
+    top: 3px;
 
     .handler {
       border-radius: 100%;
@@ -98,6 +114,7 @@ $seek-hover: rgba(#fff, 0.5);
       background-color: $progress-color;
       opacity: 0;
       transform: scale(0.4);
+      transition: transform 0.2s, opacity 0.2s;
     }
 
     &.active {
@@ -109,23 +126,31 @@ $seek-hover: rgba(#fff, 0.5);
   }
 
   .hover-time {
-    // transition opacity 0.2s;
+    text-shadow: 1px 1px 1px #000;
     position: absolute;
-    background-color: rgba(#000, 0.3);
     line-height: 18px;
     font-size: 16px;
     color: #ddd;
-    top: -25px;
+    bottom: 5px;
     left: 0;
     padding: 5px 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(#000, 0.3);
     opacity: 0;
-    transform: translateX(150px);
     pointer-events: none;
+    text-align: center;
 
     &.active {
       opacity: 1;
+    }
+
+    .preview-screen {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      width: 160px;
+      height: 90px;
+      border-radius: 5px;
+      background-color: #000;
+      margin: 0 auto 10px;
     }
   }
 
