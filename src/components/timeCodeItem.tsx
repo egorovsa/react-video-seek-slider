@@ -20,6 +20,7 @@ export interface Props {
   isBufferPassed?: boolean;
   isHoverPassed?: boolean;
   onHover?: (label: string) => void;
+  withGap?: boolean;
 }
 
 export const TimeCodeItem: React.FC<Props> = memo(
@@ -36,13 +37,14 @@ export const TimeCodeItem: React.FC<Props> = memo(
     isBufferPassed = false,
     isHoverPassed = false,
     onHover = () => undefined,
+    withGap,
   }) => {
-    const gap = endTime === maxTime ? 0 : 2;
     const positionPercent = getPositionPercent(maxTime, startTime);
     const translateX = (trackWidth / 100) * positionPercent;
     const timeDiff = endTime - startTime;
     const widthPercent = (timeDiff / maxTime) * 100;
     const width = (trackWidth / 100) * widthPercent;
+    const mainClassName = `main ${withGap && 'with-gap'}`;
 
     const currentTimeScale = getTimeScale(
       currentTime,
@@ -69,10 +71,10 @@ export const TimeCodeItem: React.FC<Props> = memo(
 
     return (
       <div
-        className="main"
+        className={mainClassName}
         onMouseMove={handleMouseMove}
         style={{
-          width: `${width - gap}px`,
+          width: `${width}px`,
           left: `${translateX}px`,
         }}
       >

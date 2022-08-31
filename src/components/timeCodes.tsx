@@ -87,6 +87,7 @@ export const TimeCodes: React.FC<Props> = ({
             bufferTime={newBufferTime}
             seekHoverTime={newHoverTime}
             onHover={handleLableChange}
+            withGap={true}
           />
         );
       })}

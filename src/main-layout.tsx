@@ -1,26 +1,31 @@
 /* eslint-disable no-console */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/media-has-caption */
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { VideoSeekSlider } from './index';
+import { timeToTimeString } from './utils/timeToTimeString';
 
 export const AppComponent: React.FC = () => {
   const player = useRef<HTMLVideoElement>(null);
+  const previewImage = useRef('');
   const interval = useRef<any>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [maxTime, setMaxTime] = useState(0);
 
-  const handleTimeChange = (time: number, offsetTime: number): void => {
-    if (!player.current?.currentTime) {
-      return;
-    }
+  const handleTimeChange = useCallback(
+    (time: number, offsetTime: number): void => {
+      if (!player.current?.currentTime) {
+        return;
+      }
 
-    player.current.currentTime = time / 1000;
-    setCurrentTime(time);
+      player.current.currentTime = time / 1000;
+      setCurrentTime(time);
 
-    console.log({ time, offsetTime });
-  };
+      console.log({ time, offsetTime });
+    },
+    []
+  );
 
   const handlePlay = (): void => {
     interval.current = setInterval(() => {
@@ -54,6 +59,28 @@ export const AppComponent: React.FC = () => {
     }
   };
 
+  const updatePreviewImage = (hoverTime: number, maxValue: number): void => {
+    const text = timeToTimeString(maxValue, hoverTime);
+    const url = `https://via.placeholder.com/140x60?text=${text}`;
+    const image = document.createElement('img');
+    image.src = url;
+
+    image.onload = () => {
+      previewImage.current = url;
+    };
+  };
+
+  const handleGettingPreview = useCallback(
+    (hoverTime: number): string => {
+      // FIND AND RETURN LOADED!!! VIDEO PREVIEW ACCORDING TO the hoverTime TIME
+      console.log({ hoverTime, maxTime });
+      updatePreviewImage(hoverTime, maxTime);
+
+      return previewImage.current;
+    },
+    [maxTime]
+  );
+
   useEffect(() => {
     if (!player) {
       return;
@@ -78,6 +105,7 @@ export const AppComponent: React.FC = () => {
         limitTimeTooltipBySides={true}
         secondsPrefix="00:"
         minutesPrefix="0:"
+        getPreviewScreenUrl={handleGettingPreview}
         timeCodes={[
           {
             fromMs: 0,
@@ -101,6 +129,19 @@ export const AppComponent: React.FC = () => {
           },
         ]}
       />
+
+      <caption>Seeker with time codes and preview opportunity</caption>
+
+      <VideoSeekSlider
+        max={maxTime}
+        currentTime={currentTime}
+        bufferTime={progress}
+        onChange={handleTimeChange}
+        limitTimeTooltipBySides={true}
+        secondsPrefix="00:"
+        minutesPrefix="0:"
+      />
+      <caption>Simple seeker with no timecodes</caption>
 
       <video
         controls={true}

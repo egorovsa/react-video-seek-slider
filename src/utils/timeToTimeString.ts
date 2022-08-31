@@ -1,6 +1,6 @@
 import { millisecondsToTime } from './secondsToTime';
 
-export function hoverPositionToTimeString(
+export function timeToTimeString(
   max: number,
   seekHoverTime: number,
   offset = 0,

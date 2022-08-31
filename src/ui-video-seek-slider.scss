@@ -33,6 +33,7 @@ $seek-hover: rgba(#fff, 0.5);
       position: absolute;
       display: flex;
       align-items: center;
+      box-sizing: border-box;
 
       &:before {
         content: '';
@@ -40,7 +41,7 @@ $seek-hover: rgba(#fff, 0.5);
         width: 100%;
         height: $track-height-default;
         background-color: $track-color;
-        border-radius: 30px;
+        // border-radius: 30px;
         overflow: hidden;
         transition: height 0.1s;
         outline: none;
@@ -73,6 +74,14 @@ $seek-hover: rgba(#fff, 0.5);
         background-color: $progress-color;
         z-index: 3;
         transform-origin: 0 0;
+      }
+
+      &.with-gap {
+        .inner-seek-block,
+        &:before {
+          width: calc(100% - 2px);
+          margin: 0 auto;
+        }
       }
 
       @media (hover) {
@@ -125,9 +134,7 @@ $seek-hover: rgba(#fff, 0.5);
     bottom: 5px;
     left: 0;
     padding: 5px 10px;
-    border-radius: 5px;
     opacity: 0;
-    // transform: translateX(150px);
     pointer-events: none;
     text-align: center;
 
@@ -136,6 +143,9 @@ $seek-hover: rgba(#fff, 0.5);
     }
 
     .preview-screen {
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
       width: 160px;
       height: 90px;
       border-radius: 5px;

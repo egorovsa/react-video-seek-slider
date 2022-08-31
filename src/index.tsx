@@ -1,7 +1,7 @@
 import './ui-video-seek-slider.scss';
 import { useEffect, useRef, useState } from 'react';
 import { getHoverTimePosition } from './utils/getHoverTimePosition';
-import { hoverPositionToTimeString } from './utils/hoverPositionToTimeString';
+import { timeToTimeString } from './utils/timeToTimeString';
 import { TimeCodeItem } from './components/timeCodeItem';
 import { isInRange } from './utils/isInRange';
 import { positionToMs } from './utils/positionToMs';
@@ -24,6 +24,7 @@ export interface Props {
   minutesPrefix?: string;
   limitTimeTooltipBySides?: boolean;
   timeCodes?: TimeCode[];
+  getPreviewScreenUrl?: (hoverTimeValue: number) => string;
 }
 
 export const VideoSeekSlider: React.FC<Props> = ({
@@ -37,6 +38,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   onChange = () => undefined,
   limitTimeTooltipBySides = false,
   timeCodes,
+  getPreviewScreenUrl,
 }) => {
   const [seekHoverPosition, setSeekHoverTime] = useState(0);
 
@@ -57,7 +59,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
     trackWidth.current
   );
 
-  const hoverTimeString = hoverPositionToTimeString(
+  const hoverTimeString = timeToTimeString(
     max,
     hoverTimeValue,
     offset,
@@ -233,7 +235,14 @@ export const VideoSeekSlider: React.FC<Props> = ({
           ref={hoverTimeElement}
           data-testid="hover-time"
         >
-          <div className="preview-screen" />
+          {isThumbActive && getPreviewScreenUrl && (
+            <div
+              className="preview-screen"
+              style={{
+                backgroundImage: `url(${getPreviewScreenUrl(hoverTimeValue)})`,
+              }}
+            />
+          )}
           {label && <div>{label}</div>}
           {hoverTimeString}
         </div>
