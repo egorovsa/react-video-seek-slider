@@ -132,17 +132,6 @@ export const AppComponent: React.FC = () => {
 
       <caption>Seeker with time codes and preview opportunity</caption>
 
-      <VideoSeekSlider
-        max={maxTime}
-        currentTime={currentTime}
-        bufferTime={progress}
-        onChange={handleTimeChange}
-        limitTimeTooltipBySides={true}
-        secondsPrefix="00:"
-        minutesPrefix="0:"
-      />
-      <caption>Simple seeker with no timecodes</caption>
-
       <video
         controls={true}
         autoPlay={true}
@@ -154,6 +143,17 @@ export const AppComponent: React.FC = () => {
           type="video/mp4"
         />
       </video>
+
+      <VideoSeekSlider
+        max={maxTime}
+        currentTime={currentTime}
+        bufferTime={progress}
+        onChange={handleTimeChange}
+        limitTimeTooltipBySides={true}
+        secondsPrefix="00:"
+        minutesPrefix="0:"
+      />
+      <caption>Simple seeker with no timecodes</caption>
     </div>
   );
 };
