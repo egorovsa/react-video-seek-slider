@@ -1,7 +1,7 @@
 {
   "name": "react-video-seek-slider",
   "description": "React video seek slider like youtube",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "main": "/index.js",
   "author": "Sergey Egorov",
   "license": "MIT",
