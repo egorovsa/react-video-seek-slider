@@ -74,7 +74,7 @@ export const TimeCodes: React.FC<Props> = ({
 
         return (
           <TimeCodeItem
-            key={fromMs}
+            key={`${fromMs}-${description}`}
             trackWidth={trackWidth}
             label={description}
             maxTime={max}
