@@ -130,11 +130,13 @@ export const AppComponent: React.FC = () => {
         ]}
       />
 
-      <caption>Seeker with time codes and preview opportunity</caption>
+      <div className="caption">
+        Seeker with time codes and preview opportunity
+      </div>
 
       <video
-        controls={true}
-        autoPlay={true}
+        controls
+        autoPlay
         className="video-preview"
         ref={player}
       >
@@ -153,7 +155,7 @@ export const AppComponent: React.FC = () => {
         secondsPrefix="00:"
         minutesPrefix="0:"
       />
-      <caption>Simple seeker with no timecodes</caption>
+      <div className="caption">Simple seeker with no timecodes</div>
     </div>
   );
 };

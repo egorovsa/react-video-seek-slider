@@ -41,10 +41,10 @@ export const VideoSeekSlider: React.FC<Props> = ({
   getPreviewScreenUrl,
 }) => {
   const [seekHoverPosition, setSeekHoverTime] = useState(0);
+  const [trackWidth, setTrackWidth] = useState(0);
 
   const [label, setLabel] = useState('');
   const seeking = useRef(false);
-  const trackWidth = useRef(0);
   const mobileSeeking = useRef(false);
   const trackElement = useRef<HTMLDivElement>(null);
   const hoverTimeElement = useRef<HTMLDivElement>(null);
@@ -53,11 +53,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   const thumbClassName = isThumbActive ? 'thumb active' : 'thumb active';
   const hoverTimeClassName = isThumbActive ? 'hover-time active' : 'hover-time';
 
-  const hoverTimeValue = positionToMs(
-    max,
-    seekHoverPosition,
-    trackWidth.current
-  );
+  const hoverTimeValue = positionToMs(max, seekHoverPosition, trackWidth);
 
   const hoverTimeString = timeToTimeString(
     max,
@@ -70,7 +66,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   const hoverTimePosition = getHoverTimePosition(
     seekHoverPosition,
     hoverTimeElement?.current,
-    trackWidth?.current,
+    trackWidth,
     limitTimeTooltipBySides
   );
 
@@ -79,11 +75,11 @@ export const VideoSeekSlider: React.FC<Props> = ({
     let position = pageX - left;
 
     position = position < 0 ? 0 : position;
-    position = position > trackWidth.current ? trackWidth.current : position;
+    position = position > trackWidth ? trackWidth : position;
 
     setSeekHoverTime(position);
 
-    const percent = (position * 100) / trackWidth.current;
+    const percent = (position * 100) / trackWidth;
     const time = +(percent * (max / 100)).toFixed(0);
 
     onChange(time, time + offset);
@@ -114,7 +110,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
 
   const setTrackWidthState = (): void => {
     if (trackElement.current) {
-      trackWidth.current = trackElement.current.offsetWidth;
+      setTrackWidth(trackElement.current.offsetWidth);
     }
   };
 
@@ -129,7 +125,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   };
 
   const getThumbHandlerPosition = (): { transform: string } => {
-    const position = trackWidth.current / (max / currentTime);
+    const position = trackWidth / (max / currentTime);
 
     return { transform: `translateX(${position}px)` };
   };
@@ -188,7 +184,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
       window.removeEventListener('touchmove', handleTouchSeeking);
       window.removeEventListener('touchend', mobileTouchSeekingHandler);
     };
-  }, [max, offset]);
+  }, [max, offset, trackWidth]);
 
   return (
     <div className="ui-video-seek-slider">
@@ -201,7 +197,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
         onTouchStart={() => setMobileSeeking(true)}
         data-testid="main-track"
       >
-        {(timeCodes?.length || 0) > 0 && (
+        {(timeCodes?.length ?? 0) > 0 && (
           <TimeCodes
             currentTime={currentTime}
             max={max}
@@ -209,7 +205,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
             seekHoverPosition={seekHoverPosition}
             timeCodes={timeCodes}
             mobileSeeking={mobileSeeking.current}
-            trackWidth={trackWidth.current}
+            trackWidth={trackWidth}
             label={label}
             setLabel={setLabel}
           />
@@ -217,7 +213,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
 
         {!timeCodes && (
           <TimeCodeItem
-            trackWidth={trackWidth?.current}
+            trackWidth={trackWidth}
             maxTime={max}
             startTime={0}
             endTime={max}

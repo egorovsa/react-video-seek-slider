@@ -29,7 +29,7 @@ export const TimeCodes: React.FC<Props> = ({
 }) => {
   const hoverTimeValue = positionToMs(max, seekHoverPosition, trackWidth);
 
-  const handleLableChange = useCallback(
+  const handleLabelChange = useCallback(
     (currentLabel: string) => {
       if (label !== currentLabel) {
         setLabel(currentLabel);
@@ -86,7 +86,7 @@ export const TimeCodes: React.FC<Props> = ({
             currentTime={newCurrentTime}
             bufferTime={newBufferTime}
             seekHoverTime={newHoverTime}
-            onHover={handleLableChange}
+            onHover={handleLabelChange}
             withGap={true}
           />
         );
