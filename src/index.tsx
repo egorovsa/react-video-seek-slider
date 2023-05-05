@@ -36,7 +36,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
   secondsPrefix = '',
   minutesPrefix = '',
   onChange = () => undefined,
-  limitTimeTooltipBySides = false,
+  limitTimeTooltipBySides = true,
   timeCodes,
   getPreviewScreenUrl,
 }) => {
