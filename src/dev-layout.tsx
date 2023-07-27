@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { VideoSeekSlider } from './index';
 import { timeToTimeString } from './utils/timeToTimeString';
 
-export const AppComponent: React.FC = () => {
+export const DevLayout: React.FC = () => {
   const player = useRef<HTMLVideoElement>(null);
   const previewImage = useRef('');
   const interval = useRef<any>(null);
