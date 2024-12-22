@@ -6,7 +6,7 @@ module.exports = {
   },
   setupFilesAfterEnv: [
     '@testing-library/react/dont-cleanup-after-each',
-    '@testing-library/jest-dom/extend-expect',
+    '@testing-library/jest-dom',
   ],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   moduleFileExtensions: ['js', 'json', 'jsx', 'node', 'ts', 'tsx'],

@@ -7,6 +7,9 @@
             "dom.iterable",
             "esnext"
         ],
+        "types": [
+            "@testing-library/jest-dom"
+        ],
         "sourceMap": true,
         "jsx": "react-jsx",
         "strictNullChecks": true,
