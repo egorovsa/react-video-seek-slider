@@ -1,13 +1,15 @@
 # react-video-seek-slider
 
 The simplest, light weight and dependency free html video seeker like YouTube for React
-With time codes and video preview opportunity 
+With time codes and video preview opportunity
 
-Demo [codesandbox demo](https://codesandbox.io/s/react-video-seek-slider-lj2hmh)
+
+Demo [codesandbox demo](https://codesandbox.io/p/sandbox/react-video-seek-slider-forked-vglxvf)
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
 
 ## What's new in v6
+
 - Added time codes and seeker preview fully like in youtube player!
 - The codebase is completely refactored and optimized
 
@@ -18,10 +20,9 @@ Demo [codesandbox demo](https://codesandbox.io/s/react-video-seek-slider-lj2hmh)
 - `progress` -> `bufferTime`
 - `hideSeekTimes` -> `hideThumbTooltip`
 
-
 ## Braking changes from v4 -> v5
 
-All time values you pass to props like `max`, `currentTime` and `progress` now are in milliseconds instead of seconds. 
+All time values you pass to props like `max`, `currentTime` and `progress` now are in milliseconds instead of seconds.
 
 `onChange` prop will also return `time` param in milliseconds as well.
 
@@ -88,7 +89,6 @@ import "react-video-seek-slider/styles.css"
 - `timeCodes` (TimeCode[], default: undefined) - will divide slider into parts according to an array of times
 - `getPreviewScreenUrl` ((hoverTimeValue: number) => string, default: undefined) - the callback function is going to be called each time when a slider in hovered. It will pass a current hover mouse time and expect and preview image url to be returned
 
-
 ### TimeCode object
 
 - `fromMs` (number, required) - time stamp in milliseconds from where the part is starting
@@ -101,7 +101,7 @@ The very first part is always should start from fromMs=0. The other parts any va
 
 just use:
 
-```javascript 1.8
+```javascript
 $ npm i
 $ npm run dev
 ```
