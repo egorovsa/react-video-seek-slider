@@ -3,10 +3,18 @@
 The simplest, light weight and dependency free html video seeker like YouTube for React
 With time codes and video preview opportunity
 
-
 Demo [codesandbox demo](https://codesandbox.io/p/sandbox/react-video-seek-slider-forked-vglxvf)
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
+
+## What's new in v7
+
+- This version is built for React 19
+
+## Bracking changes from v6 -> v7
+
+- It's not compatible with React versions lower than v19
+- The last version for React 18 is v6.0.8
 
 ## What's new in v6
 
@@ -32,7 +40,6 @@ All time values you pass to props like `max`, `currentTime` and `progress` now a
 npm i react-video-seek-slider
 or
 yarn add react-video-seek-slider
-
 ```
 
 ## How to import
