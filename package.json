@@ -1,7 +1,7 @@
 {
   "name": "react-video-seek-slider",
   "description": "React video seek slider like youtube",
-  "version": "6.0.9",
+  "version": "7.0.0",
   "main": "/index.js",
   "author": "Sergey Egorov",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/jest": "^28.1.6",
-    "@types/react": "18.0.15",
-    "@types/react-dom": "18.0.6",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "css-loader": "^6.2.0",
@@ -55,8 +55,8 @@
     "postcss-preset-env": "^6.7.0",
     "postcss-short": "^5.0.0",
     "prettier": "^2.5.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "sass": "1.39.0",
     "sass-loader": "12.1.0",
     "style-loader": "^3.2.1",
@@ -73,7 +73,7 @@
   },
   "homepage": "https://video-seeker.egorov.pw/",
   "peerDependencies": {
-    "react": ">=16.8.0 && <19.0.0",
-    "react-dom": ">=16.8.0 && <19.0.0"
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
   }
 }
