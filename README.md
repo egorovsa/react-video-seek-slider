@@ -14,7 +14,7 @@ Demo [codesandbox demo](https://codesandbox.io/p/sandbox/react-video-seek-slider
 ## Bracking changes from v6 -> v7
 
 - It's not compatible with React versions lower than v19
-- The last version for React 18 is v6.0.8
+- The last version for React 18 is v6.0.9
 
 ## What's new in v6
 
