@@ -7,6 +7,10 @@ Demo [codesandbox demo](https://codesandbox.io/p/sandbox/react-video-seek-slider
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
 
+## What's new in v8
+
+- It's built now with Vitejs and again availalbe for both react versions as for 18+ and for 19+
+
 ## What's new in v7
 
 - This version is built for React 19
@@ -47,7 +51,7 @@ yarn add react-video-seek-slider
 For TypeScript usage there is a index.d.ts
 
 ```typescript
-import { VideoSeekSlider } from "react-video-seek-slider";
+import { VideoSeekSlider } from 'react-video-seek-slider';
 ```
 
 Also you have to use css file in a lib folder:
@@ -60,26 +64,26 @@ import "react-video-seek-slider/styles.css"
 
 ```tsx
 //JSX
-    const [currentTime, setCurrentTime] = useState(0);
-    /// ..... 
-    <VideoSeekSlider
-        max={1152000}
-        currentTime={currentTime}
-        bufferTime={400000}
-        onChange={setCurrentTime}
-        secondsPrefix="00:00:"
-        minutesPrefix="00:"
-        timeCodes={[
-          {
-            fromMs: 0,
-            description: 'Description label of the first part',
-          },
-          {
-            fromMs: 130000,
-            description: 'Description label of the last part',
-          },
-        ]}
-    />
+const [currentTime, setCurrentTime] = useState(0);
+/// .....
+<VideoSeekSlider
+  max={1152000}
+  currentTime={currentTime}
+  bufferTime={400000}
+  onChange={setCurrentTime}
+  secondsPrefix="00:00:"
+  minutesPrefix="00:"
+  timeCodes={[
+    {
+      fromMs: 0,
+      description: 'Description label of the first part',
+    },
+    {
+      fromMs: 130000,
+      description: 'Description label of the last part',
+    },
+  ]}
+/>;
 ```
 
 ### Available component props
@@ -120,3 +124,4 @@ open your browser http://localhost:3000
 ```
 $ npm run build
 ```
+

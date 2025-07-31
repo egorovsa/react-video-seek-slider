@@ -1,26 +1,18 @@
 {
-    "compilerOptions": {
-        "module": "ESNext",
-        "target": "ESNext",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "types": [
-            "@testing-library/jest-dom"
-        ],
-        "sourceMap": true,
-        "jsx": "react-jsx",
-        "strictNullChecks": true,
-        "noImplicitAny": true,
-        "declaration": true,
-        "outDir": "lib",
-        "rootDir": ".",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["@testing-library/jest-dom", "vitest/globals"],
+    "sourceMap": true,
+    "jsx": "react-jsx",
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    "outDir": "lib",
+    "rootDir": ".",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true
+  },
+  "exclude": ["node_modules", "**/__tests__/**", "**/*.test.*", "**/*.spec.*"]
 }

@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable max-len */
-/* eslint-disable jsx-a11y/media-has-caption */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { VideoSeekSlider } from './index';
 import { timeToTimeString } from './utils/timeToTimeString';

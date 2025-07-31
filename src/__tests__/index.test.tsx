@@ -1,6 +1,6 @@
-/* eslint-disable no-underscore-dangle */
 import * as React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { VideoSeekSlider, Props } from '..';
 
 const getWrapper = (overrides: Partial<Props> = {}): any => (
@@ -55,13 +55,11 @@ describe('VideoSeekSlider.tsx', () => {
   });
 
   it('should render without hover time ', () => {
-    cleanup();
     render(getWrapper({ hideThumbTooltip: true }));
     expect(screen.queryByTestId('hover-time')).not.toBeInTheDocument();
   });
 
   it('should show hover-time by default', () => {
-    cleanup();
     render(getWrapper());
     expect(screen.getByTestId('hover-time')).toBeInTheDocument();
   });

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { timeToTimeString } from '../timeToTimeString';
 
 describe('getHoverPositionToTimeValue', () => {

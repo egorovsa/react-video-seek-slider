@@ -1,2 +1,380 @@
 /*! For license information please see index.js.LICENSE.txt */
-(()=>{"use strict";var e={698:(e,t)=>{var r=Symbol.for("react.transitional.element"),s=Symbol.for("react.fragment");function i(e,t,s){var i=null;if(void 0!==s&&(i=""+s),void 0!==t.key&&(i=""+t.key),"key"in t)for(var n in s={},t)"key"!==n&&(s[n]=t[n]);else s=t;return t=s.ref,{$$typeof:r,type:e,key:i,ref:void 0!==t?t:null,props:s}}t.Fragment=s,t.jsx=i,t.jsxs=i},848:(e,t,r)=>{e.exports=r(698)}},t={};function r(s){var i=t[s];if(void 0!==i)return i.exports;var n=t[s]={exports:{}};return e[s](n,n.exports,r),n.exports}r.d=(e,t)=>{for(var s in t)r.o(t,s)&&!r.o(e,s)&&Object.defineProperty(e,s,{enumerable:!0,get:t[s]})},r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),r.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var s={};r.r(s),r.d(s,{VideoSeekSlider:()=>v});var i=r(848);const n=require("react"),o=(e,t,r)=>e>=t&&e<=r;function a(e,t,r,s){const i=o(e,t,r);return s?1:i?(e-t)/(r-t):0}const c=(0,n.memo)((({label:e="",startTime:t,maxTime:r,endTime:s,currentTime:n,seekHoverTime:o,bufferTime:c,isTimePassed:m=!1,isBufferPassed:u=!1,isHoverPassed:l=!1,onHover:d=()=>{},withGap:f})=>{const v=100*t/(r||-1),h=(s-t)/r*100,T="main"+(f?" with-gap":""),x=a(n,t,s,m),p=a(o,t,s,l),b=a(c,t,s,u);return(0,i.jsxs)("div",{className:T,onMouseMove:()=>d(e),style:{width:`${h}%`,left:`${v}%`},children:[(0,i.jsx)("div",{className:"inner-seek-block buffered","data-test-id":"test-buffered",style:{transform:`scaleX(${b})`}}),(0,i.jsx)("div",{className:"inner-seek-block seek-hover","data-test-id":"test-seek-hover",style:{transform:`scaleX(${p})`}}),(0,i.jsx)("div",{className:"inner-seek-block connect",style:{transform:`scaleX(${x})`}})]})}));function m(e,t,r){const s=100*t/r;return Math.floor(e/100*+s)}const u=(e,t,r)=>t+1<e.length?e[t+1].fromMs:r,l=({max:e=1e3,currentTime:t=0,bufferTime:r=0,seekHoverPosition:s=0,timeCodes:a,trackWidth:l,mobileSeeking:d,label:f,setLabel:v})=>{const h=m(e,s,l),T=(0,n.useCallback)((e=>{f!==e&&v(e)}),[f]);return(0,n.useEffect)((()=>{if(!d)return;const r=a?.find((({fromMs:r},s)=>{const i=u(a,s,e);return o(t,r,i)}));r?.description!==f&&v(r?.description||"")}),[t,f,e,a]),(0,i.jsx)(i.Fragment,{children:a?.map((({fromMs:s,description:n},m)=>{const l=u(a,m,e),d=l<=t,f=l<=r,v=l<=h;let x=o(t,s,l);const p=d||!x?0:t;x=o(r,s,l);const b=f||!x?0:r;x=o(h,s,l);const k=v||!x?0:h;return(0,i.jsx)(c,{label:n,maxTime:e,startTime:s,endTime:l,isTimePassed:d,isBufferPassed:f,isHoverPassed:v,currentTime:p,bufferTime:b,seekHoverTime:k,onHover:T,withGap:!0},s)}))})};const d=({max:e,hoverTimeValue:t,offset:r,trackWidth:s,seekHoverPosition:o,isThumbActive:a,limitTimeTooltipBySides:c,label:m,minutesPrefix:u,secondsPrefix:l,getPreviewScreenUrl:d})=>{const f=(0,n.useRef)(null),v=a?"hover-time active":"hover-time",h=function(e,t,r,s){let i=0;return t&&(i=e-t.offsetWidth/2,s&&(i<0?i=0:i+t.offsetWidth>r&&(i=r-t.offsetWidth))),{transform:`translateX(${i}px)`}}(o,f?.current,s,c),T=function(e,t,r=0,s="",i=""){const n=function(e,t=0){const r=Math.round(e/1e3+t),s=Math.floor(r/3600),i=r%3600,n=Math.floor(i/60),o=Math.ceil(i%60);return{hh:s.toString(),mm:n<10?`0${n}`:n.toString(),ss:o<10?`0${o}`:o.toString()}}(t,r);return e+r<6e4?i+n.ss:e+r<36e5?`${s+n.mm}:${n.ss}`:`${n.hh}:${n.mm}:${n.ss}`}(e,t,r,u,l);return(0,i.jsxs)("div",{className:v,style:h,ref:f,"data-testid":"hover-time",children:[a&&d&&(0,i.jsx)("div",{className:"preview-screen",style:{backgroundImage:`url(${d(t)})`}}),m&&(0,i.jsx)("div",{children:m}),T]})},f=({max:e,currentTime:t,isThumbActive:r})=>(0,i.jsx)("div",{className:"thumb active","data-testid":"testThumb",style:{left:`calc(${t/e*100}% + -6px)`},children:(0,i.jsx)("div",{className:"handler"})}),v=({max:e=1e3,currentTime:t=0,bufferTime:r=0,hideThumbTooltip:s=!1,offset:a=0,secondsPrefix:v="",minutesPrefix:h="",limitTimeTooltipBySides:T=!0,timeCodes:x,onChange:p=()=>{},getPreviewScreenUrl:b})=>{const[k,g]=(0,n.useState)(0),[y,w]=(0,n.useState)(""),P=(0,n.useRef)(!1),j=(0,n.useRef)(!1),S=(0,n.useRef)(null),M=S.current?.offsetWidth||0,$=k>0||P.current,E=m(e,k,M),H=t=>{const r=S.current?.getBoundingClientRect(),s=r?.left||0,i=r?.width||0;let n=t-s;n=n<0?0:n,n=n>i?i:n;const o=+(100*n/i*(e/100)).toFixed(0);g(n),p(o,o+a)},L=e=>{if(e.preventDefault(),e.stopPropagation(),!j.current)return;const{changedTouches:t}=e;let r=t?.[t.length-1]?.pageX||0;r=r<0?0:r,H(r)},N=e=>{P.current&&H(e.pageX)},B=(e,t)=>{const r=S.current?.getBoundingClientRect().left||0,s=e?0:t.pageX-r;g(s)},W=(e=!0)=>{j.current=e,g(e?k:0)},C=(e,t)=>{t.preventDefault(),N(t),P.current=e,g(e?k:0)},X=e=>{C(!1,e)},O=()=>{W(!1)};return(0,n.useEffect)((()=>{if(!j.current)return;const r=x?.find((({fromMs:r},s)=>{const i=u(x,s,e);return o(t,r,i)}));r?.description!==y&&w(r?.description||"")}),[t,y,e,x]),(0,n.useEffect)((()=>(window.addEventListener("mousemove",N),window.addEventListener("mouseup",X),window.addEventListener("touchmove",L),window.addEventListener("touchend",O),()=>{window.removeEventListener("mousemove",N),window.removeEventListener("mouseup",X),window.removeEventListener("touchmove",L),window.removeEventListener("touchend",O)})),[e,a,M]),(0,i.jsxs)("div",{className:"ui-video-seek-slider",children:[(0,i.jsxs)("div",{className:$?"track active":"track",ref:S,onMouseMove:e=>B(!1,e),onMouseLeave:e=>B(!0,e),onMouseDown:e=>C(!0,e),onTouchStart:()=>W(!0),"data-testid":"main-track",children:[Boolean(x?.length)&&(0,i.jsx)(l,{currentTime:t,max:e,bufferTime:r,seekHoverPosition:k,timeCodes:x,mobileSeeking:j.current,trackWidth:M,label:y,setLabel:w}),!x&&(0,i.jsx)(c,{maxTime:e,startTime:0,endTime:e,currentTime:t,bufferTime:r,seekHoverTime:E})]}),!s&&(0,i.jsx)(d,{max:e,hoverTimeValue:E,isThumbActive:$,label:y,limitTimeTooltipBySides:T,offset:a,seekHoverPosition:k,trackWidth:M,getPreviewScreenUrl:b,minutesPrefix:h,secondsPrefix:v}),(0,i.jsx)(f,{max:e,currentTime:t,isThumbActive:$})]})};var h=exports;for(var T in s)h[T]=s[T];s.__esModule&&Object.defineProperty(h,"__esModule",{value:!0})})();
+(() => {
+  'use strict';
+  var e = {
+      698: (e, t) => {
+        var r = Symbol.for('react.transitional.element'),
+          s = Symbol.for('react.fragment');
+        function i(e, t, s) {
+          var i = null;
+          if (
+            (void 0 !== s && (i = '' + s),
+            void 0 !== t.key && (i = '' + t.key),
+            'key' in t)
+          )
+            for (var n in ((s = {}), t)) 'key' !== n && (s[n] = t[n]);
+          else s = t;
+          return (
+            (t = s.ref),
+            {
+              $$typeof: r,
+              type: e,
+              key: i,
+              ref: void 0 !== t ? t : null,
+              props: s,
+            }
+          );
+        }
+        ((t.Fragment = s), (t.jsx = i), (t.jsxs = i));
+      },
+      848: (e, t, r) => {
+        e.exports = r(698);
+      },
+    },
+    t = {};
+  function r(s) {
+    var i = t[s];
+    if (void 0 !== i) return i.exports;
+    var n = (t[s] = { exports: {} });
+    return (e[s](n, n.exports, r), n.exports);
+  }
+  ((r.d = (e, t) => {
+    for (var s in t)
+      r.o(t, s) &&
+        !r.o(e, s) &&
+        Object.defineProperty(e, s, { enumerable: !0, get: t[s] });
+  }),
+    (r.o = (e, t) => Object.prototype.hasOwnProperty.call(e, t)),
+    (r.r = (e) => {
+      ('undefined' != typeof Symbol &&
+        Symbol.toStringTag &&
+        Object.defineProperty(e, Symbol.toStringTag, { value: 'Module' }),
+        Object.defineProperty(e, '__esModule', { value: !0 }));
+    }));
+  var s = {};
+  (r.r(s), r.d(s, { VideoSeekSlider: () => v }));
+  var i = r(848);
+  const n = require('react'),
+    o = (e, t, r) => e >= t && e <= r;
+  function a(e, t, r, s) {
+    const i = o(e, t, r);
+    return s ? 1 : i ? (e - t) / (r - t) : 0;
+  }
+  const c = (0, n.memo)(
+    ({
+      label: e = '',
+      startTime: t,
+      maxTime: r,
+      endTime: s,
+      currentTime: n,
+      seekHoverTime: o,
+      bufferTime: c,
+      isTimePassed: m = !1,
+      isBufferPassed: u = !1,
+      isHoverPassed: l = !1,
+      onHover: d = () => {},
+      withGap: f,
+    }) => {
+      const v = (100 * t) / (r || -1),
+        h = ((s - t) / r) * 100,
+        T = 'main' + (f ? ' with-gap' : ''),
+        x = a(n, t, s, m),
+        p = a(o, t, s, l),
+        b = a(c, t, s, u);
+      return (0, i.jsxs)('div', {
+        className: T,
+        onMouseMove: () => d(e),
+        style: { width: `${h}%`, left: `${v}%` },
+        children: [
+          (0, i.jsx)('div', {
+            className: 'inner-seek-block buffered',
+            'data-test-id': 'test-buffered',
+            style: { transform: `scaleX(${b})` },
+          }),
+          (0, i.jsx)('div', {
+            className: 'inner-seek-block seek-hover',
+            'data-test-id': 'test-seek-hover',
+            style: { transform: `scaleX(${p})` },
+          }),
+          (0, i.jsx)('div', {
+            className: 'inner-seek-block connect',
+            style: { transform: `scaleX(${x})` },
+          }),
+        ],
+      });
+    }
+  );
+  function m(e, t, r) {
+    const s = (100 * t) / r;
+    return Math.floor((e / 100) * +s);
+  }
+  const u = (e, t, r) => (t + 1 < e.length ? e[t + 1].fromMs : r),
+    l = ({
+      max: e = 1e3,
+      currentTime: t = 0,
+      bufferTime: r = 0,
+      seekHoverPosition: s = 0,
+      timeCodes: a,
+      trackWidth: l,
+      mobileSeeking: d,
+      label: f,
+      setLabel: v,
+    }) => {
+      const h = m(e, s, l),
+        T = (0, n.useCallback)(
+          (e) => {
+            f !== e && v(e);
+          },
+          [f]
+        );
+      return (
+        (0, n.useEffect)(() => {
+          if (!d) return;
+          const r = a?.find(({ fromMs: r }, s) => {
+            const i = u(a, s, e);
+            return o(t, r, i);
+          });
+          r?.description !== f && v(r?.description || '');
+        }, [t, f, e, a]),
+        (0, i.jsx)(i.Fragment, {
+          children: a?.map(({ fromMs: s, description: n }, m) => {
+            const l = u(a, m, e),
+              d = l <= t,
+              f = l <= r,
+              v = l <= h;
+            let x = o(t, s, l);
+            const p = d || !x ? 0 : t;
+            x = o(r, s, l);
+            const b = f || !x ? 0 : r;
+            x = o(h, s, l);
+            const k = v || !x ? 0 : h;
+            return (0, i.jsx)(
+              c,
+              {
+                label: n,
+                maxTime: e,
+                startTime: s,
+                endTime: l,
+                isTimePassed: d,
+                isBufferPassed: f,
+                isHoverPassed: v,
+                currentTime: p,
+                bufferTime: b,
+                seekHoverTime: k,
+                onHover: T,
+                withGap: !0,
+              },
+              s
+            );
+          }),
+        })
+      );
+    };
+  const d = ({
+      max: e,
+      hoverTimeValue: t,
+      offset: r,
+      trackWidth: s,
+      seekHoverPosition: o,
+      isThumbActive: a,
+      limitTimeTooltipBySides: c,
+      label: m,
+      minutesPrefix: u,
+      secondsPrefix: l,
+      getPreviewScreenUrl: d,
+    }) => {
+      const f = (0, n.useRef)(null),
+        v = a ? 'hover-time active' : 'hover-time',
+        h = (function (e, t, r, s) {
+          let i = 0;
+          return (
+            t &&
+              ((i = e - t.offsetWidth / 2),
+              s &&
+                (i < 0
+                  ? (i = 0)
+                  : i + t.offsetWidth > r && (i = r - t.offsetWidth))),
+            { transform: `translateX(${i}px)` }
+          );
+        })(o, f?.current, s, c),
+        T = (function (e, t, r = 0, s = '', i = '') {
+          const n = (function (e, t = 0) {
+            const r = Math.round(e / 1e3 + t),
+              s = Math.floor(r / 3600),
+              i = r % 3600,
+              n = Math.floor(i / 60),
+              o = Math.ceil(i % 60);
+            return {
+              hh: s.toString(),
+              mm: n < 10 ? `0${n}` : n.toString(),
+              ss: o < 10 ? `0${o}` : o.toString(),
+            };
+          })(t, r);
+          return e + r < 6e4
+            ? i + n.ss
+            : e + r < 36e5
+              ? `${s + n.mm}:${n.ss}`
+              : `${n.hh}:${n.mm}:${n.ss}`;
+        })(e, t, r, u, l);
+      return (0, i.jsxs)('div', {
+        className: v,
+        style: h,
+        ref: f,
+        'data-testid': 'hover-time',
+        children: [
+          a &&
+            d &&
+            (0, i.jsx)('div', {
+              className: 'preview-screen',
+              style: { backgroundImage: `url(${d(t)})` },
+            }),
+          m && (0, i.jsx)('div', { children: m }),
+          T,
+        ],
+      });
+    },
+    f = ({ max: e, currentTime: t, isThumbActive: r }) =>
+      (0, i.jsx)('div', {
+        className: 'thumb active',
+        'data-testid': 'testThumb',
+        style: { left: `calc(${(t / e) * 100}% + -6px)` },
+        children: (0, i.jsx)('div', { className: 'handler' }),
+      }),
+    v = ({
+      max: e = 1e3,
+      currentTime: t = 0,
+      bufferTime: r = 0,
+      hideThumbTooltip: s = !1,
+      offset: a = 0,
+      secondsPrefix: v = '',
+      minutesPrefix: h = '',
+      limitTimeTooltipBySides: T = !0,
+      timeCodes: x,
+      onChange: p = () => {},
+      getPreviewScreenUrl: b,
+    }) => {
+      const [k, g] = (0, n.useState)(0),
+        [y, w] = (0, n.useState)(''),
+        P = (0, n.useRef)(!1),
+        j = (0, n.useRef)(!1),
+        S = (0, n.useRef)(null),
+        M = S.current?.offsetWidth || 0,
+        $ = k > 0 || P.current,
+        E = m(e, k, M),
+        H = (t) => {
+          const r = S.current?.getBoundingClientRect(),
+            s = r?.left || 0,
+            i = r?.width || 0;
+          let n = t - s;
+          ((n = n < 0 ? 0 : n), (n = n > i ? i : n));
+          const o = +(((100 * n) / i) * (e / 100)).toFixed(0);
+          (g(n), p(o, o + a));
+        },
+        L = (e) => {
+          if ((e.preventDefault(), e.stopPropagation(), !j.current)) return;
+          const { changedTouches: t } = e;
+          let r = t?.[t.length - 1]?.pageX || 0;
+          ((r = r < 0 ? 0 : r), H(r));
+        },
+        N = (e) => {
+          P.current && H(e.pageX);
+        },
+        B = (e, t) => {
+          const r = S.current?.getBoundingClientRect().left || 0,
+            s = e ? 0 : t.pageX - r;
+          g(s);
+        },
+        W = (e = !0) => {
+          ((j.current = e), g(e ? k : 0));
+        },
+        C = (e, t) => {
+          (t.preventDefault(), N(t), (P.current = e), g(e ? k : 0));
+        },
+        X = (e) => {
+          C(!1, e);
+        },
+        O = () => {
+          W(!1);
+        };
+      return (
+        (0, n.useEffect)(() => {
+          if (!j.current) return;
+          const r = x?.find(({ fromMs: r }, s) => {
+            const i = u(x, s, e);
+            return o(t, r, i);
+          });
+          r?.description !== y && w(r?.description || '');
+        }, [t, y, e, x]),
+        (0, n.useEffect)(
+          () => (
+            window.addEventListener('mousemove', N),
+            window.addEventListener('mouseup', X),
+            window.addEventListener('touchmove', L),
+            window.addEventListener('touchend', O),
+            () => {
+              (window.removeEventListener('mousemove', N),
+                window.removeEventListener('mouseup', X),
+                window.removeEventListener('touchmove', L),
+                window.removeEventListener('touchend', O));
+            }
+          ),
+          [e, a, M]
+        ),
+        (0, i.jsxs)('div', {
+          className: 'ui-video-seek-slider',
+          children: [
+            (0, i.jsxs)('div', {
+              className: $ ? 'track active' : 'track',
+              ref: S,
+              onMouseMove: (e) => B(!1, e),
+              onMouseLeave: (e) => B(!0, e),
+              onMouseDown: (e) => C(!0, e),
+              onTouchStart: () => W(!0),
+              'data-testid': 'main-track',
+              children: [
+                Boolean(x?.length) &&
+                  (0, i.jsx)(l, {
+                    currentTime: t,
+                    max: e,
+                    bufferTime: r,
+                    seekHoverPosition: k,
+                    timeCodes: x,
+                    mobileSeeking: j.current,
+                    trackWidth: M,
+                    label: y,
+                    setLabel: w,
+                  }),
+                !x &&
+                  (0, i.jsx)(c, {
+                    maxTime: e,
+                    startTime: 0,
+                    endTime: e,
+                    currentTime: t,
+                    bufferTime: r,
+                    seekHoverTime: E,
+                  }),
+              ],
+            }),
+            !s &&
+              (0, i.jsx)(d, {
+                max: e,
+                hoverTimeValue: E,
+                isThumbActive: $,
+                label: y,
+                limitTimeTooltipBySides: T,
+                offset: a,
+                seekHoverPosition: k,
+                trackWidth: M,
+                getPreviewScreenUrl: b,
+                minutesPrefix: h,
+                secondsPrefix: v,
+              }),
+            (0, i.jsx)(f, { max: e, currentTime: t, isThumbActive: $ }),
+          ],
+        })
+      );
+    };
+  var h = exports;
+  for (var T in s) h[T] = s[T];
+  s.__esModule && Object.defineProperty(h, '__esModule', { value: !0 });
+})();
