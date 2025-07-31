@@ -6,7 +6,7 @@ export const usePreviewManager = (maxTime: number) => {
 
   const updatePreviewImage = (hoverTime: number, maxValue: number): void => {
     const text = timeToTimeString(maxValue, hoverTime);
-    const url = `https://via.placeholder.com/140x60?text=${text}`;
+    const url = `https://placehold.co/140x60/000000/fff?text=${text}`;
     const image = document.createElement('img');
     image.src = url;
 
@@ -25,4 +25,4 @@ export const usePreviewManager = (maxTime: number) => {
   );
 
   return { handleGettingPreview };
-}; 
+};
