@@ -3,7 +3,10 @@
 The simplest, light weight and dependency free html video seeker like YouTube for React
 With time codes and video preview opportunity
 
-Demo [codesandbox demo](https://codesandbox.io/p/sandbox/react-video-seek-slider-forked-vglxvf)
+Demo on [GitHub pages](https://egorovsa.github.io/react-video-seek-slider/)
+
+
+* [ ]
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
 
