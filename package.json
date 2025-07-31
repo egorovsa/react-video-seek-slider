@@ -1,14 +1,15 @@
 {
   "name": "react-video-seek-slider",
   "description": "React video seek slider like youtube",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
   "author": "Sergey Egorov",
   "license": "MIT",
   "files": [
-    "lib"
+    "lib",
+    "styles.css"
   ],
   "scripts": {
     "dev": "vite",
@@ -45,7 +46,6 @@
     "postcss-preset-env": "^10.2.4",
     "postcss-short": "^5.0.0",
     "prettier": "^3.6.2",
-
     "sass": "^1.89.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",

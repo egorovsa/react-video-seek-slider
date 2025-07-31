@@ -9,7 +9,8 @@ Demo [codesandbox demo](https://codesandbox.io/p/sandbox/react-video-seek-slider
 
 ## What's new in v8
 
-- It's built now with Vitejs and again availalbe for both react versions as for 18+ and for 19+
+- It's now built with Vite.js and is available for both React versions: 18+ and 19+.
+- No migration needed.
 
 ## What's new in v7
 
@@ -46,6 +47,8 @@ or
 yarn add react-video-seek-slider
 ```
 
+The package includes the CSS file, so you don't need to install any additional dependencies.
+
 ## How to import
 
 For TypeScript usage there is a index.d.ts
@@ -54,11 +57,13 @@ For TypeScript usage there is a index.d.ts
 import { VideoSeekSlider } from 'react-video-seek-slider';
 ```
 
-Also you have to use css file in a lib folder:
+Also you have to import the CSS file:
 
-```
+```javascript
 import "react-video-seek-slider/styles.css"
 ```
+
+**Note:** The styles are automatically generated and included in the package.
 
 ## How to use
 
