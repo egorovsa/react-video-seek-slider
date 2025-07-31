@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { DevLayout } from './dev-layout';
+import { DevLayout } from './dev/dev-layout';
 import './styles.scss';
 
 window.onload = () => {
