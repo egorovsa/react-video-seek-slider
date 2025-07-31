@@ -3,10 +3,8 @@
 The simplest, light weight and dependency free html video seeker like YouTube for React
 With time codes and video preview opportunity
 
-Demo on [GitHub pages](https://egorovsa.github.io/react-video-seek-slider/)
+ [DEMO](https://egorovsa.github.io/react-video-seek-slider/)
 
-
-* [ ]
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
 
@@ -14,15 +12,6 @@ Demo on [GitHub pages](https://egorovsa.github.io/react-video-seek-slider/)
 
 - It's now built with Vite.js and is available for both React versions: 18+ and 19+.
 - No migration needed.
-
-## What's new in v7
-
-- This version is built for React 19
-
-## Bracking changes from v6 -> v7
-
-- It's not compatible with React versions lower than v19
-- The last version for React 18 is v6.0.9
 
 ## What's new in v6
 
@@ -132,4 +121,3 @@ open your browser http://localhost:3000
 ```
 $ npm run build
 ```
-

@@ -1,7 +1,7 @@
 {
   "name": "react-video-seek-slider",
   "description": "React video seek slider like youtube",
-  "version": "8.0.2",
+  "version": "8.0.3",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
@@ -58,7 +58,7 @@
     "type": "git",
     "url": "https://github.com/egorovsa/react-video-seek-slider.git"
   },
-  "homepage": "https://video-seeker.egorov.pw/",
+  "homepage": "https://egorovsa.github.io/react-video-seek-slider",
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
