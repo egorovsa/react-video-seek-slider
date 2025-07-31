@@ -363,6 +363,26 @@ section {
       }
     }
   }
+
+  .timecode-section {
+    margin-top: 2rem;
+    padding-left: 1rem;
+  }
+
+  .timecode-title {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1rem;
+  }
+
+  .required-badge {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    font-weight: 500;
+  }
 }
 
 // Footer
