@@ -3,6 +3,7 @@ export { VideoPlayer } from './VideoPlayer';
 export { ExampleTabs } from './ExampleTabs';
 export { ExampleDemo } from './ExampleDemo';
 export { CodeBlock } from './CodeBlock';
+export { InstallSection } from './InstallSection';
 export { ApiTable } from './ApiTable';
 export { FeaturesGrid } from './FeaturesGrid';
 export { Footer } from './Footer';

@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 
 interface VideoPlayerProps {
+  currentTime: number;
   onTimeChange: (time: number, offsetTime: number) => void;
   onMaxTimeChange: (maxTime: number) => void;
   onProgressChange: (progress: number) => void;
 }
 
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
+  currentTime,
   onTimeChange,
   onMaxTimeChange,
   onProgressChange,
@@ -49,6 +51,16 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   };
 
+  // Update video time when currentTime changes from slider
+  useEffect(() => {
+    if (player.current && currentTime > 0) {
+      const videoTime = currentTime / 1000;
+      if (Math.abs(player.current.currentTime - videoTime) > 0.1) {
+        player.current.currentTime = videoTime;
+      }
+    }
+  }, [currentTime]);
+
   useEffect(() => {
     if (!player.current) {
       return;
@@ -85,4 +97,4 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       </video>
     </div>
   );
-}; 
+};

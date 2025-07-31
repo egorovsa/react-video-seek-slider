@@ -22,14 +22,14 @@ export const ExampleDemo: React.FC<ExampleDemoProps> = ({
     { fromMs: 130000, description: 'Main Content' },
     { fromMs: 270000, description: 'Story Development' },
     { fromMs: 440000, description: 'Climax' },
-    { fromMs: 600000, description: 'Finale' }
+    { fromMs: 600000, description: 'Finale' },
   ];
 
   const timeCodesAdvanced = [
     { fromMs: 0, description: 'Beginning' },
     { fromMs: 130000, description: 'Development' },
     { fromMs: 270000, description: 'Climax' },
-    { fromMs: 440000, description: 'Resolution' }
+    { fromMs: 440000, description: 'Resolution' },
   ];
 
   const commonProps = {
@@ -38,32 +38,30 @@ export const ExampleDemo: React.FC<ExampleDemoProps> = ({
     bufferTime: progress,
     onChange: onTimeChange,
     limitTimeTooltipBySides: true,
-    secondsPrefix: "00:",
-    minutesPrefix: "0:",
+    secondsPrefix: '00:',
+    minutesPrefix: '0:',
   };
 
   return (
     <div className="example-demo">
-      {activeTab === 'basic' && (
-        <VideoSeekSlider {...commonProps} />
-      )}
-      
+      {activeTab === 'basic' && <VideoSeekSlider {...commonProps} />}
+
       {activeTab === 'withTimeCodes' && (
-        <VideoSeekSlider 
+        <VideoSeekSlider
           {...commonProps}
           timeCodes={timeCodes}
         />
       )}
-      
+
       {activeTab === 'withPreview' && (
-        <VideoSeekSlider 
+        <VideoSeekSlider
           {...commonProps}
           getPreviewScreenUrl={onGettingPreview}
         />
       )}
-      
+
       {activeTab === 'advanced' && (
-        <VideoSeekSlider 
+        <VideoSeekSlider
           {...commonProps}
           getPreviewScreenUrl={onGettingPreview}
           timeCodes={timeCodesAdvanced}
@@ -71,4 +69,4 @@ export const ExampleDemo: React.FC<ExampleDemoProps> = ({
       )}
     </div>
   );
-}; 
+};

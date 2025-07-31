@@ -5,6 +5,7 @@ import {
   ExampleTabs,
   ExampleDemo,
   CodeBlock,
+  InstallSection,
   ApiTable,
   FeaturesGrid,
   Footer,
@@ -20,6 +21,7 @@ export const DevLayout: React.FC = () => {
   const { handleGettingPreview } = usePreviewManager(maxTime);
 
   const handleTimeChange = (time: number, _offsetTime: number): void => {
+    console.log('handleTimeChange', time, _offsetTime);
     setCurrentTime(time);
   };
 
@@ -36,9 +38,12 @@ export const DevLayout: React.FC = () => {
       <Header />
 
       <main className="dev-main">
+        <InstallSection />
+
         <section className="demo-section">
           <h2>Demo</h2>
           <VideoPlayer
+            currentTime={currentTime}
             onTimeChange={handleTimeChange}
             onMaxTimeChange={handleMaxTimeChange}
             onProgressChange={handleProgressChange}
