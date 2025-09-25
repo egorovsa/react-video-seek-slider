@@ -2,17 +2,34 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["@testing-library/jest-dom", "vitest/globals"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "@testing-library/jest-dom",
+      "vitest/globals"
+    ],
     "sourceMap": true,
     "jsx": "react-jsx",
     "strictNullChecks": true,
     "noImplicitAny": true,
     "declaration": true,
     "outDir": "lib",
-    "rootDir": ".",
+    "rootDir": "src",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
-  "exclude": ["node_modules", "**/__tests__/**", "**/*.test.*", "**/*.spec.*"]
+  "include": [
+    "src/**/*",
+    "vitest.setup.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ]
 }

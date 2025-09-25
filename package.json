@@ -1,12 +1,30 @@
 {
   "name": "react-video-seek-slider",
-  "description": "React video seek slider like youtube",
-  "version": "8.0.3",
+  "description": "A lightweight, dependency-free React video seek slider component with YouTube-like functionality, time codes, and video preview support",
+  "version": "8.0.4",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
   "author": "Sergey Egorov",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "react-component",
+    "video",
+    "slider",
+    "seek",
+    "scrubber",
+    "youtube",
+    "time-codes",
+    "video-preview",
+    "typescript",
+    "ui",
+    "component",
+    "media",
+    "player",
+    "timeline",
+    "progress-bar"
+  ],
   "files": [
     "lib",
     "styles.css"
@@ -62,5 +80,13 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
-  }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 5 versions",
+    "not dead"
+  ]
 }
