@@ -54,7 +54,7 @@ export const ApiTable: React.FC = () => {
             <td><code>offset</code></td>
             <td><code>number</code></td>
             <td><code>0</code></td>
-            <td>When you need start slider with offset time</td>
+            <td>Offset in milliseconds, added to the displayed time and to <code>offsetTime</code></td>
           </tr>
           <tr>
             <td><code>minutesPrefix</code></td>

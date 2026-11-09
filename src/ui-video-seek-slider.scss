@@ -10,6 +10,8 @@ $seek-hover: rgba(#fff, 0.5);
 .ui-video-seek-slider {
   position: relative;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 
   &:focus {
     outline: none;

@@ -1,9 +1,8 @@
 import './ui-video-seek-slider.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { TimeCodeItem } from './components/timeCodeItem';
-import { isInRange } from './utils/isInRange';
 import { positionToMs } from './utils/positionToMs';
-import { getEndTimeByIndex } from './utils/getEndTimeByIndex';
+import { findTimeCode } from './utils/findTimeCode';
 import { TimeCodes } from './components/timeCodes';
 import { HoverTimeWithPreview } from './components/hoverTimeWithPreview';
 import { Thumb } from './components/thumb';
@@ -17,6 +16,7 @@ export interface Props {
   max: number;
   currentTime: number;
   bufferTime?: number;
+  /** Offset in milliseconds, added to the displayed time and to `offsetTime` in `onChange`. */
   offset?: number;
   timeCodes?: TimeCode[];
   hideThumbTooltip?: boolean;
@@ -26,6 +26,9 @@ export interface Props {
   onChange: (time: number, offsetTime: number) => void;
   getPreviewScreenUrl?: (hoverTimeValue: number) => string;
 }
+
+const useIsomorphicLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 export const VideoSeekSlider: React.FC<Props> = ({
   max = 1000,
@@ -41,125 +44,109 @@ export const VideoSeekSlider: React.FC<Props> = ({
   getPreviewScreenUrl,
 }) => {
   const [seekHoverPosition, setSeekHoverPosition] = useState(0);
-  const [label, setLabel] = useState('');
-  const seeking = useRef(false);
-  const mobileSeeking = useRef(false);
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [trackWidth, setTrackWidth] = useState(0);
   const trackElement = useRef<HTMLDivElement>(null);
 
-  const trackWidth = trackElement.current?.offsetWidth || 0;
-  const isThumbActive = seekHoverPosition > 0 || seeking.current;
+  useIsomorphicLayoutEffect(() => {
+    const track = trackElement.current;
+
+    if (!track) {
+      return;
+    }
+
+    const updateWidth = (): void => setTrackWidth(track.offsetWidth);
+
+    updateWidth();
+
+    if (typeof ResizeObserver === 'undefined') {
+      return;
+    }
+
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(track);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const isThumbActive = seekHoverPosition > 0 || isSeeking;
   const hoverTimeValue = positionToMs(max, seekHoverPosition, trackWidth);
 
-  const changeCurrentTimePosition = (pageX: number): void => {
-    const clientRect = trackElement.current?.getBoundingClientRect();
-    const left = clientRect?.left || 0;
-    const width = clientRect?.width || 0;
+  const label = isThumbActive
+    ? findTimeCode(timeCodes, hoverTimeValue, max)?.description || ''
+    : '';
 
-    let position = pageX - left;
-    position = position < 0 ? 0 : position;
-    position = position > width ? width : position;
+  const getTrackPosition = (clientX: number): number => {
+    const rect = trackElement.current?.getBoundingClientRect();
 
-    const percent = (position * 100) / width;
-    const time = +(percent * (max / 100)).toFixed(0);
+    if (!rect) {
+      return 0;
+    }
+
+    return Math.min(Math.max(clientX - rect.left, 0), rect.width);
+  };
+
+  const seekTo = (clientX: number): void => {
+    const position = getTrackPosition(clientX);
+    const width = trackElement.current?.getBoundingClientRect().width || 0;
+    const time = width ? Math.round((position / width) * max) : 0;
 
     setSeekHoverPosition(position);
     onChange(time, time + offset);
   };
 
-  const handleTouchSeeking = (event: TouchEvent): void => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (!mobileSeeking.current) {
-      return;
-    }
-
-    const { changedTouches } = event;
-
-    let pageX = changedTouches?.[changedTouches.length - 1]?.pageX || 0;
-
-    pageX = pageX < 0 ? 0 : pageX;
-
-    changeCurrentTimePosition(pageX);
-  };
-
-  const handleSeeking = (event: MouseEvent): void => {
-    if (seeking.current) {
-      changeCurrentTimePosition(event.pageX);
-    }
-  };
-
-  const handleTrackHover = (
-    clear: boolean,
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  const handlePointerDown = (
+    event: React.PointerEvent<HTMLDivElement>
   ): void => {
-    const left = trackElement.current?.getBoundingClientRect().left || 0;
-    const position = clear ? 0 : event.pageX - left;
-
-    setSeekHoverPosition(position);
-  };
-
-  const setMobileSeeking = (state = true): void => {
-    mobileSeeking.current = state;
-    setSeekHoverPosition(state ? seekHoverPosition : 0);
-  };
-
-  const setSeeking = (state: boolean, event: MouseEvent): void => {
-    event.preventDefault();
-
-    handleSeeking(event);
-    seeking.current = state;
-
-    setSeekHoverPosition(state ? seekHoverPosition : 0);
-  };
-
-  const mouseSeekingHandler = (event: MouseEvent): void => {
-    setSeeking(false, event);
-  };
-
-  const mobileTouchSeekingHandler = (): void => {
-    setMobileSeeking(false);
-  };
-
-  useEffect(() => {
-    if (!mobileSeeking.current) {
+    if (event.button !== 0) {
       return;
     }
 
-    const currentCode = timeCodes?.find(({ fromMs }, index) => {
-      const endTime = getEndTimeByIndex(timeCodes, index, max);
+    event.preventDefault();
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    setIsSeeking(true);
+    seekTo(event.clientX);
+  };
 
-      return isInRange(currentTime, fromMs, endTime);
-    });
-
-    if (currentCode?.description !== label) {
-      setLabel(currentCode?.description || '');
+  const handlePointerMove = (
+    event: React.PointerEvent<HTMLDivElement>
+  ): void => {
+    if (isSeeking) {
+      seekTo(event.clientX);
+      return;
     }
-  }, [currentTime, label, max, timeCodes]);
 
-  useEffect(() => {
-    window.addEventListener('mousemove', handleSeeking);
-    window.addEventListener('mouseup', mouseSeekingHandler);
-    window.addEventListener('touchmove', handleTouchSeeking);
-    window.addEventListener('touchend', mobileTouchSeekingHandler);
+    setSeekHoverPosition(getTrackPosition(event.clientX));
+  };
 
-    return () => {
-      window.removeEventListener('mousemove', handleSeeking);
-      window.removeEventListener('mouseup', mouseSeekingHandler);
-      window.removeEventListener('touchmove', handleTouchSeeking);
-      window.removeEventListener('touchend', mobileTouchSeekingHandler);
-    };
-  }, [max, offset, trackWidth]);
+  const handlePointerUp = (
+    event: React.PointerEvent<HTMLDivElement>
+  ): void => {
+    if (!isSeeking) {
+      return;
+    }
+
+    event.currentTarget.releasePointerCapture?.(event.pointerId);
+    setIsSeeking(false);
+    setSeekHoverPosition(0);
+  };
+
+  const handlePointerLeave = (): void => {
+    if (!isSeeking) {
+      setSeekHoverPosition(0);
+    }
+  };
 
   return (
     <div className="ui-video-seek-slider">
       <div
         className={isThumbActive ? 'track active' : 'track'}
         ref={trackElement}
-        onMouseMove={(event) => handleTrackHover(false, event)}
-        onMouseLeave={(event) => handleTrackHover(true, event)}
-        onMouseDown={(event) => setSeeking(true, event as any)}
-        onTouchStart={() => setMobileSeeking(true)}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onPointerLeave={handlePointerLeave}
         data-testid="main-track"
       >
         {Boolean(timeCodes?.length) && (
@@ -167,16 +154,12 @@ export const VideoSeekSlider: React.FC<Props> = ({
             currentTime={currentTime}
             max={max}
             bufferTime={bufferTime}
-            seekHoverPosition={seekHoverPosition}
+            hoverTimeValue={hoverTimeValue}
             timeCodes={timeCodes}
-            mobileSeeking={mobileSeeking.current}
-            trackWidth={trackWidth}
-            label={label}
-            setLabel={setLabel}
           />
         )}
 
-        {!timeCodes && (
+        {!timeCodes?.length && (
           <TimeCodeItem
             maxTime={max}
             startTime={0}
@@ -204,11 +187,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
         />
       )}
 
-      <Thumb
-        max={max}
-        currentTime={currentTime}
-        isThumbActive={isThumbActive}
-      />
+      <Thumb max={max} currentTime={currentTime} />
     </div>
   );
 };

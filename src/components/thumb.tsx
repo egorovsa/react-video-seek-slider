@@ -1,24 +1,18 @@
 interface Props {
   max: number;
   currentTime: number;
-  isThumbActive: boolean;
 }
 
-export const Thumb: React.FC<Props> = ({ max, currentTime, isThumbActive }) => {
-  const getThumbHandlerPosition = (): { left: string } => {
-    const thumbConstantOffset = -6;
-    const leftPosition = (currentTime / max) * 100;
+const THUMB_OFFSET_PX = -6;
 
-    return {
-      left: `calc(${leftPosition}% + ${thumbConstantOffset}px)`,
-    };
-  };
+export const Thumb: React.FC<Props> = ({ max, currentTime }) => {
+  const leftPosition = max ? (currentTime / max) * 100 : 0;
 
   return (
     <div
-      className={isThumbActive ? 'thumb active' : 'thumb active'}
+      className="thumb active"
       data-testid="testThumb"
-      style={getThumbHandlerPosition()}
+      style={{ left: `calc(${leftPosition}% + ${THUMB_OFFSET_PX}px)` }}
     >
       <div className="handler" />
     </div>

@@ -25,4 +25,12 @@ describe('millisecondsToTime', () => {
       ss: '00',
     });
   });
+
+  it('treats offset as milliseconds', () => {
+    expect(millisecondsToTime(1000, 59000)).toEqual({
+      hh: '0',
+      mm: '01',
+      ss: '00',
+    });
+  });
 });

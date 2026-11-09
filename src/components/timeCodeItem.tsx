@@ -14,17 +14,14 @@ export interface Props {
   startTime: number;
   endTime: number;
   maxTime: number;
-  label?: string;
   isTimePassed?: boolean;
   isBufferPassed?: boolean;
   isHoverPassed?: boolean;
-  onHover?: (label: string) => void;
   withGap?: boolean;
 }
 
 export const TimeCodeItem: React.FC<Props> = memo(
   ({
-    label = '',
     startTime,
     maxTime,
     endTime,
@@ -34,7 +31,6 @@ export const TimeCodeItem: React.FC<Props> = memo(
     isTimePassed = false,
     isBufferPassed = false,
     isHoverPassed = false,
-    onHover = () => undefined,
     withGap,
   }) => {
     const positionPercent = getPositionPercent(maxTime, startTime);
@@ -63,12 +59,9 @@ export const TimeCodeItem: React.FC<Props> = memo(
       isBufferPassed
     );
 
-    const handleMouseMove = (): void => onHover(label);
-
     return (
       <div
         className={mainClassName}
-        onMouseMove={handleMouseMove}
         style={{
           width: `${widthPercent}%`,
           left: `${positionPercent}%`,

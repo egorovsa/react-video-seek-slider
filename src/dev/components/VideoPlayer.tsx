@@ -90,10 +90,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         className="demo-video"
         ref={player}
       >
-        <source
-          src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
-          type="video/mp4"
-        />
+        <source src="https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov" />
       </video>
     </div>
   );

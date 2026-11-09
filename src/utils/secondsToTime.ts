@@ -5,7 +5,7 @@ export interface Time {
 }
 
 export function millisecondsToTime(ms: number, offset = 0): Time {
-  const roundedSeconds = Math.round(ms / 1000 + offset);
+  const roundedSeconds = Math.round((ms + offset) / 1000);
 
   const hours: number = Math.floor(roundedSeconds / 3600);
   const divirsForMinutes: number = roundedSeconds % 3600;

@@ -1,7 +1,7 @@
 {
   "name": "react-video-seek-slider",
   "description": "A lightweight, dependency-free React video seek slider component with YouTube-like functionality, time codes, and video preview support",
-  "version": "8.0.4",
+  "version": "9.0.0",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",

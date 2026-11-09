@@ -8,6 +8,48 @@ With time codes and video preview opportunity
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
 
+## What's new in v9
+
+- Seeking is built on Pointer Events with pointer capture: one code path for mouse, touch and pen, no global `window` listeners.
+- `onChange` always calls the latest callback you pass (previously a stale one could be called until `max`, `offset` or the track width changed).
+- The track width follows container resizes (`ResizeObserver`).
+- The time code label is taken from the hovered position, so it is correct on touch devices as well.
+- Seeking works correctly on horizontally scrolled pages.
+- Dragging the slider no longer selects page text.
+- Type declarations no longer include internal dev files.
+
+## Breaking changes from v8 -> v9
+
+#### `offset` is now in milliseconds everywhere
+
+Before v9 the hover tooltip treated `offset` as seconds, while `onChange` added it to `offsetTime` as milliseconds. Now both use milliseconds, like every other time prop.
+
+If you passed `offset` in seconds, multiply it by 1000:
+
+```tsx
+// v8
+<VideoSeekSlider offset={10} ... />
+
+// v9
+<VideoSeekSlider offset={10000} ... />
+```
+
+#### `onChange` fires on press
+
+`onChange` is now called as soon as the user presses the track, then on every move while dragging. In v8 a click without movement called it only on release. If you track seek events (analytics, network requests), expect calls on press.
+
+#### Only the primary button seeks
+
+Right and middle mouse buttons no longer move the thumb.
+
+#### Pointer Events are required
+
+The slider listens to `pointerdown` / `pointermove` / `pointerup` instead of `mouse*` / `touch*` events. All current browsers support them (Safari 13+). If your code stops propagation of pointer events above the slider, or relied on the slider's global `mousemove` / `mouseup` / `touchmove` listeners, review it.
+
+#### Empty `timeCodes` renders a plain track
+
+`timeCodes={[]}` used to render no track at all; now it renders the same track as without `timeCodes`.
+
 ## What's new in v8
 
 - It's now built with Vite.js and is available for both React versions: 18+ and 19+.
@@ -90,7 +132,7 @@ const [currentTime, setCurrentTime] = useState(0);
 - `bufferTime` (number) - Current buffer progress (in milliseconds)
 - `hideThumbTooltip` (boolean) - hide hover seek time (Default: false)
 - `onChange` ((time:number, offsetTime:number)=>void, required) - script to be run when thumb change position
-- `offset` (number, default:0) - when you need start slider with offset time
+- `offset` (number, default:0) - offset in milliseconds, added to the displayed time and to `offsetTime` in `onChange`
 - `minutesPrefix` (string, default: '') - when video duration is less than an hour you can use time prefix like "0:" so the time tooltip will show e.g "0:25:23"
 - `secondsPrefix` (string, default: '') - when video duration is less than one minute it's possible to use time prefix like "0:00:" and the time tooltip will show e.g "0:00:10"
 - `limitTimeTooltipBySides` (boolean, default: true) - limit the time tooltip position inside of the slider
