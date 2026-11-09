@@ -5,6 +5,9 @@
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
+  "bin": {
+    "react-video-seek-slider": "./scripts/generate-thumbnails.mjs"
+  },
   "author": "Sergey Egorov",
   "license": "MIT",
   "keywords": [
@@ -27,7 +30,8 @@
   ],
   "files": [
     "lib",
-    "styles.css"
+    "styles.css",
+    "scripts/generate-thumbnails.mjs"
   ],
   "scripts": {
     "dev": "vite --config vite-dev.config.ts",

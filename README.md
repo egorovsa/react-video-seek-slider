@@ -10,6 +10,8 @@ With time codes and video preview opportunity
 
 ## What's new in v9
 
+- Preview thumbnails from sprite sheets described by a WebVTT file (`previewThumbnails`), like on YouTube. The package ships a CLI that generates them with ffmpeg.
+- Watch heatmap above the track (`heatmap`), like "Most replayed" on YouTube.
 - Seeking is built on Pointer Events with pointer capture: one code path for mouse, touch and pen, no global `window` listeners.
 - `onChange` always calls the latest callback you pass (previously a stale one could be called until `max`, `offset` or the track width changed).
 - The track width follows container resizes (`ResizeObserver`).
@@ -138,6 +140,8 @@ const [currentTime, setCurrentTime] = useState(0);
 - `limitTimeTooltipBySides` (boolean, default: true) - limit the time tooltip position inside of the slider
 - `timeCodes` (TimeCode[], default: undefined) - will divide slider into parts according to an array of times
 - `getPreviewScreenUrl` ((hoverTimeValue: number) => string, default: undefined) - the callback function is going to be called each time when a slider in hovered. It will pass a current hover mouse time and expect and preview image url to be returned
+- `previewThumbnails` (string | PreviewThumbnail[], default: undefined) - URL of a WebVTT thumbnails file, or already parsed thumbnails. Takes priority over `getPreviewScreenUrl`, see [Preview thumbnails](#preview-thumbnails)
+- `heatmap` (number[], default: undefined) - watch intensity per equal part of the video, see [Heatmap](#heatmap)
 
 ### TimeCode object
 
@@ -146,6 +150,90 @@ const [currentTime, setCurrentTime] = useState(0);
 
 To use time codes you should provide to the component an array of timeCode objects according to scheme above.
 The very first part is always should start from fromMs=0. The other parts any valuer according to those places where you would like to slice a slider.
+
+## Preview thumbnails
+
+Loading a separate image for every hovered millisecond is slow. Video players use sprite sheets instead: one image holds a grid of small frames, and a WebVTT file says which part of which image belongs to which time range:
+
+```
+WEBVTT
+
+00:00:00.000 --> 00:00:05.000
+sprite-001.jpg#xywh=0,0,160,66
+
+00:00:05.000 --> 00:00:10.000
+sprite-001.jpg#xywh=160,0,160,66
+```
+
+`#xywh=x,y,width,height` is the frame position inside the sprite in pixels. Without it the whole image is shown. Relative image paths are resolved against the VTT file URL.
+
+Pass the VTT URL, the slider loads it once and preloads the sprite sheets on the first hover:
+
+```tsx
+<VideoSeekSlider
+  max={max}
+  currentTime={currentTime}
+  onChange={setCurrentTime}
+  previewThumbnails="/videos/42/thumbnails.vtt"
+/>
+```
+
+The VTT file and images must be reachable from the page (same origin or CORS enabled for the VTT file).
+
+### Generating thumbnails
+
+The package includes a CLI that generates sprite sheets and the VTT file. It requires [ffmpeg](https://ffmpeg.org/) (`ffmpeg` and `ffprobe` in `PATH`):
+
+```
+npx react-video-seek-slider thumbnails video.mp4 public/videos/42
+```
+
+Options:
+
+- `--interval` (default: 5) - seconds between frames
+- `--width` (default: 160) - frame width in pixels, the height follows the video aspect ratio
+- `--columns`, `--rows` (default: 10) - grid size of one sprite sheet
+
+A 12 minute video with the defaults gives 147 frames in two sprite sheets of about 360 KB in total. The input may also be a URL. Run it once per video, for example when the video is uploaded.
+
+The same format is used by Video.js, JW Player and other players, so any existing thumbnails VTT works too.
+
+### PreviewThumbnail object
+
+If you already have thumbnail data, pass an array instead of a URL:
+
+- `fromMs` (number, required) - start of the time range in milliseconds
+- `toMs` (number, required) - end of the time range in milliseconds
+- `url` (string, required) - image URL
+- `x`, `y`, `width`, `height` (number) - frame position inside the sprite sheet in pixels
+
+`parseThumbnailsVtt(vtt: string, baseUrl?: string)` is exported as well, if you want to load and parse the VTT file yourself.
+
+## Heatmap
+
+Shows how often each part of the video is watched, as a graph above the track while it is hovered:
+
+```tsx
+<VideoSeekSlider
+  max={max}
+  currentTime={currentTime}
+  onChange={setCurrentTime}
+  heatmap={[120, 340, 180, 90, 75, 410, 260, 110]}
+/>
+```
+
+Values are spread evenly over the whole video, and normalized by the maximum, so you can pass raw view counts.
+
+The data has to come from your analytics: the slider only draws it. One way to collect it is to send the played ranges of each session (`video.played`) to your backend and count views per part of the video there.
+
+Colors and size are CSS variables:
+
+```css
+.ui-video-seek-slider {
+  --vss-heatmap-height: 40px;
+  --vss-heatmap-color: rgba(255, 255, 255, 0.25);
+}
+```
 
 ## For development
 

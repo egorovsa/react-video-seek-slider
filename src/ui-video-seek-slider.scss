@@ -12,6 +12,8 @@ $seek-hover: rgba(#fff, 0.5);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  --vss-heatmap-height: 40px;
+  --vss-heatmap-color: rgba(255, 255, 255, 0.25);
 
   &:focus {
     outline: none;
@@ -102,6 +104,29 @@ $seek-hover: rgba(#fff, 0.5);
     }
   }
 
+  .heatmap {
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: var(--vss-heatmap-height);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    path {
+      fill: var(--vss-heatmap-color);
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  &.with-heatmap .hover-time {
+    bottom: var(--vss-heatmap-height);
+  }
+
   .thumb {
     pointer-events: none;
     position: absolute;
@@ -157,6 +182,15 @@ $seek-hover: rgba(#fff, 0.5);
       border-radius: 5px;
       background-color: #000;
       margin: 0 auto 10px;
+
+      &.sprite {
+        overflow: hidden;
+      }
+    }
+
+    .preview-sprite {
+      background-repeat: no-repeat;
+      transform-origin: 0 0;
     }
   }
 

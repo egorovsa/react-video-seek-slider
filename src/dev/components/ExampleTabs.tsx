@@ -25,6 +25,18 @@ export const ExampleTabs: React.FC<ExampleTabsProps> = ({ activeTab, onTabChange
         With Preview
       </button>
       <button 
+        className={`tab ${activeTab === 'withThumbnails' ? 'active' : ''}`}
+        onClick={() => onTabChange('withThumbnails')}
+      >
+        Sprite Preview
+      </button>
+      <button 
+        className={`tab ${activeTab === 'withHeatmap' ? 'active' : ''}`}
+        onClick={() => onTabChange('withHeatmap')}
+      >
+        Heatmap
+      </button>
+      <button 
         className={`tab ${activeTab === 'advanced' ? 'active' : ''}`}
         onClick={() => onTabChange('advanced')}
       >

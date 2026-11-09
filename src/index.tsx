@@ -6,6 +6,12 @@ import { findTimeCode } from './utils/findTimeCode';
 import { TimeCodes } from './components/timeCodes';
 import { HoverTimeWithPreview } from './components/hoverTimeWithPreview';
 import { Thumb } from './components/thumb';
+import { Heatmap } from './components/heatmap';
+import { usePreviewThumbnails } from './hooks/usePreviewThumbnails';
+import { PreviewThumbnail } from './utils/parseThumbnailsVtt';
+
+export type { PreviewThumbnail } from './utils/parseThumbnailsVtt';
+export { parseThumbnailsVtt } from './utils/parseThumbnailsVtt';
 
 export interface TimeCode {
   fromMs: number;
@@ -25,6 +31,13 @@ export interface Props {
   minutesPrefix?: string;
   onChange: (time: number, offsetTime: number) => void;
   getPreviewScreenUrl?: (hoverTimeValue: number) => string;
+  /**
+   * URL of a WebVTT thumbnails file (sprite sheets with `#xywh=`)
+   * or already parsed thumbnails. Takes priority over `getPreviewScreenUrl`.
+   */
+  previewThumbnails?: string | PreviewThumbnail[];
+  /** Relative watch intensity, evenly spread over the whole track. Normalized by its maximum. */
+  heatmap?: number[];
 }
 
 const useIsomorphicLayoutEffect =
@@ -42,11 +55,14 @@ export const VideoSeekSlider: React.FC<Props> = ({
   timeCodes,
   onChange = () => undefined,
   getPreviewScreenUrl,
+  previewThumbnails,
+  heatmap,
 }) => {
   const [seekHoverPosition, setSeekHoverPosition] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
   const [trackWidth, setTrackWidth] = useState(0);
   const trackElement = useRef<HTMLDivElement>(null);
+  const thumbnails = usePreviewThumbnails(previewThumbnails);
 
   useIsomorphicLayoutEffect(() => {
     const track = trackElement.current;
@@ -119,9 +135,7 @@ export const VideoSeekSlider: React.FC<Props> = ({
     setSeekHoverPosition(getTrackPosition(event.clientX));
   };
 
-  const handlePointerUp = (
-    event: React.PointerEvent<HTMLDivElement>
-  ): void => {
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>): void => {
     if (!isSeeking) {
       return;
     }
@@ -138,7 +152,20 @@ export const VideoSeekSlider: React.FC<Props> = ({
   };
 
   return (
-    <div className="ui-video-seek-slider">
+    <div
+      className={
+        heatmap?.length
+          ? 'ui-video-seek-slider with-heatmap'
+          : 'ui-video-seek-slider'
+      }
+    >
+      {heatmap && heatmap.length > 0 && (
+        <Heatmap
+          values={heatmap}
+          isActive={isThumbActive}
+        />
+      )}
+
       <div
         className={isThumbActive ? 'track active' : 'track'}
         ref={trackElement}
@@ -182,12 +209,16 @@ export const VideoSeekSlider: React.FC<Props> = ({
           seekHoverPosition={seekHoverPosition}
           trackWidth={trackWidth}
           getPreviewScreenUrl={getPreviewScreenUrl}
+          previewThumbnails={thumbnails}
           minutesPrefix={minutesPrefix}
           secondsPrefix={secondsPrefix}
         />
       )}
 
-      <Thumb max={max} currentTime={currentTime} />
+      <Thumb
+        max={max}
+        currentTime={currentTime}
+      />
     </div>
   );
 };

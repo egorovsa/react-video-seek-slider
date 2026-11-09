@@ -86,6 +86,18 @@ export const ApiTable: React.FC = () => {
             <td><code>undefined</code></td>
             <td>The callback function is going to be called each time when a slider is hovered. It will pass a current hover mouse time and expect a preview image url to be returned</td>
           </tr>
+          <tr>
+            <td><code>previewThumbnails</code></td>
+            <td><code>string | PreviewThumbnail[]</code></td>
+            <td><code>undefined</code></td>
+            <td>URL of a WebVTT thumbnails file with sprite sheets (<code>#xywh=</code>), or already parsed thumbnails. Takes priority over <code>getPreviewScreenUrl</code></td>
+          </tr>
+          <tr>
+            <td><code>heatmap</code></td>
+            <td><code>number[]</code></td>
+            <td><code>undefined</code></td>
+            <td>Watch intensity per equal part of the video, shown as a graph above the track on hover. Values are normalized by the maximum</td>
+          </tr>
         </tbody>
       </table>
       

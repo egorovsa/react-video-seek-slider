@@ -38,9 +38,10 @@ describe('VideoSeekSlider.tsx', () => {
       vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(
         TRACK_WIDTH
       );
-      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
-        { left: 0, width: TRACK_WIDTH } as DOMRect
-      );
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+        left: 0,
+        width: TRACK_WIDTH,
+      } as DOMRect);
     });
 
     afterEach(() => {
@@ -138,6 +139,111 @@ describe('VideoSeekSlider.tsx', () => {
       const { container } = render(getWrapper({ timeCodes: [] }));
 
       expect(container.querySelectorAll('.track .main')).toHaveLength(1);
+    });
+  });
+
+  describe('previews and heatmap', () => {
+    beforeEach(() => {
+      vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(
+        100
+      );
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+        left: 0,
+        width: 100,
+      } as DOMRect);
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    const thumbnails = [
+      {
+        fromMs: 0,
+        toMs: 50000,
+        url: 'sprite.jpg',
+        x: 0,
+        y: 0,
+        width: 320,
+        height: 180,
+      },
+      {
+        fromMs: 50000,
+        toMs: 100000,
+        url: 'sprite.jpg',
+        x: 320,
+        y: 0,
+        width: 320,
+        height: 180,
+      },
+    ];
+
+    it('shows the sprite fragment for the hovered time', () => {
+      render(getWrapper({ max: 100000, previewThumbnails: thumbnails }));
+
+      fireEvent.pointerMove(screen.getByTestId('main-track'), { clientX: 70 });
+
+      const preview = screen.getByTestId('preview-screen');
+      const sprite = preview.firstElementChild as HTMLElement;
+
+      expect(preview).toHaveStyle({ height: '90px' });
+      expect(sprite.style.backgroundPosition).toBe('-320px 0px');
+      expect(sprite.style.transform).toBe('scale(0.5)');
+    });
+
+    it('loads thumbnails from a VTT url', async () => {
+      const fetchMock = vi
+        .spyOn(globalThis, 'fetch')
+        .mockResolvedValue(
+          new Response(
+            'WEBVTT\n\n00:00:00.000 --> 00:01:40.000\nsheet.jpg#xywh=0,0,160,90\n'
+          )
+        );
+
+      render(
+        getWrapper({ max: 100000, previewThumbnails: '/media/thumbs.vtt' })
+      );
+      fireEvent.pointerMove(screen.getByTestId('main-track'), { clientX: 30 });
+
+      const preview = await screen.findByTestId('preview-screen');
+      const sprite = preview.firstElementChild as HTMLElement;
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        'http://localhost:3000/media/thumbs.vtt',
+        expect.anything()
+      );
+      expect(sprite.style.backgroundImage).toContain(
+        'http://localhost:3000/media/sheet.jpg'
+      );
+    });
+
+    it('falls back to getPreviewScreenUrl outside the thumbnails', () => {
+      render(
+        getWrapper({
+          max: 200000,
+          previewThumbnails: thumbnails,
+          getPreviewScreenUrl: () => 'fallback.jpg',
+        })
+      );
+
+      fireEvent.pointerMove(screen.getByTestId('main-track'), { clientX: 80 });
+
+      expect(screen.getByTestId('preview-screen').style.backgroundImage).toBe(
+        'url("fallback.jpg")'
+      );
+    });
+
+    it('renders the heatmap only with data and activates it on hover', () => {
+      const { rerender } = render(getWrapper({ heatmap: [] }));
+      expect(screen.queryByTestId('heatmap')).not.toBeInTheDocument();
+
+      rerender(getWrapper({ heatmap: [1, 3, 2] }));
+      const heatmap = screen.getByTestId('heatmap');
+
+      expect(heatmap).not.toHaveClass('active');
+
+      fireEvent.pointerMove(screen.getByTestId('main-track'), { clientX: 40 });
+      expect(heatmap).toHaveClass('active');
     });
   });
 });

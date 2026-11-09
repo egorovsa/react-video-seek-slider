@@ -1,5 +1,21 @@
 import { VideoSeekSlider } from '../../index';
 
+const THUMBNAILS_URL = `${import.meta.env.BASE_URL}thumbnails/thumbnails.vtt`;
+
+/** Sample watch intensity: a few smooth peaks over a flat base. */
+const SAMPLE_HEATMAP = Array.from({ length: 100 }, (_, index) => {
+  const peak = (center: number, width: number, height: number): number =>
+    height * Math.exp(-((index - center) ** 2) / (2 * width ** 2));
+
+  return (
+    0.15 +
+    peak(4, 3, 0.9) +
+    peak(38, 6, 0.6) +
+    peak(62, 2, 1) +
+    peak(88, 5, 0.5)
+  );
+});
+
 interface ExampleDemoProps {
   activeTab: string;
   maxTime: number;
@@ -60,10 +76,25 @@ export const ExampleDemo: React.FC<ExampleDemoProps> = ({
         />
       )}
 
+      {activeTab === 'withThumbnails' && (
+        <VideoSeekSlider
+          {...commonProps}
+          previewThumbnails={THUMBNAILS_URL}
+        />
+      )}
+
+      {activeTab === 'withHeatmap' && (
+        <VideoSeekSlider
+          {...commonProps}
+          heatmap={SAMPLE_HEATMAP}
+        />
+      )}
+
       {activeTab === 'advanced' && (
         <VideoSeekSlider
           {...commonProps}
-          getPreviewScreenUrl={onGettingPreview}
+          previewThumbnails={THUMBNAILS_URL}
+          heatmap={SAMPLE_HEATMAP}
           timeCodes={timeCodesAdvanced}
         />
       )}
