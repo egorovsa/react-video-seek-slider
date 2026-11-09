@@ -18,6 +18,8 @@ export default defineConfig({
       ],
     }),
   ],
+  // public/ holds demo assets only, keep them out of the library build
+  publicDir: false,
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.tsx'),

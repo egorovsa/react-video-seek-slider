@@ -1,10 +1,13 @@
 # react-video-seek-slider
 
-The simplest, light weight and dependency free html video seeker like YouTube for React
-With time codes and video preview opportunity
+[![npm version](https://img.shields.io/npm/v/react-video-seek-slider)](https://www.npmjs.com/package/react-video-seek-slider)
+[![npm downloads](https://img.shields.io/npm/dm/react-video-seek-slider)](https://www.npmjs.com/package/react-video-seek-slider)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/react-video-seek-slider)](https://bundlephobia.com/package/react-video-seek-slider)
+[![license](https://img.shields.io/npm/l/react-video-seek-slider)](LICENSE)
 
- [DEMO](https://egorovsa.github.io/react-video-seek-slider/)
+YouTube-style video seek bar for React: chapters, sprite/WebVTT preview thumbnails, watch heatmap and touch support. Lightweight, zero dependencies, written in TypeScript.
 
+[DEMO](https://egorovsa.github.io/react-video-seek-slider/)
 
 ![react-video-seek-slider](https://github.com/egorovsa/react-video-seek-slider/blob/develop/example.gif?raw=true)
 
@@ -62,14 +65,14 @@ The slider listens to `pointerdown` / `pointermove` / `pointerup` instead of `mo
 - Added time codes and seeker preview fully like in youtube player!
 - The codebase is completely refactored and optimized
 
-## Braking changes from v5 -> v6
+## Breaking changes from v5 -> v6
 
 #### props names that are changed
 
 - `progress` -> `bufferTime`
 - `hideSeekTimes` -> `hideThumbTooltip`
 
-## Braking changes from v4 -> v5
+## Breaking changes from v4 -> v5
 
 All time values you pass to props like `max`, `currentTime` and `progress` now are in milliseconds instead of seconds.
 
